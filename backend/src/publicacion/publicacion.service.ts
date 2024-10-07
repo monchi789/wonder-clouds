@@ -58,7 +58,7 @@ export class PublicacionService {
 
     if ((await publicacion).affected === 0) {
       throw new NotFoundException(
-        `Publicacion con el id ${idPublicacion} no encontrado`,
+        `Publicacion con el ID ${idPublicacion} no encontrado`,
       );
     }
 
@@ -66,14 +66,12 @@ export class PublicacionService {
   }
 
   async remove(idPublicacion: string) {
-    console.log(idPublicacion);
-
     const publicacion =
       await this.publicacionRepository.softDelete(idPublicacion);
 
     if ((await publicacion).affected === 0) {
       throw new NotFoundException(
-        `Publicacion con el id ${idPublicacion} no encontrada.`,
+        `Publicacion con el ID ${idPublicacion} no encontrada.`,
       );
     }
 
