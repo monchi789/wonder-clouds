@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { PublicacionModule } from './publicacion/publicacion.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServicioModule } from './servicio/servicio.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       logging: true,
     }),
+    ServicioModule,
   ],
   controllers: [],
   providers: [],
