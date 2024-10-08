@@ -8,5 +8,6 @@ import { TipoGeneral } from './entities/tipo-general.entity';
   imports: [TypeOrmModule.forFeature([TipoGeneral])],
   controllers: [TipoGeneralController],
   providers: [TipoGeneralService],
+  exports: [TipoGeneralService],
 })
 export class TipoGeneralModule {}

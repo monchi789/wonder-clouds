@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsBoolean, IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateTipoGeneralDto {
@@ -13,6 +14,11 @@ export class CreateTipoGeneralDto {
   @IsNotEmpty()
   @IsString()
   descripcion: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Type(() => String)
+  tipo: string;
 
   @IsNotEmpty()
   @IsBoolean()

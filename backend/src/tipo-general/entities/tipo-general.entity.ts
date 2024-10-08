@@ -12,10 +12,10 @@ export class TipoGeneral {
   @PrimaryGeneratedColumn('uuid')
   idTipoGeneral: string;
 
-  @Column({ type: 'varchar', length: 3 })
+  @Column({ type: 'varchar', length: 5, unique: true })
   codigo: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', unique: true })
   nombre: string;
 
   @Column({ type: 'text' })

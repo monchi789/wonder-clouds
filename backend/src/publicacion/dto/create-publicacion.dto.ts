@@ -5,11 +5,13 @@ export class CreatePublicacionDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(3)
+  @Type(() => String)
   titulo: string;
 
   @IsString()
   @IsNotEmpty()
   @MinLength(5)
+  @Type(() => String)
   contenido: string;
 
   @IsString()
@@ -20,6 +22,8 @@ export class CreatePublicacionDto {
   @Type(() => Date)
   fechaPublicacion: Date;
 
+  @IsNotEmpty()
   @IsString()
+  @Type(() => String)
   categoriaPublicacion: string;
 }

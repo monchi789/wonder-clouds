@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class UpdateTipoGeneralDto {
@@ -13,6 +14,11 @@ export class UpdateTipoGeneralDto {
   @IsOptional()
   @IsString()
   descripcion: string;
+
+  @IsOptional()
+  @IsString()
+  @Type(() => String)
+  tipo: string;
 
   @IsOptional()
   @IsBoolean()

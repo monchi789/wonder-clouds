@@ -8,15 +8,27 @@ import { UpdatePublicacionDto } from './dto/update-publicacion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Publicacion } from './entities/publicacion.entity';
 import { Repository } from 'typeorm';
+import { TipoGeneral } from 'src/tipo-general/entities/tipo-general.entity';
 
 @Injectable()
 export class PublicacionService {
   constructor(
     @InjectRepository(Publicacion)
     private readonly publicacionRepository: Repository<Publicacion>,
+
+    @InjectRepository(TipoGeneral)
+    private readonly tipoGeneralRepository: Repository<TipoGeneral>,
   ) {}
 
   async create(createPublicacionDto: CreatePublicacionDto) {
+    const tipo = await this.tipoGeneralRepository.findOne({
+      where: { nombre: createPublicacionDto.categoriaPublicacion },
+    });
+
+    if (!tipo) {
+      throw new NotFoundException('El tipo de publicacion no encontrado');
+    }
+
     const publicacion = this.publicacionRepository.create(createPublicacionDto);
     return await this.publicacionRepository.save(publicacion);
   }
