@@ -44,5 +44,5 @@ import {
     remove(@Param('id') id: string) {
       return this.popUpService.remove(id);
     }
-  }
-  
+    
+ 
