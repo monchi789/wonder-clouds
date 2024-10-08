@@ -1,26 +1,80 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTipoGeneralDto } from './dto/create-tipo-general.dto';
 import { UpdateTipoGeneralDto } from './dto/update-tipo-general.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TipoGeneral } from './entities/tipo-general.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TipoGeneralService {
-  create(createTipoGeneralDto: CreateTipoGeneralDto) {
-    return 'This action adds a new tipoGeneral';
+  constructor(
+    @InjectRepository(TipoGeneral)
+    private readonly tipoGeneralRepository: Repository<TipoGeneral>,
+  ) {}
+
+  async create(createTipoGeneralDto: CreateTipoGeneralDto) {
+    const tipoGeneral = this.tipoGeneralRepository.create(createTipoGeneralDto);
+    return await this.tipoGeneralRepository.save(tipoGeneral);
   }
 
-  findAll() {
-    return `This action returns all tipoGeneral`;
+  async findAll() {
+    return await this.tipoGeneralRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tipoGeneral`;
+  async findOne(idTipoGeneral: string) {
+    try {
+      const tipoGeneral = await this.tipoGeneralRepository.findOne({
+        where: { idTipoGeneral },
+      });
+
+      if (!tipoGeneral) {
+        throw new NotFoundException(
+          `Tipo General con el ID ${idTipoGeneral} no encontrado`,
+        );
+      }
+
+      return tipoGeneral;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+
+      throw new BadRequestException('El ID proporcionado no es valido');
+    }
   }
 
-  update(id: number, updateTipoGeneralDto: UpdateTipoGeneralDto) {
-    return `This action updates a #${id} tipoGeneral`;
+  async update(
+    idTipoGeneral: string,
+    updateTipoGeneralDto: UpdateTipoGeneralDto,
+  ) {
+    const tipoGeneral = this.tipoGeneralRepository.update(
+      idTipoGeneral,
+      updateTipoGeneralDto,
+    );
+
+    if ((await tipoGeneral).affected === 0) {
+      throw new NotFoundException(
+        `Tipo General con el ID ${idTipoGeneral} no encontrado`,
+      );
+    }
+
+    return this.tipoGeneralRepository.findOne({ where: { idTipoGeneral } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tipoGeneral`;
+  async remove(idTipoGeneral: string) {
+    const tipoGeneral =
+      await this.tipoGeneralRepository.softDelete(idTipoGeneral);
+
+    if ((await tipoGeneral).affected === 0) {
+      throw new NotFoundException(
+        `Tipo General con el ID ${idTipoGeneral} no encontrada`,
+      );
+    }
+
+    return { message: `Tipo General con el ID ${idTipoGeneral} eliminada` };
   }
 }

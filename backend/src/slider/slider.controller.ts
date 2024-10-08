@@ -31,10 +31,7 @@ export class SliderController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateSliderDto: UpdateSliderDto,
-  ) {
+  update(@Param('id') id: string, @Body() updateSliderDto: UpdateSliderDto) {
     return this.sliderService.update(id, updateSliderDto);
   }
 

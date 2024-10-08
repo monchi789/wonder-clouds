@@ -1,4 +1,20 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateTipoGeneralDto } from './create-tipo-general.dto';
+import { IsBoolean, IsOptional, IsString, MaxLength } from 'class-validator';
 
-export class UpdateTipoGeneralDto extends PartialType(CreateTipoGeneralDto) {}
+export class UpdateTipoGeneralDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(5)
+  codigo: string;
+
+  @IsOptional()
+  @IsString()
+  nombre: string;
+
+  @IsOptional()
+  @IsString()
+  descripcion: string;
+
+  @IsOptional()
+  @IsBoolean()
+  activo: boolean;
+}
