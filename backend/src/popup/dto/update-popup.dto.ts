@@ -1,12 +1,12 @@
-import { IsNotEmpty, IsString, MinLength, IsBoolean } from 'class-validator';
+import { IsOptional, IsString, MinLength, IsBoolean } from "class-validator";
 
-export class UpdatePopUpDto {
-  @IsNotEmpty()
-  @IsBoolean()
-  estadoPopUp: boolean;
+export class UpdatePopUpDto{
+    @IsOptional()
+    @IsBoolean()
+    estadoPopUp: boolean;
 
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
-  imagenPopUp: string;
+    @IsString()
+    @IsOptional()
+    @MinLength(5)
+    imagenPopUp: string;
 }

@@ -16,10 +16,10 @@ export class PopUpService {
     private readonly popUpRepository: Repository<PopUp>,
   ) {}
 
-  async create(createPopUpDto: CreatePopUpDto) {
-    const slider = this.popUpRepository.create(createPopUpDto);
-    return await this.popUpRepository.save(slider);
-  }
+    async create(createPopUpDto:CreatePopUpDto){
+        const popUp = this.popUpRepository.create(createPopUpDto);
+        return await this.popUpRepository.save(popUp);
+    }
 
   async findAll() {
     return await this.popUpRepository.find();

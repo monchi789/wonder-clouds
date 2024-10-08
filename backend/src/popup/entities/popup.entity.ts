@@ -1,13 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    DeleteDateColumn,
+    UpdateDateColumn,
+  } from 'typeorm';
+  
+  @Entity()
+  export class PopUp {
+    @PrimaryGeneratedColumn('uuid')
+    idPopUp: string;
+  
+    @Column({ type: 'boolean' })
+    estadoPopUp: boolean;
+  
+    @Column({ type: 'text' })
+    imagenPopUp: string; 
 
-@Entity()
-export class PopUp {
-  @PrimaryGeneratedColumn('uuid')
-  idPopUp: string;
+    @CreateDateColumn()
+    createAt: Date;
 
-  @Column({ type: 'boolean' })
-  estadoPopUp: boolean;
+    @UpdateDateColumn()
+    updateAt: Date;
 
-  @Column({ type: 'text' })
-  imagenPopUp: string;
-}
+    @DeleteDateColumn()
+    deleteAt: Date;
+  }
+  
+

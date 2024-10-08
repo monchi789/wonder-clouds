@@ -1,13 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    DeleteDateColumn,
+    UpdateDateColumn,
+  } from 'typeorm';
+  
+  @Entity()
+  export class Slider {
+    @PrimaryGeneratedColumn('uuid')
+    idSlider: string;
+  
+    @Column({ type: 'boolean' })
+    estadoSlider: boolean;
+  
+    @Column({ type: 'text' })
+    imagen: string; 
 
-@Entity()
-export class Slider {
-  @PrimaryGeneratedColumn('uuid')
-  idSlider: string;
+    @CreateDateColumn()
+    createAt: Date;
 
-  @Column({ type: 'boolean' })
-  estadoSlider: boolean;
+    @UpdateDateColumn()
+    updateAt: Date;
 
-  @Column({ type: 'text' })
-  imagen: string;
-}
+    @DeleteDateColumn()
+    deleteAt: Date;
+  }
+  
+

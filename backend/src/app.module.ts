@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { PublicacionModule } from './publicacion/publicacion.module';
 import { SliderModule } from './slider/slider.module';
+import { ClienteModule } from './cliente/cliente.module';
+import { TrabajoModule } from './trabajo/trabajo.module';
+import { DetalleTrabajoModule } from './detalle-trabajo/detalle-trabajo.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServicioModule } from './servicio/servicio.module';
@@ -14,6 +17,9 @@ import { PopUpModule } from './popup/popup.module';
     PopUpModule,
     ServicioModule,
     TipoGeneralModule,
+    ClienteModule,
+    TrabajoModule,
+    DetalleTrabajoModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env'],
