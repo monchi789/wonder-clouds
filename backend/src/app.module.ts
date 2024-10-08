@@ -9,6 +9,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServicioModule } from './servicio/servicio.module';
 import { TipoGeneralModule } from './tipo-general/tipo-general.module';
 import { PopUpModule } from './popup/popup.module';
+import { UsuarioModule } from './usuario/usuario.module';
+import { RolModule } from './rol/rol.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { PopUpModule } from './popup/popup.module';
       synchronize: true,
       logging: true,
     }),
+    UsuarioModule,
+    RolModule,
   ],
 })
 export class AppModule {}
