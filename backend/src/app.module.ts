@@ -1,26 +1,23 @@
 import { Module } from '@nestjs/common';
-<<<<<<< Updated upstream
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { PublicacionModule } from './publicacion/publicacion.module';
+import { SliderModule } from './slider/slider.module';
+import { PublicacionModule } from './publicacion/publicacion.module';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServicioModule } from './servicio/servicio.module';
 
 @Module({
   imports: [],
   controllers: [AppController],
-  providers: [AppService],
-=======
-import { PublicacionModule } from './publicacion/publicacion.module';
-import { SliderModule } from './slider/slider.module';
-import { PopUpModule } from './popup/popup.module';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+  providers: [AppService]
 
-@Module({
+
   imports: [
     PublicacionModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env'],
-    }),
+
     SliderModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -42,9 +39,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       logging: true,
     }),
+
   ],
   controllers: [],
   providers: [],
->>>>>>> Stashed changes
+
+    ServicioModule,
+  ],
 })
 export class AppModule {}
