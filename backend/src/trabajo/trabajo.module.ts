@@ -6,10 +6,7 @@ import { Trabajo } from './entities/trabajo.entity';
 import { ClienteModule } from 'src/cliente/cliente.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Trabajo]),
-    ClienteModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Trabajo]), ClienteModule],
   controllers: [TrabajoController],
   providers: [TrabajoService],
   exports: [TypeOrmModule],

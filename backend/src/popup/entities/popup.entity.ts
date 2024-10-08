@@ -1,31 +1,29 @@
 import {
-    Column,
-    Entity,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    DeleteDateColumn,
-    UpdateDateColumn,
-  } from 'typeorm';
-  
-  @Entity()
-  export class PopUp {
-    @PrimaryGeneratedColumn('uuid')
-    idPopUp: string;
-  
-    @Column({ type: 'boolean' })
-    estadoPopUp: boolean;
-  
-    @Column({ type: 'text' })
-    imagenPopUp: string; 
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-    @CreateDateColumn()
-    createAt: Date;
+@Entity()
+export class PopUp {
+  @PrimaryGeneratedColumn('uuid')
+  idPopUp: string;
 
-    @UpdateDateColumn()
-    updateAt: Date;
+  @Column({ type: 'boolean' })
+  estadoPopUp: boolean;
 
-    @DeleteDateColumn()
-    deleteAt: Date;
-  }
-  
+  @Column({ type: 'text' })
+  imagenPopUp: string;
 
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
+}

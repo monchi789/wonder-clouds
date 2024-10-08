@@ -1,47 +1,46 @@
 import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    UpdateDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    ManyToOne,
-  } from 'typeorm';
-  import { Cliente } from 'src/cliente/entities/cliente.entity';
-  
-  @Entity()
-  export class Trabajo {
-    @PrimaryGeneratedColumn('uuid')
-    idTrabajo: string;
-  
-    @Column({ type: 'text' })
-    nombreTrabajo: string;
-  
-    @Column({ type: 'text' })
-    portadaTrabajo: string;
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+} from 'typeorm';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 
-    @Column({ type: 'text' })
-    descripcionTrabajo: string; 
+@Entity()
+export class Trabajo {
+  @PrimaryGeneratedColumn('uuid')
+  idTrabajo: string;
 
-    @Column({ type: 'boolean' })
-    visibilidadTrabajo: boolean; 
+  @Column({ type: 'text' })
+  nombreTrabajo: string;
 
-    @Column({ type: Date  })
-    fechaTrabajo: Date; 
+  @Column({ type: 'text' })
+  portadaTrabajo: string;
 
-    @ManyToOne(() => Cliente)
-    idCliente: Cliente;
+  @Column({ type: 'text' })
+  descripcionTrabajo: string;
 
-    @Column({ type: 'text' })
-    tipoTrabajo: string; 
+  @Column({ type: 'boolean' })
+  visibilidadTrabajo: boolean;
 
-    @CreateDateColumn()
-    createAt: Date;
+  @Column({ type: Date })
+  fechaTrabajo: Date;
 
-    @UpdateDateColumn()
-    updateAt: Date;
+  @ManyToOne(() => Cliente)
+  idCliente: Cliente;
 
-    @DeleteDateColumn()
-    deleteAt: Date;
-  }
-  
+  @Column({ type: 'text' })
+  tipoTrabajo: string;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
+}

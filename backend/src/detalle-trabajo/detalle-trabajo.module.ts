@@ -6,10 +6,7 @@ import { DetalleTrabajo } from './entities/detalle-trabajo.entity';
 import { TrabajoModule } from 'src/trabajo/trabajo.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([DetalleTrabajo]),
-    TrabajoModule,
-  ],
+  imports: [TypeOrmModule.forFeature([DetalleTrabajo]), TrabajoModule],
   controllers: [DetalleTrabajoController],
   providers: [DetalleTrabajoService],
 })
