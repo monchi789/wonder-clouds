@@ -1,12 +1,12 @@
-import { IsNotEmpty, IsString, MinLength, IsBoolean } from "class-validator";
+import { IsOptional, IsString, MinLength, IsBoolean } from "class-validator";
 
 export class UpdateSliderDto{
-    @IsNotEmpty()
+    @IsOptional()
     @IsBoolean()
     estadoSlider:boolean;
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     @MinLength(5)
     imagen:string;
 

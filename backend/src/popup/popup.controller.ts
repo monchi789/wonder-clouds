@@ -10,7 +10,9 @@ import {
   import { PopUpService } from './popup.service';
   import { CreatePopUpDto } from './dto/create-popuo.dto';
   import { UpdatePopUpDto } from './dto/update-popup.dto';
+  import { ApiTags } from '@nestjs/swagger';
   
+  @ApiTags('PopUp')
   @Controller('popUp')
   export class PopUpController {
     constructor(private readonly popUpService: PopUpService) {}

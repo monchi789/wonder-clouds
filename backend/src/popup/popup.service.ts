@@ -17,8 +17,8 @@ export class PopUpService{
     ){}
 
     async create(createPopUpDto:CreatePopUpDto){
-        const slider = this.popUpRepository.create(createPopUpDto);
-        return await this.popUpRepository.save(slider);
+        const popUp = this.popUpRepository.create(createPopUpDto);
+        return await this.popUpRepository.save(popUp);
     }
 
     async findAll(){

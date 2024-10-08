@@ -10,7 +10,9 @@ import {
 import { SliderService } from './slider.service';
 import { CreateSliderDto } from './dto/create-slider.dto';
 import { UpdateSliderDto } from './dto/update-slider.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Slider')
 @Controller('slider')
 export class SliderController {
   constructor(private readonly sliderService: SliderService) {}

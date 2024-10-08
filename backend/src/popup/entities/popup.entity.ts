@@ -2,6 +2,9 @@ import {
     Column,
     Entity,
     PrimaryGeneratedColumn,
+    CreateDateColumn,
+    DeleteDateColumn,
+    UpdateDateColumn,
   } from 'typeorm';
   
   @Entity()
@@ -14,5 +17,14 @@ import {
   
     @Column({ type: 'text' })
     imagenPopUp: string; 
+
+    @CreateDateColumn()
+    createAt: Date;
+
+    @UpdateDateColumn()
+    updateAt: Date;
+
+    @DeleteDateColumn()
+    deleteAt: Date;
   }
   
