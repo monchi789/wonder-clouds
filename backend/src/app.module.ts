@@ -1,13 +1,19 @@
 import { Module } from '@nestjs/common';
 import { PublicacionModule } from './publicacion/publicacion.module';
+import { SliderModule } from './slider/slider.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServicioModule } from './servicio/servicio.module';
 import { TipoGeneralModule } from './tipo-general/tipo-general.module';
+import { PopUpModule } from './popup/popup.module';
 
 @Module({
   imports: [
     PublicacionModule,
+    SliderModule,
+    PopUpModule,
+    ServicioModule,
+    TipoGeneralModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env'],
@@ -18,15 +24,11 @@ import { TipoGeneralModule } from './tipo-general/tipo-general.module';
       port: parseInt(process.env.PORT),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
-      autoLoadEntities: true,
       database: process.env.POSTGRES_DB,
+      autoLoadEntities: true,
       synchronize: true,
       logging: true,
     }),
-    ServicioModule,
-    TipoGeneralModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
