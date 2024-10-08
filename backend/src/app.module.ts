@@ -3,6 +3,7 @@ import { PublicacionModule } from './publicacion/publicacion.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServicioModule } from './servicio/servicio.module';
+import { TipoGeneralModule } from './tipo-general/tipo-general.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ServicioModule } from './servicio/servicio.module';
       logging: true,
     }),
     ServicioModule,
+    TipoGeneralModule,
   ],
   controllers: [],
   providers: [],

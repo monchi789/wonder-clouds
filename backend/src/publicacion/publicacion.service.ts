@@ -75,6 +75,6 @@ export class PublicacionService {
       );
     }
 
-    return { message: `Publicacion con el id ${idPublicacion} eliminada.` };
+    return { message: `Publicacion con el ID ${idPublicacion} eliminada.` };
   }
 }
