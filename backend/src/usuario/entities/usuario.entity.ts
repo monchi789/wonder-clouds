@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Rol } from 'src/rol/entities/rol.entity';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Usuario {
@@ -13,4 +14,9 @@ export class Usuario {
 
   @Column({ type: 'text', unique: true })
   email: string;
+
+  @ManyToOne(() => Rol, (rol) => rol.idRol, {
+    eager: true,
+  })
+  rol: Rol;
 }

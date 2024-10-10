@@ -1,8 +1,13 @@
+import { Permiso } from 'src/permiso/entities/permiso.entity';
+import { Usuario } from 'src/usuario/entities/usuario.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -23,4 +28,11 @@ export class Rol {
 
   @DeleteDateColumn()
   deleteAt: Date;
+
+  @OneToMany(() => Usuario, (usuario) => usuario.rol)
+  roles: Usuario[];
+
+  @ManyToMany(() => Permiso, (permiso) => permiso.roles)
+  @JoinTable()
+  permisos: Permiso[];
 }
