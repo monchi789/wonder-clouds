@@ -5,7 +5,9 @@ import {
   UpdateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  ManyToOne,
+  OneToOne,
+  JoinColumn,
+  Index,
 } from 'typeorm';
 import { Trabajo } from 'src/trabajo/entities/trabajo.entity';
 
@@ -23,7 +25,9 @@ export class DetalleTrabajo {
   @Column({ type: Date })
   fechaDominio: Date;
 
-  @ManyToOne(() => Trabajo)
+  @OneToOne(() => Trabajo)
+  @JoinColumn()
+  @Index({ unique: true })
   idTrabajo: Trabajo;
 
   @CreateDateColumn()
