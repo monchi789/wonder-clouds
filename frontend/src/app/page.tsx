@@ -56,7 +56,7 @@ export default function Home() {
       <div className="container flex flex-col w-full lg:w-3/4 mx-auto items-center mt-12 lg:mt-24">
         <h2 className="text-3xl lg:text-4xl font-semibold">Comunícate con nosotros</h2>
         <div className="flex flex-row mx-12 justify-center space-x-10">
-          <img className="hidden lg:block w-1/2" src="/static/images/info.svg" width={500} height={500} alt="Imagen representativa" />
+          <Image className="hidden lg:block w-1/2" src="/static/images/info.svg" width={500} height={500} alt="Imagen representativa" />
           <div className="w-1/2 my-auto">
             <span className="text-medium font-semibold">¿Necesitas soluciones digitales?</span>
             <h3 className="text-3xl lg:text-4xl font-semibold mb-5">No dudes en contactarnos</h3>

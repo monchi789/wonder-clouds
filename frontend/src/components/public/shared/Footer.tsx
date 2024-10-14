@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CiFacebook } from "react-icons/ci";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
+import Image from "next/image";
 
 export function Footer() {
   return (
@@ -31,7 +32,7 @@ export function Footer() {
           </div>
         </div>
         <div className="flex flex-col md:w-2/5">
-          <Link href="/"><img className='w-3/6 md:w-5/6 lg:w-1/2 mx-auto' src="/static/images/clouds.png" alt="Logo Wonder Clouds" /></Link>
+          <Link href="/"><Image className='w-3/6 md:w-5/6 lg:w-1/2 mx-auto' src="/static/images/clouds.png" alt="Logo Wonder Clouds"  width={1000} height={1000}/></Link>
         </div>
       </div>
       <div className="text-center text-white font-nunito py-5">
