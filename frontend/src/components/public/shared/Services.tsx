@@ -1,53 +1,47 @@
-import React from 'react'
-import { CardServices } from '../ui/Cards'
+import CardService from "@/components/public/ui/CardService";
 
-function Services() {
+export default function Services() {
+
+  const services = [
+    {
+      title: "Presencia Digital de Marca",
+      imageSrc: "/static/images/service_01.svg",
+      imageAlt: "Servicio numero uno"
+    },
+    {
+      title: "Marketing Digital 360",
+      imageSrc: "/static/images/service_02.svg",
+      imageAlt: "Servicio numero dos"
+    },
+    {
+      title: "Branding e Identidad de Marca",
+      imageSrc: "/static/images/service_03.svg",
+      imageAlt: "Servicio numero tres"
+    },
+    {
+      title: "Organización de Eventos",
+      imageSrc: "/static/images/service_04.svg",
+      imageAlt: "Servicio numero cuatro"
+    },
+    {
+      title: "Desarrollo Web Personalizado",
+      imageSrc: "/static/images/service_05.svg",
+      imageAlt: "Servicio numero cinco"
+    },
+    {
+      title: "Gestión de Redes Sociales",
+      imageSrc: "/static/images/service_06.svg",
+      imageAlt: "Servicio numero seis"
+    }
+  ]
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-10 w-full">
-      <CardServices
-        title="Páginas web"
-        description="Desde diseños elegantes hasta funcionalidades avanzadas, creamos sitios web a medida que no solo cautivan a tus visitantes, sino que también potencian tus objetivos comerciales."
-        imageSrc="/static/images/services_01.svg"
-        imageAlt="Desarrollo Web"
-      />
-      <CardServices
-        title="Marketing digital"
-        description="Desde diseños elegantes hasta funcionalidades avanzadas, creamos sitios web a medida que no solo cautivan a tus visitantes, sino que también potencian tus objetivos comerciales."
-        imageSrc="/static/images/services_01.svg"
-        imageAlt="Desarrollo Web"
-        bgColor = "#E9DFFB"
-        borderColor = "#3E0B73"
-      />
-      <CardServices
-        title="Desarrollo de software a medida"
-        description="Desde diseños elegantes hasta funcionalidades avanzadas, creamos sitios web a medida que no solo cautivan a tus visitantes, sino que también potencian tus objetivos comerciales."
-        imageSrc="/static/images/services_01.svg"
-        imageAlt="Desarrollo Web"
-        bgColor = "#E9DFFB"
-        borderColor = "#3E0B73"
-      />
-      <CardServices
-        title="Gestión de redes sociales"
-        description="Desde diseños elegantes hasta funcionalidades avanzadas, creamos sitios web a medida que no solo cautivan a tus visitantes, sino que también potencian tus objetivos comerciales."
-        imageSrc="/static/images/services_01.svg"
-        imageAlt="Desarrollo Web"
-      />
-      <CardServices
-        title="Diseño gráfico"
-        description="Desde diseños elegantes hasta funcionalidades avanzadas, creamos sitios web a medida que no solo cautivan a tus visitantes, sino que también potencian tus objetivos comerciales."
-        imageSrc="/static/images/services_01.svg"
-        imageAlt="Desarrollo Web"
-      />
-      <CardServices
-        title="Asistente virtual personalizado"
-        description="Desde diseños elegantes hasta funcionalidades avanzadas, creamos sitios web a medida que no solo cautivan a tus visitantes, sino que también potencian tus objetivos comerciales."
-        imageSrc="/static/images/services_01.svg"
-        imageAlt="Desarrollo Web"
-        bgColor = "#E9DFFB"
-        borderColor = "#3E0B73"
-      />
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-10 w-full">
+      {
+        services.map((item, key) => (
+          <CardService key={key} link="" title={item.title} imageSrc={item.imageSrc} imageAlt={item.imageAlt} />
+        ))
+      }
     </div>
   )
 }
-
-export default Services

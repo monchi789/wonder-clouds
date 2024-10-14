@@ -12,7 +12,7 @@ const Header = () => {
       <div className="flex items-center">
         <Image src="/static/images/wonder.png" alt="Logo Wonder Clouds Cusco" width={100} height={100} />
       </div>
-      <div className="text-lg font-semibold space-x-10">
+      <div className="text-lg text-default font-semibold space-x-10">
         <Link href="/">
           <span className={`cursor-pointer ${pathname === '/' ? 'text-color-background' : 'text-black'}`}>
             Inicio
