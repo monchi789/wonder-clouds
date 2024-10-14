@@ -1,60 +1,43 @@
-'use client'
-
 import Image from "next/image";
-import Header from "../components/public/shared/Header";
-import { Footer } from "@/components/public/shared/Footer";
+import Header from "@/components/public/shared/Header";
+import Footer from "@/components/public/shared/Footer";
 import Services from "@/components/public/shared/Services";
-import MovingCirclesBackground from "@/components/public/ui/MovingCirclesBackground";
 import { MailIcon, Phone, Send, User } from "lucide-react";
-import { useTypewriter, Cursor } from 'react-simple-typewriter';
 import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
+import { Input } from "@nextui-org/input"; 
+import InicioWritting from "@/components/public/inicio/InicioWritting";
 
 export default function Home() {
-  const [text] = useTypewriter({
-    words: ['TU MARCA', 'TU NEGOCIO', 'TU EMPRESA'],
-    loop: 0,
-    typeSpeed: 70,
-    deleteSpeed: 50,
-    delaySpeed: 1000,
-  });
-
   return (
     <div className="relative">
 
       <Header />
 
-      <div className="container flex flex-row w-full lg:w-full items-center px-auto mx-auto my-12 lg:mt-5 space-y-10 relative">
-        <MovingCirclesBackground />
-        <div className="flex flex-col w-full lg:w-full space-y-5 px-4 lg:px-0 z-10">
-          <h3 className="text-3xl lg:text-5xl font-extrabold leading-tight">
-            Es momento de que <br />
-            <span className="text-[#104D7E]">{text}</span>
-            <Cursor cursorColor="#104D7E" /> <br />
-            suba al siguiente nivel
-          </h3>
-          <span className="text-lg lg:text-xl">
-            En Wonder Clouds nos encargamos de diseñar estrategias innovadoras para impulsar tu marca
-            hacia nuevos horizontes y conectar con audiencias globales de manera impactante.
-          </span>
-          <Button className="bg-[#104D7E] text-xl text-white font-medium rounded-2xl w-fit px-5 py-1">Contáctanos</Button>
-        </div>
-        <Image className="hidden lg:block w-2/6 z-10" src="/static/images/image_01.svg" width={1000} height={1000} alt="Imagen representativa" />
-      </div>
+      <InicioWritting />
 
-      <div className="flex flex-col justify-center items-center text-white bg-[#104D7E] space-y-5 p-10 ">
-        <h1 className="text-5xl">Wonder Clouds</h1>
+      <div className="flex flex-col justify-center items-center text-white bg-[#104D7E] space-y-10 p-10 ">
+        <h1 className="text-5xl font-bold">Wonder Clouds</h1>
         <p className="">Nos encargamos de diseñar estrategias innovadoras para impulsar tu marca hacia nuevos horizontes y conectar con audiencias globales de manera impactante.</p>
-        <span className="font-bold">Nuestros expertos están listos para ayudarte</span>
+        <span className="text-2xl font-semibold">Nuestros expertos están listos para ayudarte</span>
+        <div className="flex flex-row space-x-10">
+          <div className="flex flex-col text-center space-y-5">
+            <h4 className="text-lg font-semibold">Experiencia</h4>
+            <span className="text-5xl font-bold">2+</span>
+          </div>
+          <div className="flex flex-col text-center space-y-5">
+            <h4 className="text-lg font-semibold">Clientes satisfechos</h4>
+            <span className="text-5xl font-bold">10+</span>
+          </div>
+        </div>
       </div>
 
       <div className="container flex flex-col w-full lg:w-3/4 mx-auto items-center mt-12 lg:mt-18 space-y-10 relative">
-        <h2 className="text-3xl lg:text-4xl font-semibold">Nuestros Servicios</h2>
+        <h2 className="text-3xl lg:text-4xl font-semibold">Nuestros <span className="text-default">Servicios</span></h2>
         <Services />
       </div>
       
       <div className="container flex flex-col w-full lg:w-3/4 mx-auto items-center mt-12 lg:mt-24">
-        <h2 className="text-3xl lg:text-4xl font-semibold">Comunícate con nosotros</h2>
+        <h2 className="text-3xl lg:text-4xl font-semibold"><span className="text-default">Comunícate</span> con nosotros</h2>
         <div className="flex flex-row mx-12 justify-center space-x-10">
           <Image className="hidden lg:block w-1/2" src="/static/images/info.svg" width={500} height={500} alt="Imagen representativa" />
           <div className="w-1/2 my-auto">

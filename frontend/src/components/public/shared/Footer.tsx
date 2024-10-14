@@ -3,9 +3,11 @@ import { CiFacebook } from "react-icons/ci";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
 import Image from "next/image";
 
-export function Footer() {
+export default function Footer() {
   return (
-    <div className="w-full bg-[#104D7E] mt-10 py-5">
+    <>
+    <Image className="w-full" src="/static/images/background_footer.webp" alt="" width={1800} height={1000}/>
+    <div className="w-full bg-[#104D7E] py-5">
       <div className="container flex flex-col md:flex-row md:space-x-12 text-white w-4/6 mx-auto py-12">
         <div className='flex flex-col md:w-1/5 space-y-10 items-center my-auto'>
           <a href="https://www.facebook.com/" className="hover:text-[#A6C0D8] transition duration-300" ><CiFacebook size={35} /></a>
@@ -39,5 +41,6 @@ export function Footer() {
         <span className="text-sm"><a href="https://www.wonderclouds.dev">Copyright © 2024 Wonder Clouds</a></span>
       </div>
     </div>
+    </>
   )
 }
