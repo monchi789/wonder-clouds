@@ -1,101 +1,95 @@
+'use client'
+
 import Image from "next/image";
+import Header from "../components/public/shared/Header";
+import { Footer } from "@/components/public/shared/Footer";
+import Services from "@/components/public/shared/Services";
+import MovingCirclesBackground from "@/components/public/ui/MovingCirclesBackground";
+import { MailIcon, Phone, Send, User } from "lucide-react";
+import { useTypewriter, Cursor } from 'react-simple-typewriter';
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/input";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [text] = useTypewriter({
+    words: ['TU MARCA', 'TU NEGOCIO', 'TU EMPRESA'],
+    loop: 0,
+    typeSpeed: 70,
+    deleteSpeed: 50,
+    delaySpeed: 1000,
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="relative">
+      <Header />
+      <div className="container flex flex-row w-full lg:w-full mx-auto items-center my-12 lg:mt-5 space-y-10 relative">
+      <MovingCirclesBackground />
+        <div className="flex flex-col w-full lg:w-full space-y-5 px-4 lg:px-0 z-10"> 
+          <h3 className="text-3xl lg:text-5xl font-extrabold leading-tight">
+            Es momento de que <br />
+            <span className="text-[#104D7E]">{text}</span>
+            <Cursor cursorColor="#104D7E" /> <br />
+            suba al siguiente nivel
+          </h3>
+          <span className="text-lg lg:text-xl">
+            En Wonder Clouds nos encargamos de diseñar estrategias innovadoras para impulsar tu marca
+            hacia nuevos horizontes y conectar con audiencias globales de manera impactante.
+          </span>
+          <Button className="bg-[#104D7E] text-xl text-white font-medium rounded-2xl w-fit px-5 py-1">Contáctanos</Button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <Image className="hidden lg:block w-2/6 z-10" src="/static/images/image_01.svg" width={1000} height={1000} alt="Imagen representativa" />
+      </div>
+
+      <div className="flex flex-col justify-center items-center text-white bg-[#104D7E] space-y-5 p-10 ">
+        <h1 className="text-3xl">Wonder Clouds</h1>
+        <p className="">Nos encargamos de diseñar estrategias innovadoras para impulsar tu marca hacia nuevos horizontes y conectar con audiencias globales de manera impactante.</p>
+        <span className="font-bold">Nuestros expertos están listos para ayudarte</span>
+      </div>
+
+      <div className="container flex flex-col w-full lg:w-3/4 mx-auto items-center mt-12 lg:mt-18 space-y-10 relative">
+        <h2 className="text-3xl lg:text-4xl font-semibold">Nuestros Servicios</h2>
+        <Services />
+      </div>
+      <div className="container flex flex-col w-full lg:w-3/4 mx-auto items-center mt-12 lg:mt-24 space-y-10">
+        <h2 className="text-3xl lg:text-4xl font-semibold mb-10">Comunícate con nosotros</h2>
+        <div className="flex flex-row mx-24 justify-center space-x-20">
+          <div className="w-1/2 my-auto">
+            <span className="text-medium font-semibold">¿Necesitas soluciones digitales?</span>
+            <h3 className="text-3xl lg:text-4xl font-semibold mb-5">No dudes en contactarnos</h3>
+            <div className="flex flex-col space-y-10">
+              <Input
+                type="text"
+                variant="underlined"
+                placeholder="Nombre"
+                startContent={
+                  <User className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                }
+              />
+
+              <Input
+                type="email"
+                variant="underlined"
+                placeholder="Correo"
+                startContent={
+                  <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                }
+              />
+
+              <Input
+                type="number"
+                variant="underlined"
+                placeholder="Teléfono"
+                startContent={
+                  <Phone className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                }
+              />
+              <Button className="bg-[#104D7E] text-white text-base mx-auto p-5" startContent={<Send />}>Enviar</Button>
+            </div>
+          </div>
+          <img className="hidden lg:block w-1/3" src="/images/image02.png" width={500} height={500} alt="Imagen representativa" />
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 }
