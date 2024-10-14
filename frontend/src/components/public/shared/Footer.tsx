@@ -31,7 +31,7 @@ export function Footer() {
           </div>
         </div>
         <div className="flex flex-col md:w-2/5">
-          <Link href="/"><img className='w-3/6 md:w-5/6 lg:w-1/2 mx-auto' src="/images/clouds.png" alt="Logo Wonder Clouds" /></Link>
+          <Link href="/"><img className='w-3/6 md:w-5/6 lg:w-1/2 mx-auto' src="/static/images/clouds.png" alt="Logo Wonder Clouds" /></Link>
         </div>
       </div>
       <div className="text-center text-white font-nunito py-5">

@@ -18,22 +18,22 @@ const Header = () => {
             Inicio
           </span>
         </Link>
-        <Link href="/nosotros">
+        <Link href="/">
           <span className={`cursor-pointer ${pathname === '/' ? 'text-color-background' : 'text-black'}`}>
             Nosotros
           </span>
         </Link>
-        <Link href="/servicios">
+        <Link href="/">
           <span className={`cursor-pointer ${pathname === '/' ? 'text-color-background' : 'text-black'}`}>
             Servicios
           </span>
         </Link>
-        <Link href="/proyectos">
+        <Link href="/">
           <span className={`cursor-pointer ${pathname === '/' ? 'text-color-background' : 'text-black'}`}>
             Proyectos
           </span>
         </Link>
-        <Link href="/contactanos">
+        <Link href="/">
           <span className={`cursor-pointer ${pathname === '/' ? 'text-color-background' : 'text-black'}`}>
             Contáctanos
           </span>
