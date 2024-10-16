@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateTrabajoDto } from './dto/create-trabajo.dto';
 import { UpdateTrabajoDto } from './dto/update-trabajo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,7 +15,7 @@ export class TrabajoService {
     private readonly clienteRepository: Repository<Cliente>,
   ) {}
 
-  async create(createTrabajoDto: CreateTrabajoDto) {
+  async create(createTrabajoDto: CreateTrabajoDto, portadaTrabajo: string) {
     const cliente = await this.clienteRepository.findOne({
       where: { idCliente: createTrabajoDto.idCliente },
     });
@@ -32,6 +28,7 @@ export class TrabajoService {
 
     const trabajo = this.trabajoRepository.create({
       ...createTrabajoDto,
+      portadaTrabajo,
       idCliente: cliente,
     });
 
@@ -45,29 +42,25 @@ export class TrabajoService {
   }
 
   async findOne(idTrabajo: string) {
-    try {
-      const trabajo = await this.trabajoRepository.findOne({
-        where: { idTrabajo },
-        relations: ['idCliente'],
-      });
+    const trabajo = await this.trabajoRepository.findOne({
+      where: { idTrabajo },
+      relations: ['idCliente'],
+    });
 
-      if (!trabajo) {
-        throw new NotFoundException(
-          `Trabajo con el id ${idTrabajo} no encontrado.`,
-        );
-      }
-
-      return trabajo;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new BadRequestException('El ID proporcionado no es valido');
+    if (!trabajo) {
+      throw new NotFoundException(
+        `Trabajo con el id ${idTrabajo} no encontrado.`,
+      );
     }
+
+    return trabajo;
   }
 
-  async update(idTrabajo: string, updateTrabajoDto: UpdateTrabajoDto) {
+  async update(
+    idTrabajo: string,
+    updateTrabajoDto: UpdateTrabajoDto,
+    portadaTrabajo?: string,
+  ) {
     let cliente = null;
     if (updateTrabajoDto.idCliente) {
       cliente = await this.clienteRepository.findOne({
@@ -91,6 +84,10 @@ export class TrabajoService {
       throw new NotFoundException(
         `Trabajo con el id ${idTrabajo} no encontrado.`,
       );
+    }
+
+    if (portadaTrabajo) {
+      trabajo.portadaTrabajo = portadaTrabajo;
     }
 
     return await this.trabajoRepository.save(trabajo);

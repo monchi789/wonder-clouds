@@ -15,11 +15,6 @@ export class UpdateTrabajoDto {
   @IsString()
   @IsOptional()
   @MinLength(5)
-  portadaTrabajo: string;
-
-  @IsString()
-  @IsOptional()
-  @MinLength(5)
   descripcionTrabajo: string;
 
   @IsOptional()

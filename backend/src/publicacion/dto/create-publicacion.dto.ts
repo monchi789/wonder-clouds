@@ -14,9 +14,6 @@ export class CreatePublicacionDto {
   @Type(() => String)
   contenido: string;
 
-  @IsString()
-  portada: string;
-
   @IsNotEmpty()
   @IsDate()
   @Type(() => Date)

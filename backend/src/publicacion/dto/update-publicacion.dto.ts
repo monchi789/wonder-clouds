@@ -14,10 +14,6 @@ export class UpdatePublicacionDto {
   @Type(() => String)
   contenido: string;
 
-  @IsString()
-  @IsOptional()
-  portada: string;
-
   @IsDate()
   @IsOptional()
   @Type(() => Date)

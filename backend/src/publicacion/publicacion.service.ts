@@ -1,7 +1,7 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { UpdatePublicacionDto } from './dto/update-publicacion.dto';
@@ -20,7 +20,7 @@ export class PublicacionService {
     private readonly tipoGeneralRepository: Repository<TipoGeneral>,
   ) {}
 
-  async create(createPublicacionDto: CreatePublicacionDto) {
+  async create(createPublicacionDto: CreatePublicacionDto, portada: string) {
     const tipo = await this.tipoGeneralRepository.findOne({
       where: { nombre: createPublicacionDto.categoriaPublicacion },
     });
@@ -29,7 +29,11 @@ export class PublicacionService {
       throw new NotFoundException('El tipo de publicacion no encontrado');
     }
 
-    const publicacion = this.publicacionRepository.create(createPublicacionDto);
+    const publicacion = this.publicacionRepository.create({
+      ...createPublicacionDto,
+      portada,
+    });
+
     return await this.publicacionRepository.save(publicacion);
   }
 
@@ -38,50 +42,46 @@ export class PublicacionService {
   }
 
   async findOne(idPublicacion: string) {
-    try {
-      const publicacion = await this.publicacionRepository.findOne({
-        where: { idPublicacion },
-      });
+    const publicacion = await this.publicacionRepository.findOne({
+      where: { idPublicacion },
+    });
 
-      if (!publicacion) {
-        throw new NotFoundException(
-          `Publicacion con el id ${idPublicacion} no encontrado.`,
-        );
-      }
-
-      return publicacion;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new BadRequestException('El ID proporcionado no es valido');
+    if (!publicacion) {
+      throw new NotFoundException(
+        `Publicacion con el id ${idPublicacion} no encontrada.`,
+      );
     }
+
+    return publicacion;
   }
 
   async update(
     idPublicacion: string,
     updatePublicacionDto: UpdatePublicacionDto,
+    portada?: string,
   ) {
-    const publicacion = this.publicacionRepository.update(
+    const publicacion = await this.publicacionRepository.preload({
       idPublicacion,
-      updatePublicacionDto,
-    );
+      ...updatePublicacionDto,
+    });
 
-    if ((await publicacion).affected === 0) {
+    if (!publicacion) {
       throw new NotFoundException(
-        `Publicacion con el ID ${idPublicacion} no encontrado`,
+        `Publicacion con el ID ${idPublicacion} no encontrada`,
       );
     }
 
-    return this.publicacionRepository.findOne({ where: { idPublicacion } });
+    if (portada) {
+      publicacion.portada = portada;
+    }
+
+    return await this.publicacionRepository.save(publicacion);
   }
 
   async remove(idPublicacion: string) {
-    const publicacion =
-      await this.publicacionRepository.softDelete(idPublicacion);
+    const publicacion = await this.publicacionRepository.softDelete(idPublicacion);
 
-    if ((await publicacion).affected === 0) {
+    if (publicacion.affected === 0) {
       throw new NotFoundException(
         `Publicacion con el ID ${idPublicacion} no encontrada.`,
       );
