@@ -25,6 +25,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { unlink } from 'fs/promises';
+import { Express } from 'express';
 
 @ApiTags('PopUp')
 @Controller('popUp')
@@ -61,11 +62,21 @@ export class PopUpController {
     }),
   )
   async create(
-    @UploadedFile() file: any,
+    @UploadedFile() file: Express.Multer.File,
     @Body() createPopUpDto: CreatePopUpDto,
   ) {
     if (!file) {
       throw new BadRequestException('No se ha subido ninguna imagen');
+    }
+
+    // Asegurarse de que estadoPopUp se maneje correctamente como booleano
+    if (createPopUpDto.estadoPopUp !== undefined && createPopUpDto.estadoPopUp !== null) {
+      if (typeof createPopUpDto.estadoPopUp === 'string') {
+        // Convertir cadena "true"/"false" a booleano
+        createPopUpDto.estadoPopUp = createPopUpDto.estadoPopUp === 'true';
+      }
+    } else {
+      createPopUpDto.estadoPopUp = false; // Valor por defecto si no se envía estadoPopUp
     }
 
     const imagePath = `/uploads/${file.filename}`;
@@ -97,9 +108,20 @@ export class PopUpController {
 
   @Patch(':id')
   @ApiOperation({
-    summary: 'Actualiza un PopUp',
+    summary:
+      'Actualiza un PopUp, incluida la posibilidad de cambiar el estado y la imagen',
   })
   @ApiResponse({ status: 200, description: 'PopUp actualizado exitosamente.' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        estadoPopUp: { type: 'boolean' },
+        image: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
@@ -116,31 +138,41 @@ export class PopUpController {
   )
   async update(
     @Param('id') id: string,
-    @UploadedFile() file: any,
-    @Body() updatePopUpDto: UpdatePopUpDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updatePopUpDto: Partial<UpdatePopUpDto>,
   ) {
     const existingPopUp = await this.popUpService.findOne(id);
     if (!existingPopUp) {
       throw new NotFoundException(`PopUp con id ${id} no encontrado`);
     }
 
-    let updatedData = { ...updatePopUpDto };
+    let updatedData: Partial<UpdatePopUpDto & { imagenPopUp?: string }> = {
+      ...updatePopUpDto,
+    };
 
-    if (file) {
+    // Manejo del estado para asegurarse de que solo acepte booleanos correctos
+    if (updatePopUpDto.estadoPopUp !== undefined) {
+      updatedData.estadoPopUp =
+        typeof updatePopUpDto.estadoPopUp === 'string'
+          ? updatePopUpDto.estadoPopUp === 'true'
+          : updatePopUpDto.estadoPopUp;
+    }
+
+    // Manejo de la imagen, manteniendo la imagen anterior si no se sube una nueva
+    if (!file) {
+      updatedData.imagenPopUp = existingPopUp.imagenPopUp;
+    } else {
       const oldImagePath = existingPopUp.imagenPopUp;
       if (oldImagePath) {
         try {
-          await unlink(`.${oldImagePath}`);
-        } catch {
+          await unlink(`.${oldImagePath}`); // Elimina la imagen anterior
+        } catch (error) {
           throw new BadRequestException('Error al eliminar la imagen anterior');
         }
       }
 
       const newImagePath = `/uploads/${file.filename}`;
-      updatedData = {
-        ...updatedData,
-        imagenPopUp: newImagePath,
-      };
+      updatedData.imagenPopUp = newImagePath;  
     }
 
     return this.popUpService.update(id, updatedData);
@@ -160,7 +192,7 @@ export class PopUpController {
     if (imagePath) {
       try {
         await unlink(`.${imagePath}`);
-      } catch {
+      } catch (error) {
         throw new BadRequestException('Error al eliminar la imagen');
       }
     }
