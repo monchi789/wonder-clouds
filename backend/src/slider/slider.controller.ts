@@ -50,7 +50,7 @@ export class SliderController {
   @UseInterceptors(
     FileInterceptor('imagen', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/sldier',
         filename: (req, file, cb) => {
           const randomName = Array(32)
             .fill(null)
@@ -69,7 +69,7 @@ export class SliderController {
       throw new BadRequestException('No se ha subido ninguna imagen');
     }
 
-    const imagePath = `/uploads/${file.filename}`;
+    const imagePath = `/uploads/slider/${file.filename}`;
     console.log('Ruta de la imagen subida:', imagePath);
 
     const sliderData = {
@@ -117,7 +117,7 @@ export class SliderController {
   @UseInterceptors(
     FileInterceptor('imagen', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/slider',
         filename: (req, file, cb) => {
           const randomName = Array(32)
             .fill(null)
@@ -156,7 +156,7 @@ export class SliderController {
         }
       }
 
-      const newImagePath = `/uploads/${file.filename}`;
+      const newImagePath = `/uploads/slider/${file.filename}`;
       updatedData.imagen = newImagePath;  
     }
 
