@@ -2,55 +2,50 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Patch,
   Param,
   Delete,
-  UploadedFile,
+  UploadedFiles,
   UseInterceptors,
   BadRequestException,
   NotFoundException,
+  Body,
 } from '@nestjs/common';
 import { SliderService } from './slider.service';
 import { CreateSliderDto } from './dto/create-slider.dto';
 import { UpdateSliderDto } from './dto/update-slider.dto';
-import {
-  ApiTags,
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiResponse,
-} from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { unlink } from 'fs/promises';
-import { Express } from 'express';
+import { ApiTags, ApiOperation, ApiResponse, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { ImageService } from '../shared/image.service';
 
 @ApiTags('Slider')
 @Controller('slider')
 export class SliderController {
-  constructor(private readonly sliderService: SliderService) {}
+  constructor(
+    private readonly sliderService: SliderService,
+    private readonly imageService: ImageService,
+  ) {}
 
   @Post()
-  @ApiOperation({
-    summary: 'Crea un nuevo Slider',
-  })
-  @ApiResponse({ status: 201, description: 'Slider creado exitosamente.' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
         estadoSlider: { type: 'boolean' },
-        imagen: { type: 'string', format: 'binary' },
+        imagenes: {
+          type: 'array',
+          items: { type: 'string', format: 'binary' },
+        },
       },
     },
   })
   @UseInterceptors(
-    FileInterceptor('imagen', {
+    FilesInterceptor('imagenes', 10, {
       storage: diskStorage({
-        destination: './uploads/sldier',
+        destination: './uploads/slider',
         filename: (req, file, cb) => {
           const randomName = Array(32)
             .fill(null)
@@ -62,19 +57,18 @@ export class SliderController {
     }),
   )
   async create(
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFiles() files: Express.Multer.File[],
     @Body() createSliderDto: CreateSliderDto,
   ) {
-    if (!file) {
-      throw new BadRequestException('No se ha subido ninguna imagen');
+    if (!files || files.length === 0) {
+      throw new BadRequestException('No se han subido imágenes');
     }
 
-    const imagePath = `/uploads/slider/${file.filename}`;
-    console.log('Ruta de la imagen subida:', imagePath);
-
+    const imagePaths = await this.imageService.uploadImages(files, 'slider');
+    
     const sliderData = {
       ...createSliderDto,
-      imagen: imagePath, 
+      imagen: imagePaths,
     };
 
     return this.sliderService.create(sliderData);
@@ -82,10 +76,7 @@ export class SliderController {
 
   @Get()
   @ApiOperation({ summary: 'Obtiene todos los Sliders' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de Sliders obtenida exitosamente.',
-  })
+  @ApiResponse({ status: 200, description: 'Lista de Sliders obtenida exitosamente.' })
   findAll() {
     return this.sliderService.findAll();
   }
@@ -99,23 +90,21 @@ export class SliderController {
   }
 
   @Patch(':id')
-  @ApiOperation({
-    summary:
-      'Actualiza un Slider',
-  })
-  @ApiResponse({ status: 200, description: 'Slider actualizado exitosamente.' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
         estadoSlider: { type: 'boolean' },
-        imagen: { type: 'string', format: 'binary' },
+        imagenes: {
+          type: 'array',
+          items: { type: 'string', format: 'binary' },
+        },
       },
     },
   })
   @UseInterceptors(
-    FileInterceptor('imagen', {
+    FilesInterceptor('imagenes', 10, {
       storage: diskStorage({
         destination: './uploads/slider',
         filename: (req, file, cb) => {
@@ -130,34 +119,22 @@ export class SliderController {
   )
   async update(
     @Param('id') id: string,
-    @UploadedFile() file: Express.Multer.File,
-    @Body() updateSliderDto: Partial<UpdateSliderDto>, 
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() updateSliderDto: Partial<UpdateSliderDto>,
   ) {
     const existingSlider = await this.sliderService.findOne(id);
     if (!existingSlider) {
       throw new NotFoundException(`Slider con id ${id} no encontrado`);
     }
 
-    let updatedData: Partial<UpdateSliderDto & { imagen?: string }> = {
+    let updatedData: Partial<UpdateSliderDto & { imagen?: string[] }> = {
       ...updateSliderDto,
     };
 
-    
-    if (!file) {
-      updatedData.imagen = existingSlider.imagen;
-    } else {
-    
-      const oldImagePath = existingSlider.imagen;
-      if (oldImagePath) {
-        try {
-          await unlink(`.${oldImagePath}`);
-        } catch (error) {
-          throw new BadRequestException('Error al eliminar la imagen anterior');
-        }
-      }
-
-      const newImagePath = `/uploads/slider/${file.filename}`;
-      updatedData.imagen = newImagePath;  
+    if (files && files.length > 0) {
+      await this.imageService.deleteImages(existingSlider.imagen);
+      const newImagePaths = await this.imageService.uploadImages(files, 'slider');
+      updatedData.imagen = newImagePaths;
     }
 
     return this.sliderService.update(id, updatedData);
@@ -173,16 +150,7 @@ export class SliderController {
       throw new NotFoundException(`Slider con id ${id} no encontrado`);
     }
 
-    const imagePath = slider.imagen;
-    if (imagePath) {
-      try {
-        await unlink(`.${imagePath}`);
-      } catch (error) {
-        throw new BadRequestException('Error al eliminar la imagen');
-      }
-    }
-
-    await this.sliderService.remove(id);
-    return { message: `Slider con id ${id} eliminado` };
+    await this.imageService.deleteImages(slider.imagen);
+    return this.sliderService.remove(id);
   }
 }
