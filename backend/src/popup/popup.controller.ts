@@ -98,7 +98,8 @@ export class PopUpController {
 
   @Patch(':id')
   @ApiOperation({
-    summary: 'Actualiza un PopUp, incluida la posibilidad de cambiar el estado y la imagen',
+    summary:
+      'Actualiza un PopUp, incluida la posibilidad de cambiar el estado y la imagen',
   })
   @ApiResponse({ status: 200, description: 'PopUp actualizado exitosamente.' })
   @ApiConsumes('multipart/form-data')
@@ -135,7 +136,7 @@ export class PopUpController {
       throw new NotFoundException(`PopUp con id ${id} no encontrado`);
     }
 
-    let updatedData: Partial<UpdatePopUpDto & { imagenPopUp?: string }> = {
+    const updatedData: Partial<UpdatePopUpDto & { imagenPopUp?: string }> = {
       ...updatePopUpDto,
     };
 
@@ -146,7 +147,7 @@ export class PopUpController {
       if (oldImagePath) {
         try {
           await unlink(`.${oldImagePath}`);
-        } catch (error) {
+        } catch {
           throw new BadRequestException('Error al eliminar la imagen anterior');
         }
       }
@@ -172,7 +173,7 @@ export class PopUpController {
     if (imagePath) {
       try {
         await unlink(`.${imagePath}`);
-      } catch (error) {
+      } catch {
         throw new BadRequestException('Error al eliminar la imagen');
       }
     }

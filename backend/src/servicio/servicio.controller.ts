@@ -31,7 +31,7 @@ export class ServicioController {
       properties: {
         nombreServicio: { type: 'string' },
         precioServicio: { type: 'number' },
-        logoServicio: { type: 'string', format: 'binary' },  
+        logoServicio: { type: 'string', format: 'binary' },
       },
     },
   })
@@ -79,7 +79,7 @@ export class ServicioController {
       properties: {
         nombreServicio: { type: 'string' },
         precioServicio: { type: 'number' },
-        logoServicio: { type: 'string', format: 'binary' },  
+        logoServicio: { type: 'string', format: 'binary' },
       },
     },
   })
@@ -102,7 +102,6 @@ export class ServicioController {
     @UploadedFile() file: Express.Multer.File,
     @Body() updateServicioDto: UpdateServicioDto,
   ) {
-    
     const logoPath = file ? `/uploads/logos/${file.filename}` : null;
     return this.servicioService.update(id, updateServicioDto, logoPath);
   }

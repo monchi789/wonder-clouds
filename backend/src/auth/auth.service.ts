@@ -10,7 +10,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({nombreUsuario, contrasena, email}: RegisterDto) {
-    const usuario = await this.usuarioService.findOne(email)
+  async register({ nombreUsuario, contrasena, email }: RegisterDto) {
+    const usuario = await this.usuarioService.findOne(email);
   }
 }

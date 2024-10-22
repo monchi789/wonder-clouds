@@ -56,7 +56,9 @@ export class PublicacionController {
     @Body() createPublicacionDto: CreatePublicacionDto,
   ) {
     if (!file) {
-      throw new BadRequestException('No se ha subido ninguna imagen de portada');
+      throw new BadRequestException(
+        'No se ha subido ninguna imagen de portada',
+      );
     }
 
     const imagePath = `/uploads/portadas/${file.filename}`;

@@ -1,10 +1,4 @@
-import {
-  IsDecimal,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MinLength,
-} from 'class-validator';
+import { IsDecimal, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreateServicioDto {
   @IsNotEmpty()

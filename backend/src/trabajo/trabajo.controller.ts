@@ -58,7 +58,9 @@ export class TrabajoController {
     @Body() createTrabajoDto: CreateTrabajoDto,
   ) {
     if (!file) {
-      throw new BadRequestException('No se ha subido ninguna imagen de portada');
+      throw new BadRequestException(
+        'No se ha subido ninguna imagen de portada',
+      );
     }
 
     const portadaTrabajo = `/uploads/portadasTrabajo/${file.filename}`;
@@ -110,7 +112,9 @@ export class TrabajoController {
     @UploadedFile() file: Express.Multer.File,
     @Body() updateTrabajoDto: UpdateTrabajoDto,
   ) {
-    const portadaTrabajo = file ? `/uploads/portadasTrabajo/${file.filename}` : null;
+    const portadaTrabajo = file
+      ? `/uploads/portadasTrabajo/${file.filename}`
+      : null;
     return this.trabajoService.update(id, updateTrabajoDto, portadaTrabajo);
   }
 

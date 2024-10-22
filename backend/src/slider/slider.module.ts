@@ -6,7 +6,7 @@ import { Slider } from './entities/slider.entity';
 import { SharedModule } from '../shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Slider]),SharedModule],
+  imports: [TypeOrmModule.forFeature([Slider]), SharedModule],
   controllers: [SliderController],
   providers: [SliderService],
 })

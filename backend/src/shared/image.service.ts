@@ -5,13 +5,18 @@ import { Express } from 'express';
 @Injectable()
 export class ImageService {
   // Método para subir múltiples imágenes y devolver sus rutas
-  async uploadImages(files: Express.Multer.File[], folder: string): Promise<string[]> {
+  async uploadImages(
+    files: Express.Multer.File[],
+    folder: string,
+  ): Promise<string[]> {
     if (!files || files.length === 0) {
       throw new BadRequestException('No se han subido imágenes');
     }
 
     // Genera las rutas de las imágenes
-    const imagePaths = files.map((file) => `/uploads/${folder}/${file.filename}`);
+    const imagePaths = files.map(
+      (file) => `/uploads/${folder}/${file.filename}`,
+    );
     return imagePaths;
   }
 
@@ -20,7 +25,7 @@ export class ImageService {
     for (const path of imagePaths) {
       try {
         await unlink(`.${path}`); // Elimina la imagen del sistema de archivos
-      } catch (error) {
+      } catch {
         throw new BadRequestException(`Error al eliminar la imagen: ${path}`);
       }
     }

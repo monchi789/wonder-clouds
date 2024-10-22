@@ -1,9 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateServicioDto } from './dto/create-servicio.dto';
 import { UpdateServicioDto } from './dto/update-servicio.dto';
 import { Servicio } from './entities/servicio.entity';
@@ -17,10 +13,9 @@ export class ServicioService {
   ) {}
 
   async create(createServicioDto: CreateServicioDto, logoServicio: string) {
-
     const servicio = this.servicioRepository.create({
       ...createServicioDto,
-      logoServicio, 
+      logoServicio,
     });
 
     return await this.servicioRepository.save(servicio);
