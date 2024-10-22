@@ -15,8 +15,9 @@ export class Slider {
   @Column({ type: 'boolean' })
   estadoSlider: boolean;
 
-  @Column({ type: 'text' })
-  imagen: string;
+  // Cambiamos a un array de texto para soportar múltiples imágenes
+  @Column('text', { array: true })
+  imagen: string[];
 
   @CreateDateColumn()
   createAt: Date;

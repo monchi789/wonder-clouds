@@ -16,11 +16,6 @@ export class CreateTrabajoDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(5)
-  portadaTrabajo: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(5)
   descripcionTrabajo: string;
 
   @IsNotEmpty()

@@ -12,10 +12,6 @@ export class CreateServicioDto {
   @MinLength(1)
   nombreServicio: string;
 
-  @IsOptional()
-  @IsString()
-  logoServicio: string;
-
   @IsNotEmpty()
   @IsDecimal()
   precioServio: number;

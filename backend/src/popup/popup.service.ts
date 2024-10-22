@@ -1,13 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PopUp } from './entities/popup.entity';
 import { CreatePopUpDto } from './dto/create-popuo.dto';
 import { UpdatePopUpDto } from './dto/update-popup.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PopUp } from './entities/popup.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class PopUpService {
@@ -25,47 +21,36 @@ export class PopUpService {
     return await this.popUpRepository.find();
   }
 
-  async findOne(idPopUp: string) {
-    try {
-      const popUp = await this.popUpRepository.findOne({
-        where: { idPopUp },
-      });
-
-      if (!popUp) {
-        throw new NotFoundException(
-          `PopUp con el id ${idPopUp} no encontrado.`,
-        );
-      }
-
-      return popUp;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new BadRequestException('El ID proporcionado no es valido');
+  async findOne(idPopUp: string): Promise<PopUp> {
+    const popUp = await this.popUpRepository.findOne({ where: { idPopUp } });
+    if (!popUp) {
+      throw new NotFoundException(`PopUp con id ${idPopUp} no encontrado`);
     }
+    return popUp;
   }
 
-  async update(idPopUp: string, updatePopUpDto: UpdatePopUpDto) {
-    const popUp = this.popUpRepository.update(idPopUp, updatePopUpDto);
+  async update(
+    idPopUp: string,
+    updatePopUpDto: Partial<UpdatePopUpDto & { imagenPopUp?: string }>,
+  ) {
+    const popUp = await this.popUpRepository.preload({
+      idPopUp,
+      ...updatePopUpDto,
+    });
 
-    if ((await popUp).affected === 0) {
-      throw new NotFoundException(`PopUp con el id ${idPopUp} no encontrado`);
+    if (!popUp) {
+      throw new NotFoundException(`PopUp con id ${idPopUp} no encontrado`);
     }
 
-    return this.popUpRepository.findOne({ where: { idPopUp } });
+    return await this.popUpRepository.save(popUp);
   }
 
   async remove(idPopUp: string) {
-    console.log(idPopUp);
-
-    const popUp = await this.popUpRepository.softDelete(idPopUp);
-
-    if ((await popUp).affected === 0) {
-      throw new NotFoundException(`PopUp con el id ${idPopUp} no encontrada.`);
+    const popUp = await this.popUpRepository.findOne({ where: { idPopUp } });
+    if (!popUp) {
+      throw new NotFoundException(`PopUp con id ${idPopUp} no encontrado`);
     }
-
-    return { message: `PopUp con el id ${idPopUp} eliminada.` };
+    await this.popUpRepository.remove(popUp);
+    return { message: `PopUp con id ${idPopUp} eliminado` };
   }
 }
