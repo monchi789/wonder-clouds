@@ -21,6 +21,17 @@ export class UsuarioService {
     return await this.usuarioRepository.save(usuario);
   }
 
+  findByEmailWithPassword(email: string) {
+    return this.usuarioRepository.findOne({
+      where: { email },
+      select: ['idUsuario', 'nombreUsuario', 'email', 'contrasena', 'rol'],
+    });
+  }
+
+  findOneByEmail(email: string) {
+    return this.usuarioRepository.findOneBy({ email });
+  }
+
   async findAll() {
     return await this.usuarioRepository.find();
   }
