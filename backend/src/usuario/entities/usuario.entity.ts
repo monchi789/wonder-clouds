@@ -4,25 +4,25 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  PrimaryColumn,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class Usuario {
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   idUsuario: string;
 
   @Column({ type: 'text', unique: true })
   nombreUsuario: string;
 
-  @Column({ type: 'text', unique: true })
+  @Column({ type: 'text', nullable: false, select: false })
   contrasena: string;
 
   @Column({ type: 'text', unique: true })
   email: string;
 
-  @Column({ type: 'enum', default: Rol.USUARIO, enum: Rol })
+  @Column({ type: 'enum', default: Rol.NONE, enum: Rol })
   rol: string;
 
   @CreateDateColumn()

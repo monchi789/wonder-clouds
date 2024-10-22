@@ -11,8 +11,11 @@ import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Cliente')
+@Auth(Rol.ADMINISTRADOR)
 @Controller('cliente')
 export class ClienteController {
   constructor(private readonly clienteService: ClienteService) {}
