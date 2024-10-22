@@ -16,8 +16,13 @@ export class ServicioService {
     private readonly servicioRepository: Repository<Servicio>,
   ) {}
 
-  async create(createServicioDto: CreateServicioDto) {
-    const servicio = this.servicioRepository.create(createServicioDto);
+  async create(createServicioDto: CreateServicioDto, logoServicio: string) {
+
+    const servicio = this.servicioRepository.create({
+      ...createServicioDto,
+      logoServicio, 
+    });
+
     return await this.servicioRepository.save(servicio);
   }
 
@@ -26,51 +31,51 @@ export class ServicioService {
   }
 
   async findOne(idServicio: string) {
-    try {
-      const servicio = await this.servicioRepository.findOne({
-        where: { idServicio },
-      });
+    const servicio = await this.servicioRepository.findOne({
+      where: { idServicio },
+    });
 
-      if (!servicio) {
-        throw new NotFoundException(
-          `Servicio con el ID ${idServicio} no encontrado.`,
-        );
-      }
-
-      return servicio;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new BadRequestException('El ID proporcionado no es valido');
+    if (!servicio) {
+      throw new NotFoundException(
+        `Servicio con el ID ${idServicio} no encontrado.`,
+      );
     }
+
+    return servicio;
   }
 
-  async update(idServicio: string, updateServicioDto: UpdateServicioDto) {
-    const servicio = this.servicioRepository.update(
+  async update(
+    idServicio: string,
+    updateServicioDto: UpdateServicioDto,
+    logoServicio?: string,
+  ) {
+    const servicio = await this.servicioRepository.preload({
       idServicio,
-      updateServicioDto,
-    );
+      ...updateServicioDto,
+    });
 
-    if ((await servicio).affected === 0) {
+    if (!servicio) {
       throw new NotFoundException(
         `Servicio con el ID ${idServicio} no encontrado`,
       );
     }
 
-    return this.servicioRepository.findOne({ where: { idServicio } });
+    if (logoServicio) {
+      servicio.logoServicio = logoServicio;
+    }
+
+    return await this.servicioRepository.save(servicio);
   }
 
   async remove(idServicio: string) {
     const servicio = await this.servicioRepository.softDelete(idServicio);
 
-    if ((await servicio).affected === 0) {
+    if (servicio.affected === 0) {
       throw new NotFoundException(
-        `Publicacion con el ID ${idServicio} no encontrada`,
+        `Servicio con el ID ${idServicio} no encontrado.`,
       );
     }
 
-    return { mesage: `Publicacion con el ID ${idServicio} eliminada` };
+    return { message: `Servicio con el ID ${idServicio} eliminado.` };
   }
 }

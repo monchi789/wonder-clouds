@@ -43,31 +43,34 @@ export class SliderService {
         throw error;
       }
 
-      throw new BadRequestException('El ID proporcionado no es valido');
+      throw new BadRequestException('El ID proporcionado no es válido');
     }
   }
 
-  async update(idSlider: string, updateSliderDto: UpdateSliderDto) {
-    const slider = this.sliderRepository.update(idSlider, updateSliderDto);
+  async update(idSlider: string, updateSliderDto: Partial<UpdateSliderDto & { imagen?: string[] }>) {
+    const slider = await this.findOne(idSlider); // Verificar si el slider existe
 
-    if ((await slider).affected === 0) {
+    if (!slider) {
       throw new NotFoundException(`Slider con el id ${idSlider} no encontrado`);
     }
 
-    return this.sliderRepository.findOne({ where: { idSlider } });
+    const updatedSlider = {
+      ...slider,           // Mantener los datos actuales del slider
+      ...updateSliderDto,   // Aplicar las actualizaciones (estado e imágenes si se proveen)
+    };
+
+    return await this.sliderRepository.save(updatedSlider); // Usar save() para aplicar los cambios
   }
 
   async remove(idSlider: string) {
-    console.log(idSlider);
-
     const slider = await this.sliderRepository.softDelete(idSlider);
 
-    if ((await slider).affected === 0) {
+    if (slider.affected === 0) {
       throw new NotFoundException(
-        `Slider con el id ${idSlider} no encontrada.`,
+        `Slider con el id ${idSlider} no encontrado.`,
       );
     }
 
-    return { message: `Slider con el id ${idSlider} eliminada.` };
+    return { message: `Slider con el id ${idSlider} eliminado.` };
   }
 }
