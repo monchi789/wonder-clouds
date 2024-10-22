@@ -47,7 +47,10 @@ export class SliderService {
     }
   }
 
-  async update(idSlider: string, updateSliderDto: Partial<UpdateSliderDto & { imagen?: string[] }>) {
+  async update(
+    idSlider: string,
+    updateSliderDto: Partial<UpdateSliderDto & { imagen?: string[] }>,
+  ) {
     const slider = await this.findOne(idSlider); // Verificar si el slider existe
 
     if (!slider) {
@@ -55,8 +58,8 @@ export class SliderService {
     }
 
     const updatedSlider = {
-      ...slider,           // Mantener los datos actuales del slider
-      ...updateSliderDto,   // Aplicar las actualizaciones (estado e imágenes si se proveen)
+      ...slider, // Mantener los datos actuales del slider
+      ...updateSliderDto, // Aplicar las actualizaciones (estado e imágenes si se proveen)
     };
 
     return await this.sliderRepository.save(updatedSlider); // Usar save() para aplicar los cambios

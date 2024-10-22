@@ -17,7 +17,13 @@ import { UpdateSliderDto } from './dto/update-slider.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { ApiTags, ApiOperation, ApiResponse, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiConsumes,
+  ApiBody,
+} from '@nestjs/swagger';
 import { ImageService } from '../shared/image.service';
 
 @ApiTags('Slider')
@@ -65,7 +71,7 @@ export class SliderController {
     }
 
     const imagePaths = await this.imageService.uploadImages(files, 'slider');
-    
+
     const sliderData = {
       ...createSliderDto,
       imagen: imagePaths,
@@ -76,7 +82,10 @@ export class SliderController {
 
   @Get()
   @ApiOperation({ summary: 'Obtiene todos los Sliders' })
-  @ApiResponse({ status: 200, description: 'Lista de Sliders obtenida exitosamente.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de Sliders obtenida exitosamente.',
+  })
   findAll() {
     return this.sliderService.findAll();
   }
@@ -127,13 +136,16 @@ export class SliderController {
       throw new NotFoundException(`Slider con id ${id} no encontrado`);
     }
 
-    let updatedData: Partial<UpdateSliderDto & { imagen?: string[] }> = {
+    const updatedData: Partial<UpdateSliderDto & { imagen?: string[] }> = {
       ...updateSliderDto,
     };
 
     if (files && files.length > 0) {
       await this.imageService.deleteImages(existingSlider.imagen);
-      const newImagePaths = await this.imageService.uploadImages(files, 'slider');
+      const newImagePaths = await this.imageService.uploadImages(
+        files,
+        'slider',
+      );
       updatedData.imagen = newImagePaths;
     }
 

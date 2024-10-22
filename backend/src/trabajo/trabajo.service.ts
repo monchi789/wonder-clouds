@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTrabajoDto } from './dto/create-trabajo.dto';
 import { UpdateTrabajoDto } from './dto/update-trabajo.dto';
 import { InjectRepository } from '@nestjs/typeorm';

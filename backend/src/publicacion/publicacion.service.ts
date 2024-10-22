@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { UpdatePublicacionDto } from './dto/update-publicacion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -79,7 +75,8 @@ export class PublicacionService {
   }
 
   async remove(idPublicacion: string) {
-    const publicacion = await this.publicacionRepository.softDelete(idPublicacion);
+    const publicacion =
+      await this.publicacionRepository.softDelete(idPublicacion);
 
     if (publicacion.affected === 0) {
       throw new NotFoundException(
