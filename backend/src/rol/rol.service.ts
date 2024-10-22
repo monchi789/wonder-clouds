@@ -20,31 +20,30 @@ export class RolService {
     private readonly permisoRepository: Repository<Permiso>,
   ) {}
 
-  async create(createRolDto: CreateRolDto): Promise<Rol> {
-    const { nombreRol, permisos } = createRolDto;
+  async create(createRolDto: CreateRolDto) {
+    const permisos = await Promise.all(
+      createRolDto.permisos.map(async (permisoDto) => {
+        const permiso = await this.permisoRepository.findOne({
+          where: { nombrePermiso: permisoDto.nombrePermiso },
+        });
 
-    const nuevoRol = this.rolRepository.create({ nombreRol });
+        // Manejo de errores si el permiso no se encuentra
+        if (!permiso) {
+          throw new BadRequestException(
+            `Permiso "${permisoDto.nombrePermiso}" no encontrado`,
+          );
+        }
 
-    if (permisos && permisos.length > 0) {
-      const permisosAsociados = await Promise.all(
-        permisos.map(async (permisoDto) => {
-          if ('idPermiso' in permisoDto) {
-            return this.permisoRepository.findOne({
-              where: { idPermiso: permisoDto.idPermiso },
-            });
-          } else {
-            const nuevoPermiso = this.permisoRepository.create(permisoDto);
-            return this.permisoRepository.save(nuevoPermiso);
-          }
-        }),
-      );
+        return permiso;
+      }),
+    );
 
-      nuevoRol.permisos = permisosAsociados.filter(
-        (permiso) => permiso !== null,
-      );
-    }
+    const rol = this.rolRepository.create({
+      nombreRol: createRolDto.nombreRol,
+      permisos,
+    });
 
-    return await this.rolRepository.save(nuevoRol);
+    return await this.rolRepository.save(rol);
   }
 
   async findAll() {
