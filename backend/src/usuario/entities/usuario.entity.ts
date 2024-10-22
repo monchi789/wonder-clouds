@@ -1,5 +1,12 @@
-import { Rol } from 'src/rol/entities/rol.entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Rol } from '../../common/enums/rol.enum';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Usuario {
@@ -15,8 +22,15 @@ export class Usuario {
   @Column({ type: 'text', unique: true })
   email: string;
 
-  @ManyToOne(() => Rol, (rol) => rol.idRol, {
-    eager: true,
-  })
-  rol: Rol;
+  @Column({ type: 'enum', default: Rol.USUARIO, enum: Rol })
+  rol: string;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
 }
