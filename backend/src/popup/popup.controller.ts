@@ -24,13 +24,15 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { unlink } from 'fs/promises';
-import { Express } from 'express';
+import { ImageService } from '../imagenes/subir_image.service'; // Importa el servicio de imágenes
 
 @ApiTags('PopUp')
 @Controller('popUp')
 export class PopUpController {
-  constructor(private readonly popUpService: PopUpService) {}
+  constructor(
+    private readonly popUpService: PopUpService,
+    private readonly imageService: ImageService, // Inyecta el servicio de imágenes
+  ) {}
 
   @Post()
   @ApiOperation({
@@ -69,10 +71,12 @@ export class PopUpController {
       throw new BadRequestException('No se ha subido ninguna imagen');
     }
 
-    const imagePath = `/uploads/popup/${file.filename}`;
+    // Usa el servicio de imágenes para subir la imagen
+    const imagePath = await this.imageService.uploadImages([file], 'popup');
+
     const popUpData = {
       ...createPopUpDto,
-      imagenPopUp: imagePath,
+      imagenPopUp: imagePath[0], // Solo se usa la primera imagen subida
     };
 
     return this.popUpService.create(popUpData);
@@ -140,20 +144,11 @@ export class PopUpController {
       ...updatePopUpDto,
     };
 
-    if (!file) {
-      updatedData.imagenPopUp = existingPopUp.imagenPopUp;
-    } else {
-      const oldImagePath = existingPopUp.imagenPopUp;
-      if (oldImagePath) {
-        try {
-          await unlink(`.${oldImagePath}`);
-        } catch {
-          throw new BadRequestException('Error al eliminar la imagen anterior');
-        }
-      }
+    if (file) {
+      await this.imageService.deleteImages([existingPopUp.imagenPopUp]);
 
-      const newImagePath = `/uploads/popup/${file.filename}`;
-      updatedData.imagenPopUp = newImagePath;
+      const newImagePaths = await this.imageService.uploadImages([file], 'popup');
+      updatedData.imagenPopUp = newImagePaths[0];
     }
 
     return this.popUpService.update(id, updatedData);
@@ -169,16 +164,8 @@ export class PopUpController {
       throw new NotFoundException(`PopUp con id ${id} no encontrado`);
     }
 
-    const imagePath = popUp.imagenPopUp;
-    if (imagePath) {
-      try {
-        await unlink(`.${imagePath}`);
-      } catch {
-        throw new BadRequestException('Error al eliminar la imagen');
-      }
-    }
+    await this.imageService.deleteImages([popUp.imagenPopUp]);
 
-    await this.popUpService.remove(id);
-    return { message: `PopUp con id ${id} eliminado` };
+    return this.popUpService.remove(id);
   }
 }
