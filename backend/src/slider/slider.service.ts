@@ -51,18 +51,18 @@ export class SliderService {
     idSlider: string,
     updateSliderDto: Partial<UpdateSliderDto & { imagen?: string[] }>,
   ) {
-    const slider = await this.findOne(idSlider); // Verificar si el slider existe
+    const slider = await this.findOne(idSlider);
 
     if (!slider) {
       throw new NotFoundException(`Slider con el id ${idSlider} no encontrado`);
     }
 
     const updatedSlider = {
-      ...slider, // Mantener los datos actuales del slider
-      ...updateSliderDto, // Aplicar las actualizaciones (estado e imágenes si se proveen)
+      ...slider,
+      ...updateSliderDto,
     };
 
-    return await this.sliderRepository.save(updatedSlider); // Usar save() para aplicar los cambios
+    return await this.sliderRepository.save(updatedSlider);
   }
 
   async remove(idSlider: string) {

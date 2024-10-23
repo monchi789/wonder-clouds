@@ -23,8 +23,9 @@ import {
   ApiResponse,
   ApiConsumes,
   ApiBody,
+  ApiParam,
 } from '@nestjs/swagger';
-import { ImageService } from '../shared/image.service';
+import { ImageService } from '../imagenes/subir_image.service';
 
 @ApiTags('Slider')
 @Controller('slider')
@@ -35,6 +36,7 @@ export class SliderController {
   ) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nuevo slider' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -48,6 +50,8 @@ export class SliderController {
       },
     },
   })
+  @ApiResponse({ status: 201, description: 'Slider creado exitosamente.' })
+  @ApiResponse({ status: 400, description: 'No se han subido imágenes.' })
   @UseInterceptors(
     FilesInterceptor('imagenes', 10, {
       storage: diskStorage({
@@ -70,36 +74,37 @@ export class SliderController {
       throw new BadRequestException('No se han subido imágenes');
     }
 
+    // Subir las imágenes y obtener las rutas de las imágenes subidas
     const imagePaths = await this.imageService.uploadImages(files, 'slider');
 
     const sliderData = {
       ...createSliderDto,
-      imagen: imagePaths,
+      imagen: imagePaths, // Asigna las rutas de las imágenes al campo 'imagen'
     };
 
     return this.sliderService.create(sliderData);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Obtiene todos los Sliders' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de Sliders obtenida exitosamente.',
-  })
+  @ApiOperation({ summary: 'Obtiene todos los sliders' })
+  @ApiResponse({ status: 200, description: 'Lista de sliders obtenida exitosamente.' })
   findAll() {
     return this.sliderService.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtiene un Slider por su ID' })
+  @ApiOperation({ summary: 'Obtiene un slider por su ID' })
   @ApiResponse({ status: 200, description: 'Slider obtenido exitosamente.' })
   @ApiResponse({ status: 404, description: 'Slider no encontrado.' })
+  @ApiParam({ name: 'id', description: 'ID del slider a obtener' })
   findOne(@Param('id') id: string) {
     return this.sliderService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar un slider' })
   @ApiConsumes('multipart/form-data')
+  @ApiParam({ name: 'id', description: 'ID del slider a actualizar' })
   @ApiBody({
     schema: {
       type: 'object',
@@ -112,20 +117,8 @@ export class SliderController {
       },
     },
   })
-  @UseInterceptors(
-    FilesInterceptor('imagenes', 10, {
-      storage: diskStorage({
-        destination: './uploads/slider',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
+  @ApiResponse({ status: 200, description: 'Slider actualizado exitosamente.' })
+  @ApiResponse({ status: 404, description: 'Slider no encontrado.' })
   async update(
     @Param('id') id: string,
     @UploadedFiles() files: Express.Multer.File[],
@@ -141,19 +134,17 @@ export class SliderController {
     };
 
     if (files && files.length > 0) {
-      await this.imageService.deleteImages(existingSlider.imagen);
-      const newImagePaths = await this.imageService.uploadImages(
-        files,
-        'slider',
-      );
-      updatedData.imagen = newImagePaths;
+      await this.imageService.deleteImages(existingSlider.imagen); // Elimina las imágenes anteriores
+      const newImagePaths = await this.imageService.uploadImages(files, 'slider');
+      updatedData.imagen = newImagePaths; // Actualiza las rutas de las nuevas imágenes
     }
 
     return this.sliderService.update(id, updatedData);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Elimina un Slider por su ID' })
+  @ApiOperation({ summary: 'Eliminar un slider' })
+  @ApiParam({ name: 'id', description: 'ID del slider a eliminar' })
   @ApiResponse({ status: 200, description: 'Slider eliminado exitosamente.' })
   @ApiResponse({ status: 404, description: 'Slider no encontrado.' })
   async remove(@Param('id') id: string) {
@@ -162,7 +153,7 @@ export class SliderController {
       throw new NotFoundException(`Slider con id ${id} no encontrado`);
     }
 
-    await this.imageService.deleteImages(slider.imagen);
+    await this.imageService.deleteImages(slider.imagen); // Elimina las imágenes asociadas al slider
     return this.sliderService.remove(id);
   }
 }

@@ -9,6 +9,7 @@ import {
   UploadedFile,
   UseInterceptors,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ServicioService } from './servicio.service';
 import { CreateServicioDto } from './dto/create-servicio.dto';
@@ -17,11 +18,15 @@ import { ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ImageService } from '../imagenes/subir_image.service';
 
 @ApiTags('Servicio')
 @Controller('servicio')
 export class ServicioController {
-  constructor(private readonly servicioService: ServicioService) {}
+  constructor(
+    private readonly servicioService: ServicioService,
+    private readonly imageService: ImageService,
+  ) {}
 
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -57,8 +62,9 @@ export class ServicioController {
       throw new BadRequestException('No se ha subido ningún logo');
     }
 
-    const logoPath = `/uploads/logos/${file.filename}`;
-    return this.servicioService.create(createServicioDto, logoPath);
+    const logoPath = await this.imageService.uploadImages([file], 'logos');
+
+    return this.servicioService.create(createServicioDto, logoPath[0]);
   }
 
   @Get()
@@ -102,12 +108,32 @@ export class ServicioController {
     @UploadedFile() file: Express.Multer.File,
     @Body() updateServicioDto: UpdateServicioDto,
   ) {
-    const logoPath = file ? `/uploads/logos/${file.filename}` : null;
-    return this.servicioService.update(id, updateServicioDto, logoPath);
+    const existingServicio = await this.servicioService.findOne(id);
+    if (!existingServicio) {
+      throw new NotFoundException(`Servicio con id ${id} no encontrado`);
+    }
+
+    let newLogoPath = null;
+
+    if (file) {
+      await this.imageService.deleteImages([existingServicio.logoServicio]);
+
+      const newLogoPaths = await this.imageService.uploadImages([file], 'logos');
+      newLogoPath = newLogoPaths[0];
+    }
+
+    return this.servicioService.update(id, updateServicioDto, newLogoPath);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
+    const servicio = await this.servicioService.findOne(id);
+    if (!servicio) {
+      throw new NotFoundException(`Servicio con id ${id} no encontrado`);
+    }
+
+    await this.imageService.deleteImages([servicio.logoServicio]);
+
     return this.servicioService.remove(id);
   }
 }
