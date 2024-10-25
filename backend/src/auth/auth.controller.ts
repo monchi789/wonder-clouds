@@ -14,7 +14,10 @@ import { AuthGuard } from './guard/auth.guard';
 import { RolesGuard } from './guard/roles.guard';
 import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.interface';
 import { ActiveUsuario } from 'src/common/decorators/active-usuario.decorator';
+import { Rol } from 'src/common/enums/rol.enum';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -36,7 +39,12 @@ export class AuthController {
   }
 
   @Post('refresh')
-  @UseGuards()
+  @Auth(
+    Rol.ADMIN,
+    Rol.GESTOR_CLIENTES_TRABAJOS,
+    Rol.CREADOR_CONTENIDO,
+    Rol.USUARIO,
+  )
   refresh(@Body('refreshToken') refreshToken: string) {
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token no provisto');
@@ -46,7 +54,12 @@ export class AuthController {
   }
 
   @Get('profile')
-  @Auth()
+  @Auth(
+    Rol.ADMIN,
+    Rol.GESTOR_CLIENTES_TRABAJOS,
+    Rol.CREADOR_CONTENIDO,
+    Rol.USUARIO,
+  )
   @UseGuards(AuthGuard, RolesGuard)
   profile(@ActiveUsuario() user: UsuarioActiveInterface) {
     return this.authService.profile(user);

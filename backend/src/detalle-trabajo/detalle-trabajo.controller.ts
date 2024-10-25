@@ -11,8 +11,11 @@ import { DetalleTrabajoService } from './detalle-trabajo.service';
 import { CreateDetalleTrabajoDto } from './dto/create-detalle-trabajo.dto';
 import { UpdateDetalleTrabajoDto } from './dto/update-detalle-trabajo.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('DetalleTrabajo')
+@Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
 @Controller('detalleTrabajo')
 export class DetalleTrabajoController {
   constructor(private readonly detalleTrabajoService: DetalleTrabajoService) {}

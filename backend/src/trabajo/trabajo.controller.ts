@@ -25,8 +25,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ImageService } from '../imagenes/subir_image.service';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Trabajo')
+@Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
 @Controller('trabajo')
 export class TrabajoController {
   constructor(

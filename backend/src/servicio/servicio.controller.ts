@@ -19,8 +19,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ImageService } from '../imagenes/subir_image.service';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Servicio')
+@Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
 @Controller('servicio')
 export class ServicioController {
   constructor(
@@ -118,7 +121,10 @@ export class ServicioController {
     if (file) {
       await this.imageService.deleteImages([existingServicio.logoServicio]);
 
-      const newLogoPaths = await this.imageService.uploadImages([file], 'logos');
+      const newLogoPaths = await this.imageService.uploadImages(
+        [file],
+        'logos',
+      );
       newLogoPath = newLogoPaths[0];
     }
 
