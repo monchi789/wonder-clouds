@@ -26,8 +26,11 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import { ImageService } from '../imagenes/subir_image.service';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Slider')
+@Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
 @Controller('slider')
 export class SliderController {
   constructor(
@@ -87,7 +90,10 @@ export class SliderController {
 
   @Get()
   @ApiOperation({ summary: 'Obtiene todos los sliders' })
-  @ApiResponse({ status: 200, description: 'Lista de sliders obtenida exitosamente.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de sliders obtenida exitosamente.',
+  })
   findAll() {
     return this.sliderService.findAll();
   }
@@ -135,7 +141,10 @@ export class SliderController {
 
     if (files && files.length > 0) {
       await this.imageService.deleteImages(existingSlider.imagen); // Elimina las imágenes anteriores
-      const newImagePaths = await this.imageService.uploadImages(files, 'slider');
+      const newImagePaths = await this.imageService.uploadImages(
+        files,
+        'slider',
+      );
       updatedData.imagen = newImagePaths; // Actualiza las rutas de las nuevas imágenes
     }
 

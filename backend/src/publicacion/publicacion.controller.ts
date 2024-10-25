@@ -19,13 +19,16 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ImageService } from '../imagenes/subir_image.service';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Publicacion')
+@Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
 @Controller('publicacion')
 export class PublicacionController {
   constructor(
     private readonly publicacionService: PublicacionService,
-    private readonly imageService: ImageService, 
+    private readonly imageService: ImageService,
   ) {}
 
   @Post()
@@ -124,11 +127,18 @@ export class PublicacionController {
     if (file) {
       await this.imageService.deleteImages([existingPublicacion.portada]);
 
-      const newImagePaths = await this.imageService.uploadImages([file], 'portadas');
+      const newImagePaths = await this.imageService.uploadImages(
+        [file],
+        'portadas',
+      );
       newImagePath = newImagePaths[0];
     }
 
-    return this.publicacionService.update(id, updatePublicacionDto, newImagePath);
+    return this.publicacionService.update(
+      id,
+      updatePublicacionDto,
+      newImagePath,
+    );
   }
 
   @Delete(':id')

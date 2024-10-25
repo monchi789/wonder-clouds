@@ -24,9 +24,12 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { ImageService } from '../imagenes/subir_image.service'; // Importa el servicio de imágenes
+import { ImageService } from '../imagenes/subir_image.service';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('PopUp')
+@Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
 @Controller('popUp')
 export class PopUpController {
   constructor(
@@ -147,7 +150,10 @@ export class PopUpController {
     if (file) {
       await this.imageService.deleteImages([existingPopUp.imagenPopUp]);
 
-      const newImagePaths = await this.imageService.uploadImages([file], 'popup');
+      const newImagePaths = await this.imageService.uploadImages(
+        [file],
+        'popup',
+      );
       updatedData.imagenPopUp = newImagePaths[0];
     }
 

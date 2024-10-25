@@ -8,6 +8,7 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuarioService {
@@ -16,19 +17,24 @@ export class UsuarioService {
     private readonly usuarioRepository: Repository<Usuario>,
   ) {}
 
-  async create(createUsuarioDto: CreateUsuarioDto) {
-    const usuario = this.usuarioRepository.create(createUsuarioDto);
-    return await this.usuarioRepository.save(usuario);
+  async create({ usuario, contrasena, email, rol }: CreateUsuarioDto) {
+    const usuarioCreate = this.usuarioRepository.create({
+      usuario,
+      contrasena: await bcrypt.hash(contrasena, 10),
+      email,
+      rol,
+    });
+    return await this.usuarioRepository.save(usuarioCreate);
   }
 
   findByEmailWithPassword(email: string) {
     return this.usuarioRepository.findOne({
       where: { email },
-      select: ['idUsuario', 'nombreUsuario', 'email', 'contrasena', 'rol'],
+      select: ['idUsuario', 'usuario', 'email', 'contrasena', 'rol'],
     });
   }
 
-  findOneByEmail(email: string) {
+  findByEmail(email: string) {
     return this.usuarioRepository.findOneBy({ email });
   }
 
@@ -57,10 +63,18 @@ export class UsuarioService {
     }
   }
 
-  async update(idUsuario: string, updateUsuarioDto: UpdateUsuarioDto) {
-    const usuario = this.usuarioRepository.update(idUsuario, updateUsuarioDto);
+  async update(
+    idUsuario: string,
+    { usuario, contrasena, email, rol }: UpdateUsuarioDto,
+  ) {
+    const usuarioUpdate = this.usuarioRepository.update(idUsuario, {
+      usuario,
+      contrasena: await bcrypt.hash(contrasena, 10),
+      email,
+      rol,
+    });
 
-    if ((await usuario).affected === 0) {
+    if ((await usuarioUpdate).affected === 0) {
       throw new NotFoundException(
         `Usuario con el ID ${idUsuario} no encontrado`,
       );
