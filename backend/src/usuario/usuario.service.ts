@@ -24,11 +24,11 @@ export class UsuarioService {
   findByEmailWithPassword(email: string) {
     return this.usuarioRepository.findOne({
       where: { email },
-      select: ['idUsuario', 'nombreUsuario', 'email', 'contrasena', 'rol'],
+      select: ['idUsuario', 'usuario', 'email', 'contrasena', 'rol'],
     });
   }
 
-  findOneByEmail(email: string) {
+  findByEmail(email: string) {
     return this.usuarioRepository.findOneBy({ email });
   }
 

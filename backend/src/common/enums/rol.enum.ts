@@ -1,6 +1,6 @@
 export enum Rol {
-  USUARIO = 'usuario',
-  ADMINISTRADOR = 'administrador',
-  CREADOR_CONTENIDO = 'creador_contenido',
-  NONE = 'none',
+  ADMIN = 'ADMIN',
+  CREADOR_CONTENIDO = 'CREADOR_CONTENIDO',
+  GESTOR_CLIENTES_TRABAJOS = 'GESTOR_CLIENTES_TRABAJOS',
+  USUARIO = 'USUARIO',
 }

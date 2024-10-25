@@ -14,7 +14,7 @@ export class Usuario {
   idUsuario: string;
 
   @Column({ type: 'text', unique: true })
-  nombreUsuario: string;
+  usuario: string;
 
   @Column({ type: 'text', nullable: false, select: false })
   contrasena: string;
@@ -22,7 +22,7 @@ export class Usuario {
   @Column({ type: 'text', unique: true })
   email: string;
 
-  @Column({ type: 'enum', default: Rol.NONE, enum: Rol })
+  @Column({ type: 'enum', default: Rol.USUARIO, enum: Rol })
   rol: string;
 
   @CreateDateColumn()
