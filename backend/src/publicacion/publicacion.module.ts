@@ -7,7 +7,7 @@ import { TipoGeneral } from 'src/tipo-general/entities/tipo-general.entity';
 import { ImageModule } from '../imagenes/image.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Publicacion, TipoGeneral]),ImageModule],
+  imports: [TypeOrmModule.forFeature([Publicacion, TipoGeneral]), ImageModule],
   controllers: [PublicacionController],
   providers: [PublicacionService],
 })

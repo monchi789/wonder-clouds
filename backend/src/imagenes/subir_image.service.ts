@@ -20,7 +20,7 @@ export class ImageService {
   async deleteImages(imagePaths: string[]): Promise<void> {
     for (const path of imagePaths) {
       try {
-        await unlink(`.${path}`); 
+        await unlink(`.${path}`);
       } catch {
         throw new BadRequestException(`Error al eliminar la imagen: ${path}`);
       }
