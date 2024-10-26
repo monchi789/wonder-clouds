@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  Patch,
   Post,
   UnauthorizedException,
   UseGuards,
@@ -16,6 +18,7 @@ import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.int
 import { ActiveUsuario } from 'src/common/decorators/active-usuario.decorator';
 import { Rol } from 'src/common/enums/rol.enum';
 import { ApiTags } from '@nestjs/swagger';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -35,7 +38,29 @@ export class AuthController {
     @Body()
     loginDto: LoginDto,
   ) {
-    return this.authService.login(loginDto);
+    try {
+      return this.authService.login(loginDto);
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException('Credenciales incorrectas');
+      }
+      throw error;
+    }
+  }
+
+  @Patch('password/:id')
+  @Auth(
+    Rol.ADMIN,
+    Rol.GESTOR_CLIENTES_TRABAJOS,
+    Rol.CREADOR_CONTENIDO,
+    Rol.USUARIO,
+  )
+  password(
+    @Param('id') id: string,
+    @Body()
+    passwordDto: UpdatePasswordDto,
+  ) {
+    return this.authService.password(id, passwordDto);
   }
 
   @Post('refresh')

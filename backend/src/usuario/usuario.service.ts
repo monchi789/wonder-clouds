@@ -18,9 +18,14 @@ export class UsuarioService {
   ) {}
 
   async create({ usuario, contrasena, email, rol }: CreateUsuarioDto) {
+    const isHashed = contrasena.startsWith('$2b$');
+    const hashedPassword = isHashed
+      ? contrasena
+      : await bcrypt.hash(contrasena, 10);
+
     const usuarioCreate = this.usuarioRepository.create({
       usuario,
-      contrasena: await bcrypt.hash(contrasena, 10),
+      contrasena: hashedPassword,
       email,
       rol,
     });
@@ -67,23 +72,29 @@ export class UsuarioService {
     idUsuario: string,
     { usuario, contrasena, email, rol }: UpdateUsuarioDto,
   ) {
-    const usuarioUpdate = this.usuarioRepository.update(idUsuario, {
-      usuario,
-      contrasena: await bcrypt.hash(contrasena, 10),
-      email,
-      rol,
-    });
+    const updateData: Partial<Usuario> = {};
 
-    if ((await usuarioUpdate).affected === 0) {
+    if (usuario) updateData.usuario = usuario;
+    if (email) updateData.email = email;
+    if (rol) updateData.rol = rol;
+
+    if (contrasena) {
+      const isHashed = contrasena.startsWith('$2b$');
+      updateData.contrasena = isHashed
+        ? contrasena
+        : await bcrypt.hash(contrasena, 10);
+    }
+
+    const result = await this.usuarioRepository.update(idUsuario, updateData);
+
+    if (result.affected === 0) {
       throw new NotFoundException(
         `Usuario con el ID ${idUsuario} no encontrado`,
       );
     }
 
     return this.usuarioRepository.findOne({
-      where: {
-        idUsuario,
-      },
+      where: { idUsuario },
     });
   }
 

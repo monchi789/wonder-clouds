@@ -5,9 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PopUp } from './entities/popup.entity';
 import { ImageModule } from '../imagenes/image.module';
 
-
 @Module({
-  imports: [TypeOrmModule.forFeature([PopUp]),ImageModule],
+  imports: [TypeOrmModule.forFeature([PopUp]), ImageModule],
   controllers: [PopUpController],
   providers: [PopUpService],
 })
