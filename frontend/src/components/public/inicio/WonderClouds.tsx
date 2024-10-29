@@ -11,14 +11,14 @@ export default function WonderClouds() {
   return (
     <motion.div
       ref={ref}
-      className="flex flex-col justify-center items-center text-white bg-primary space-y-10 relative -mt-5 md:-mt-20 px-10 pb-20"
+      className="flex flex-col justify-center items-center text-white bg-primary relative -mt-5 md:-mt-20 px-10 pb-20"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 50 }}
       transition={{ duration: 0.8, ease: 'easeOut' }}
     >
       {/* Título */}
       <motion.h1
-        className="text-5xl font-bold"
+        className="text-7xl font-bold"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
         transition={{ duration: 0.8, delay: 0.2 }}
@@ -28,17 +28,17 @@ export default function WonderClouds() {
 
       {/* Descripción */}
       <motion.p
-        className="text-xl"
+        className="text-2xl text-center mx-24 mt-10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        Nos encargamos de diseñar estrategias innovadoras para impulsar tu marca hacia nuevos horizontes y conectar con audiencias globales de manera impactante.
+        En Wonder clouds nos encargamos de diseñar estrategias innovadoras para impulsar tu marca hacia nuevos horizontes y conectar con audiencias globales de manera impactante.
       </motion.p>
 
       {/* Texto de expertos */}
       <motion.span
-        className="text-2xl font-semibold"
+        className="text-3xl font-semibold mt-5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
         transition={{ duration: 0.8, delay: 0.6 }}
@@ -48,17 +48,17 @@ export default function WonderClouds() {
 
       {/* Información de experiencia y clientes */}
       <motion.div
-        className="flex flex-row space-x-20"
+        className="flex flex-row space-x-20 mt-5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
         transition={{ duration: 0.8, delay: 0.8 }}
       >
         <div className="flex flex-col text-center space-y-5">
-          <h4 className="text-lg font-semibold">Experiencia</h4>
+          <h4 className="text-xl font-semibold">Experiencia</h4>
           <span className="text-5xl font-bold">2+</span>
         </div>
         <div className="flex flex-col text-center space-y-5">
-          <h4 className="text-lg font-semibold">Clientes satisfechos</h4>
+          <h4 className="text-xl font-semibold">Clientes satisfechos</h4>
           <span className="text-5xl font-bold">10+</span>
         </div>
       </motion.div>

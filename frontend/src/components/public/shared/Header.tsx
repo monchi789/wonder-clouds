@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,9 +13,9 @@ const Header = () => {
 
   const navLinks = [
     { href: '/', label: 'Inicio' },
-    { href: '/', label: 'Nosotros' },
-    { href: '/', label: 'Servicios' },
-    { href: '/', label: 'Nuestros proyectos' },
+    { href: '/nosotros', label: 'Nosotros' },
+    { href: '/servicios', label: 'Servicios' },
+    { href: '/proyectos', label: 'Nuestros proyectos' },
   ];
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -23,8 +24,13 @@ const Header = () => {
     <nav className="relative z-10 xl:px-24 py-4">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
+          {/* Logo with Animation */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="flex-shrink-0"
+          >
             <Image
               src="/static/images/wonder.png"
               alt="Logo Wonder Clouds Cusco"
@@ -32,10 +38,15 @@ const Header = () => {
               height={80}
               className="w-auto h-auto"
             />
-          </div>
+          </motion.div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
+          {/* Desktop Navigation with Animation */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="hidden lg:flex items-center space-x-8"
+          >
             {navLinks.map((link) => (
               <Link
                 key={link.label}
@@ -52,7 +63,7 @@ const Header = () => {
             >
               Consulta Gratuita
             </Link>
-          </div>
+          </motion.div>
 
           {/* Mobile menu button */}
           <div className="lg:hidden">
@@ -70,31 +81,39 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="lg:hidden">
-          <div className="bg-white shadow-lg mt-5 pb-4">
-            {navLinks.map((link) => (
+      {/* Mobile Navigation with Animation */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden"
+          >
+            <div className="bg-white shadow-lg mt-5 pb-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={`block rounded-md text-base font-medium hover:bg-gray-50 px-3 py-2
+                    ${pathname === link.href ? 'text-secondary' : 'text-default'}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
               <Link
-                key={link.label}
-                href={link.href}
-                className={`block rounded-md text-base font-medium hover:bg-gray-50 px-3 py-2
-                  ${pathname === link.href ? 'text-secondary' : 'text-default'}`}
+                href="/contactanos"
+                className="block text-center text-base font-medium text-white hover:bg-secondary transition-colors bg-primary rounded-xl mx-3 mt-5 px-3 py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {link.label}
+                Consulta Gratuita
               </Link>
-            ))}
-            <Link
-              href="/"
-              className="block text-center text-base font-medium text-white hover:bg-secondary transition-colors bg-primary rounded-xl mx-3 mt-5 px-3 py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Consulta Gratuita
-            </Link>
-          </div>
-        </div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
