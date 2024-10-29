@@ -12,7 +12,9 @@
   :root {
     --background: #FFFFFF;
     --foreground: #171717;
-    --default-blue: #104D7E;
+    --primary: #104D7E;
+    --secondary: #4693C0;
+    --default: #1F2C3D;
   }
 }
 
