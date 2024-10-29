@@ -15,9 +15,8 @@ export default function InicioWritting() {
   });
   return (
     <>
-      <div className="relative w-full overflow-hidden">
-      <div className="flex flex-col justify-center lg:flex-row items-center w-full space-y-5 space-x-20 px-4 lg:px-0 z-10">
-        
+      <div className="w-full flex flex-col justify-center lg:flex-row items-center relative overflow-hidden space-y-5 space-x-20 px-4 lg:px-0 z-10">
+
         {/* Contenedor animado del texto */}
         <motion.div
           className="flex flex-col w-full lg:w-2/5"
@@ -25,12 +24,12 @@ export default function InicioWritting() {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: 'easeInOut' }}
         >
-          <h3 className="text-3xl text-default lg:text-6xl font-extrabold leading-tight">
+          <span className="text-3xl text-default lg:text-6xl font-extrabold leading-tight">
             Es momento de que <br />
             <span className="text-primary">{text}</span>
             <Cursor cursorColor="#104D7E" /> <br />
             suba al siguiente nivel
-          </h3>
+          </span>
           <span className="text-lg text-default lg:text-2xl mt-10">
             En Wonder Clouds nos encargamos de diseñar estrategias innovadoras para impulsar tu marca
             hacia nuevos horizontes y conectar con audiencias globales de manera impactante.
@@ -42,15 +41,34 @@ export default function InicioWritting() {
 
         {/* Imagen animada */}
         <motion.div
-          className="hidden lg:block lg:w-2/5 z-10"
+          className="hidden lg:block lg:w-2/6 z-10"
           initial={{ x: '100%', opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: 'easeInOut' }}
         >
-          <Image src="/static/images/image_01.svg" width={1000} height={1000} alt="Imagen representativa" />
+          <motion.div
+            initial={{ x: 0, y: 0 }}
+            animate={{
+              x: [0, -10, 10, -10, 10, 0], // Se mueve en el eje x
+              y: [0, -10, 10, 10, -10, 0]  // Se mueve en el eje y
+            }}
+            transition={{
+              duration: 5, // Duración de todo el ciclo
+              repeat: Infinity, // Repetición infinita
+              repeatType: "loop",
+              ease: "easeInOut", // Suavizado
+            }}
+            className="w-auto h-auto" // Añade clases adicionales si necesitas
+          >
+            <Image
+              src="/static/images/image_01.svg"
+              width={1000}
+              height={1000}
+              alt="Imagen representativa"
+            />
+          </motion.div>
         </motion.div>
       </div>
-    </div>
     </>
   )
 }

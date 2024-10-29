@@ -1,21 +1,17 @@
 import Image from "next/image";
-import Header from "@/components/public/shared/Header";
-import Footer from "@/components/public/shared/Footer";
 import InicioWritting from "@/components/public/inicio/InicioWritting";
 import MovingCirclesBackground from "@/components/public/ui/MovingCirclesBackground";
 import Services from "@/components/public/inicio/Services";
-import OurProjects from "@/components/public/inicio/OurProjects";
+import ProjectsCarousel from "@/components/public/inicio/ProjectsCarousel";
 import { MailIcon, Phone, Send, User } from "lucide-react";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/input";
 import WonderClouds from "@/components/public/inicio/WonderClouds";
 
-export default function Home() {
+const Inicio = () => {
   return (
-    <div>
-      <Header />
-
-      <div className="container flex flex-row w-full lg:w-full items-center px-auto mx-auto mb-12 space-y-10 relative">
+    <>
+      <div className=" flex flex-row w-full lg:w-full items-center px-auto mx-auto mb-12 space-y-10 relative">
         <MovingCirclesBackground />
         <InicioWritting />
       </div>
@@ -30,14 +26,10 @@ export default function Home() {
             className="w-full h-full"
           />
         </div>
-
         <WonderClouds />
       </div>
 
       <div className="container flex flex-col w-full lg:w-3/4 items-center relative space-y-20 mx-auto mt-12 lg:mt-24 px-5">
-        <h2 className="text-3xl lg:text-4xl text-default font-semibold">
-          Nuestros <span className="text-primary">Servicios</span>
-        </h2>
         <Services />
       </div>
 
@@ -45,7 +37,7 @@ export default function Home() {
         <h2 className="flex justify-center text-3xl text-default lg:text-4xl font-semibold">
           Nuestro <span className="ps-2 text-primary">Trabajo</span>
         </h2>
-        <OurProjects />
+        <ProjectsCarousel />
       </div>
 
       <div className="container flex flex-col w-full lg:w-3/4 mx-auto items-center mt-12 lg:mt-24">
@@ -56,7 +48,7 @@ export default function Home() {
           <Image className="hidden lg:block w-1/2" src="/static/images/info.svg" width={500} height={500} alt="Imagen representativa" />
           <div className="w-1/2 text-default my-auto">
             <span className="text-medium font-semibold">¿Necesitas soluciones digitales?</span>
-            <h3 className="text-3xl lg:text-4xl font-semibold mb-5">No dudes en contactarnos</h3>
+            <span className="text-3xl lg:text-4xl font-semibold mb-5">No dudes en contactarnos</span>
             <div className="flex flex-col space-y-10">
               <Input
                 type="text"
@@ -90,7 +82,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
+
+export default Inicio;

@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <>
+    <div className="mt-12">
       <Image
         className="w-full"
         src="/static/images/background_footer.webp"
@@ -17,13 +17,13 @@ export default function Footer() {
        <div className="bg-primary py-5">
         <div className="container flex flex-col md:flex-row md:space-x-12 text-white w-11/12 md:w-4/6 mx-auto py-12">
           <div className='flex flex-col md:w-1/4 space-y-10 items-center my-auto'>
-            <a href="https://www.facebook.com/" className="hover:text-[#A6C0D8] transition duration-300">
+            <a href="https://www.facebook.com/" target="_blank" className="hover:text-[#A6C0D8] transition duration-300">
               <CiFacebook size={35} />
             </a>
-            <a href="https://www.instagram.com/" className="hover:text-[#A6C0D8] transition duration-300">
+            <a href="https://www.instagram.com/" target="_blank" className="hover:text-[#A6C0D8] transition duration-300">
               <FaInstagram size={30} />
             </a>
-            <a href="https://www.tiktok.com/" className="hover:text-[#A6C0D8] transition duration-300">
+            <a href="https://www.tiktok.com/" target="_blank" className="hover:text-[#A6C0D8] transition duration-300">
               <FaTiktok size={30} />
             </a>
           </div>
@@ -64,6 +64,6 @@ export default function Footer() {
           </span>
         </div>
       </div>
-    </>
+    </div>
   )
 }

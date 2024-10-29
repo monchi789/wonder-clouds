@@ -10,9 +10,9 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 
-import CardSliderProject from '../ui/CardSliderProject';
+import ProjectCarouselCard from '../ui/ProjectCarouselCard';
 
-const OurProjects = () => {
+const ProjectsCarousel = () => {
   return (
     <>
       <Swiper
@@ -40,16 +40,16 @@ const OurProjects = () => {
         className="swiper_container mt-12"
       >
         <SwiperSlide>
-          <CardSliderProject title="Proyecto Paltos - Geragri" imageSrc={"/static/images/prueba.png"} />
+          <ProjectCarouselCard title="Proyecto Paltos - Geragri" imageSrc={"/static/images/prueba.png"} />
         </SwiperSlide>
         <SwiperSlide>
-          <CardSliderProject title="CORLAD - Cusco" imageSrc={"/static/images/prueba2.png"} />
+          <ProjectCarouselCard title="CORLAD - Cusco" imageSrc={"/static/images/prueba2.png"} />
         </SwiperSlide>
         <SwiperSlide>
-          <CardSliderProject title="AER. Athletic Club" imageSrc={"/static/images/prueba3.png"} />
+          <ProjectCarouselCard title="AER. Athletic Club" imageSrc={"/static/images/prueba3.png"} />
         </SwiperSlide>
         <SwiperSlide>
-          <CardSliderProject title="Peruvian Cusco Travel" imageSrc={"/static/images/prueba4.png"} />
+          <ProjectCarouselCard title="Peruvian Cusco Travel" imageSrc={"/static/images/prueba4.png"} />
         </SwiperSlide>
 
         <div className="slider-controler">
@@ -112,4 +112,4 @@ const OurProjects = () => {
   );
 };
 
-export default OurProjects;
+export default ProjectsCarousel;
