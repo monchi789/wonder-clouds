@@ -4,13 +4,19 @@ import { ChevronsRight } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'; // Usamos usePathname para obtener la ruta actual
 
-const Breadcrumb = () => {
-  const pathname = usePathname(); // Obtiene la ruta actual
+interface BreadcrumpProps {
+  colorText?: string
+}
+
+const Breadcrumb = ({
+  colorText = "text-default"
+}: BreadcrumpProps) => {
+  const pathname = usePathname();
   const pathSegments = pathname.split('/').filter(segment => segment);
 
   return (
     <nav className="breadcrumb">
-      <ol className="flex space-x-2 font-semibold">
+      <ol className={`flex ${colorText} font-semibold space-x-2`}>
         <li>
           <Link href="/">
             Inicio
@@ -22,7 +28,7 @@ const Breadcrumb = () => {
           const isLast = index === pathSegments.length - 1;
 
           return (
-            <li key={href} className="flex items-center">
+            <li key={href} className={`flex ${colorText} items-center`}>
               <span className="mx-2"><ChevronsRight color="#FFA947" /></span>
               {!isLast ? (
                 <Link href={href}>
