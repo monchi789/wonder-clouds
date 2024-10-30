@@ -1,10 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Habilita la generación estática de parámetros
-  experimental: {
-    generateStaticParams: true,
-  },
-  
   // Optimizaciones para el sitemap
   poweredByHeader: false,
   

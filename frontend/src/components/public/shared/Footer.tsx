@@ -1,19 +1,34 @@
+"use client"
+
 import Link from "next/link";
 import { CiFacebook } from "react-icons/ci";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 export default function Footer() {
+  const fadeIn = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
   return (
     <div className="mt-12">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      variants={fadeIn}
+      transition={{ duration: 0.8 }} // Duración de la animación
+      className="relative" // Asegúrate de que el contenedor tenga posición relativa si necesitas superponer otros elementos
+    >
       <Image
-        className="w-full"
+        className="w-full -mb-1"
         src="/static/images/background_footer.webp"
         alt="Fondo tecnológico"
         width={1800}
         height={1000}
-        layout="cover"
+        layout="responsive" // Cambia a "responsive" si quieres que la imagen se ajuste automáticamente
       />
+    </motion.div>
        <div className="bg-primary py-5">
         <div className="container flex flex-col md:flex-row md:space-x-12 text-white w-11/12 md:w-4/6 mx-auto py-12">
           <div className='flex flex-col md:w-1/4 space-y-10 items-center my-auto'>

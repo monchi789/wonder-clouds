@@ -51,15 +51,15 @@ const Header = () => {
               <Link
                 key={link.label}
                 href={link.href}
-                className={`text-lg font-semibold hover:text-secondary transition-colors
-                  ${pathname === link.href ? 'text-secondary' : 'text-default'}`}
+                className={`text-lg font-medium relative transition-colors 
+                  ${pathname === link.href ? 'text-secondary border-b-2 border-secondary' : 'text-default hover:text-secondary hover:border-b-2 hover:border-secondary'} `}
               >
                 {link.label}
               </Link>
             ))}
             <Link
               href="/contactanos"
-              className="text-lg text-white font-semibold hover:bg-secondary transition-colors bg-primary rounded-3xl px-4 py-2 "
+              className="text-lg text-white font-medium hover:bg-secondary hover:scale-105 transition-all duration-300 bg-primary rounded-3xl px-4 py-1"
             >
               Consulta Gratuita
             </Link>
@@ -97,7 +97,7 @@ const Header = () => {
                   key={link.label}
                   href={link.href}
                   className={`block rounded-md text-base font-medium hover:bg-gray-50 px-3 py-2
-                    ${pathname === link.href ? 'text-secondary' : 'text-default'}`}
+                    ${pathname === link.href ? 'text-secondary border-b-2 border-secondary' : 'text-default hover:text-secondary'}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
