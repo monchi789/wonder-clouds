@@ -42,19 +42,19 @@ export default function Services() {
     <>
       <motion.h2
         className="text-3xl lg:text-4xl text-default font-semibold"
-        initial={{ opacity: 0, y: 20 }} // Inicia transparente y un poco abajo
-        whileInView={{ opacity: 1, y: 0 }} // Aparece y sube al estar en vista
-        transition={{ duration: 0.6, ease: "easeOut" }} // Controla duración y suavidad
-        viewport={{ once: true, amount: 0.3 }} // Animación solo una vez cuando esté 30% visible
+        initial={{ opacity: 0, y: 20 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.6, ease: "easeOut" }} 
+        viewport={{ once: true, amount: 0.2 }} 
       >
         Nuestros <span className="text-primary">Servicios</span>
       </motion.h2>
       <motion.section
         className="w-full grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-10"
-        initial={{ opacity: 0, y: 50 }} // Inicia transparente y un poco abajo
-        whileInView={{ opacity: 1, y: 0 }} // Aparece y sube al estar en vista
-        transition={{ duration: 0.8, ease: "easeOut" }} // Controla duración y suavidad
-        viewport={{ once: true, amount: 0.3 }} // Animación solo una vez cuando esté 30% visible
+        initial={{ opacity: 0, y: 20 }} 
+        whileInView={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.6, ease: "easeOut" }} 
+        viewport={{ once: true, amount: 0.2 }} 
       >
         {services.map((item, key) => (
           <ServiceCard

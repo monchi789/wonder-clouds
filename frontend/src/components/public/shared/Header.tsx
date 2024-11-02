@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
@@ -31,13 +31,15 @@ const Header = () => {
             transition={{ duration: 0.5 }}
             className="flex-shrink-0"
           >
+            <Link href={"/"}>
             <Image
-              src="/static/images/wonder.png"
+              src="/static/images/wonder.webp"
               alt="Logo Wonder Clouds Cusco"
               width={80}
               height={80}
               className="w-auto h-auto"
             />
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation with Animation */}
@@ -57,12 +59,32 @@ const Header = () => {
                 {link.label}
               </Link>
             ))}
+
             <Link
               href="/contactanos"
-              className="text-lg text-white font-medium hover:bg-secondary hover:scale-105 transition-all duration-300 bg-primary rounded-3xl px-4 py-1"
+              className="relative inline-flex items-center justify-center h-12 px-5 text-lg font-medium text-white transition-transform rounded-xl border-2 border-transparent bg-primary overflow-hidden active:scale-95 group"
             >
-              Consulta Gratuita
+
+              <span
+                className="absolute inset-0 w-full h-full rounded-xl bg-primary transition-all duration-500 transform scale-105 group-hover:border-2 group-hover:border-secondary group-hover:scale-100"
+              ></span>
+
+              <span className="relative z-10 flex items-center gap-2 text-white transition-transform duration-500 group-hover:scale-105">
+                Consulta aquí
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  strokeWidth="0"
+                  viewBox="0 0 448 512"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M429.6 92.1c4.9-11.9 2.1-25.6-7-34.7s-22.8-11.9-34.7-7l-352 144c-14.2 5.8-22.2 20.8-19.3 35.8s16.1 25.8 31.4 25.8H224V432c0 15.3 10.8 28.4 25.8 31.4s30-5.1 35.8-19.3l144-352z"></path>
+                </svg>
+              </span>
             </Link>
+
           </motion.div>
 
           {/* Mobile menu button */}
@@ -77,11 +99,12 @@ const Header = () => {
                 <Menu className="h-6 w-6" />
               )}
             </button>
+
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation with Animation */}
+      {/* Mobile Navigation */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div

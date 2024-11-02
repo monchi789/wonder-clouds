@@ -1,4 +1,4 @@
-import ProjectsList from "@/components/public/nosotros/ProjectsList"
+import ProjectsList from "@/components/public/trabajos/ProjectsList"
 import Breadcrumb from "@/components/public/ui/Breadcrumb"
 
 const Proyectos = () => {
