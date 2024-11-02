@@ -2,12 +2,12 @@ import Image from "next/image"
 import { Divider } from "./Dividers"
 
 interface CardProjectProps {
-  title: string,
-  imageSrc: string,
-  imageAlt: string,
-  type: string,
-  client: string,
-  date: string
+  title: string;
+  imageSrc: string;
+  imageAlt: string;
+  type: string;
+  client: string;
+  date: string;
 }
 
 const CardProject = ({
@@ -19,29 +19,50 @@ const CardProject = ({
   date
 }: CardProjectProps) => {
   return (
-    <div className="w-full max-w-[350px] sm:max-w-[400px] md:max-w-[500px] bg-white shadow-md rounded-2xl mx-auto">
-      <Image
-        className="w-full h-[200px] sm:h-[250px] md:h-[300px] object-cover rounded-t-2xl"
-        src={imageSrc}
-        alt={imageAlt}
-        width={500}
-        height={500}
-      />
-      <div className="flex flex-col px-4 pt-3">
-        <span className="text-base sm:text-lg md:text-xl font-bold">{title}</span>
-        <span className="bg-gray-200 text-gray-700 text-xs md:text-sm rounded-full me-auto mt-2 px-3 py-1">{type}</span>
-        <div className="flex flex-row justify-between py-4 md:py-5">
-          <span className="font-semibold">Cliente</span>
-          <span>{client}</span>
+    <article className="w-full bg-white shadow-md hover:shadow-lg transition-shadow duration-300 rounded-2xl overflow-hidden">
+      {/* Image container with aspect ratio */}
+      <div className="relative aspect-[4/3] w-full">
+        <Image
+          className="object-cover"
+          src={imageSrc}
+          alt={imageAlt}
+          fill
+          sizes="(max-width: 640px) 100vw, 
+                 (max-width: 768px) 80vw,
+                 (max-width: 1024px) 50vw,
+                 33vw"
+          priority
+        />
+      </div>
+
+      <div className="flex flex-col p-4 sm:p-5 space-y-4">
+        {/* Title */}
+        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 line-clamp-2">
+          {title}
+        </h3>
+
+        {/* Project Type Badge */}
+        <div className="flex flex-wrap gap-2">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs sm:text-sm bg-gray-200 text-gray-700 font-medium">
+            {type}
+          </span>
         </div>
+
+        {/* Client Info */}
+        <div className="flex items-center justify-between py-2 text-sm sm:text-base">
+          <span className="font-semibold text-gray-700">Cliente</span>
+          <span className="text-gray-600">{client}</span>
+        </div>
+
         <Divider />
-        <div className="flex flex-row justify-between py-4 md:py-5">
-          <span className="font-semibold">Fecha</span>
-          <span>{date}</span>
+
+        {/* Date Info */}
+        <div className="flex items-center justify-between py-2 text-sm sm:text-base">
+          <span className="font-semibold text-gray-700">Fecha</span>
+          <span className="text-gray-600">{date}</span>
         </div>
       </div>
-    </div>
-
+    </article>
   )
 }
 

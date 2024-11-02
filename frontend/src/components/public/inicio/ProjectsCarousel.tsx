@@ -1,8 +1,11 @@
-// components/ProjectCarousel.js
-"use client"; // Add this for Client Component
+// components/public/ui/ProjectCarousel.tsx
 
+"use client";
+
+import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
+import ProjectCarouselCard from '../ui/ProjectCarouselCard';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -10,104 +13,140 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 
-import ProjectCarouselCard from '../ui/ProjectCarouselCard';
+const projects = [
+  {
+    title: "Proyecto Paltos - Geragri",
+    imageSrc: "/static/images/prueba.png"
+  },
+  {
+    title: "CORLAD - Cusco",
+    imageSrc: "/static/images/prueba2.png"
+  },
+  {
+    title: "AER. Athletic Club",
+    imageSrc: "/static/images/prueba3.png"
+  },
+  {
+    title: "Peruvian Cusco Travel",
+    imageSrc: "/static/images/prueba4.png"
+  }
+];
 
 const ProjectsCarousel = () => {
   return (
     <>
-      <Swiper
-        effect={'coverflow'}
-        centeredSlides={true}
-        loop={true}
-        slidesPerView={'auto'}
-        autoplay={{
-          delay: 2000,
-          disableOnInteraction: false, // Continúa el autoplay incluso después de interacción manual
-          pauseOnMouseEnter: true, // Opcional: pausa cuando el mouse está encima
-        }}
-        coverflowEffect={{
-          rotate: 0,
-          stretch: 0,
-          depth: 100,
-          modifier: 2.5,
-        }}
-        pagination={{ el: '.swiper-pagination', clickable: true }}
-        navigation={{
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        }}
-        modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
-        className="swiper_container mt-12"
+      <motion.h2
+        className="text-3xl lg:text-4xl text-default font-semibold"
+        initial={{ opacity: 0, y: 20 }} // Inicia transparente y un poco abajo
+        whileInView={{ opacity: 1, y: 0 }} // Aparece y sube al estar en vista
+        transition={{ duration: 0.6, ease: "easeOut" }} // Controla duración y suavidad
+        viewport={{ once: true, amount: 0.2 }} // Animación solo una vez cuando esté 30% visible
       >
-        <SwiperSlide>
-          <ProjectCarouselCard title="Proyecto Paltos - Geragri" imageSrc={"/static/images/prueba.png"} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProjectCarouselCard title="CORLAD - Cusco" imageSrc={"/static/images/prueba2.png"} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProjectCarouselCard title="AER. Athletic Club" imageSrc={"/static/images/prueba3.png"} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <ProjectCarouselCard title="Peruvian Cusco Travel" imageSrc={"/static/images/prueba4.png"} />
-        </SwiperSlide>
+          Nuestro <span className="ps-2 text-primary">Trabajo</span>
+      </motion.h2>
 
-        <div className="slider-controler">
-          <div className="swiper-pagination"></div>
-        </div>
-      </Swiper>
-      <style jsx global>
-        {`
-          .swiper_container {
-            height: 30rem;
-            padding: 2rem 0;
-            position: relative;
+      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <Swiper
+          effect={'coverflow'}
+          grabCursor={true}
+          centeredSlides={true}
+          loop={true}
+          slidesPerView={'auto'}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          }}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 2.5,
+          }}
+          pagination={{
+            el: '.swiper-pagination',
+            clickable: true,
+            dynamicBullets: true
+          }}
+          navigation={{
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          }}
+          modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
+          className="w-full py-8 sm:py-12"
+        >
+          {projects.map((project, index) => (
+            <SwiperSlide key={index} className="!w-[280px] sm:!w-[340px] md:!w-[400px] lg:!w-[560px] rounded-lg">
+              <motion.div
+                initial={{ opacity: 0, y: 50 }} // Inicia transparente y un poco abajo
+                whileInView={{ opacity: 1, y: 0 }} // Aparece y sube al estar en vista
+                transition={{ duration: 0.6, ease: "easeOut" }} // Controla duración y suavidad
+                viewport={{ once: true, amount: 0.2 }} // Animación solo una vez cuando esté 30% visible
+              >
+                <ProjectCarouselCard
+                  title={project.title}
+                  imageSrc={project.imageSrc}
+                />
+              </motion.div>
+            </SwiperSlide>
+          ))}
+
+          <div className="relative mt-8 sm:mt-12">
+            <div className="swiper-pagination !relative !bottom-0 !w-full flex justify-center gap-2"></div>
+          </div>
+        </Swiper>
+
+        <style jsx global>{`
+        .swiper-slide {
+          transition: all 0.3s ease;
+          height: auto !important;
+        }
+
+        .swiper-slide-active {
+          transform: scale(1.05);
+        }
+
+        .swiper-pagination-bullet {
+          width: 10px;
+          height: 10px;
+          background: #CBD5E1;
+          opacity: 1;
+          transition: all 0.3s ease;
+        }
+
+        .swiper-pagination-bullet-active {
+          background: #104D7E;
+          width: 24px;
+          border-radius: 5px;
+        }
+
+        /* Custom slide shadows */
+        .swiper-slide-shadow-left,
+        .swiper-slide-shadow-right {
+          background-image: none;
+          background: rgba(0, 0, 0, 0.1);
+          backdrop-filter: blur(2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+          .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
           }
 
-          .swiper-slide {
-            width: 35rem;
-            height: 35rem;
-            position: relative;
+          .swiper-pagination-bullet-active {
+            width: 20px;
           }
+        }
 
-          @media (max-width: 500px) {
-            .swiper_container {
-              height: 30rem;
-            }
-            .swiper-slide {
-              width: 28rem !important;
-              height: 36rem !important;
-            }
+        @media (min-width: 1024px) {
+          .swiper-slide-active {
+            transform: scale(1.08);
           }
-
-          .swiper-slide-shadow-left,
-          .swiper-slide-shadow-right {
-            display: none;
-          }
-
-          .slider-controler {
-            position: relative;
-            bottom: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .swiper-pagination {
-            position: relative;
-            width: 15rem !important;
-            bottom: 1rem;
-          }
-
-          .swiper-pagination .swiper-pagination-bullet {
-            filter: drop-shadow(0px 8px 24px rgba(18, 28, 53, 0.1));
-          }
-
-          .swiper-pagination .swiper-pagination-bullet-active {
-            background: #000000;
-          }
-        `}
-      </style>
+        }
+      `}</style>
+      </div>
     </>
   );
 };
