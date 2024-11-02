@@ -15,10 +15,6 @@ const ContactForm = () => {
     visible: { opacity: 1, y: 0 },
   };
 
-  const ContactUs = async (formData: FormData) => {
-    // Handle form submission logic here
-  };
-
   return (
     <div className="flex flex-col lg:flex-row mx-4 lg:mx-12 justify-center space-y-8 lg:space-y-0 lg:space-x-10">
       <section className="w-full lg:w-1/2 text-base md:text-lg px-4 lg:px-10">
@@ -99,26 +95,54 @@ const ContactForm = () => {
           </p>
         </div>
 
-        <form className="space-y-6" onSubmit={ContactUs}>
-          {[
-            { type: "text", name: "nombres", placeholder: "Nombres y apellidos", icon: <User /> },
-            { type: "email", name: "correo", placeholder: "Correo electrónico", icon: <Mail /> },
-            { type: "tel", name: "numeroCelular", placeholder: "Número de contacto", icon: <Phone />, inputMode: "numeric", pattern: "[0-9]*" }
-          ].map((input, index) => (
-            <div key={index} className="group transition-all duration-300 hover:scale-[1.02]">
-              <Input
-                {...input}
-                variant="underlined"
-                size="lg"
-                startContent={<span className="text-2xl text-[#104D7E] pointer-events-none flex-shrink-0">{input.icon}</span>}
-                classNames={{
-                  input: "text-lg",
-                  inputWrapper: "pb-2"
-                }}
-              />
-            </div>
-          ))}
-
+        <form className="space-y-6">
+          <div className="group transition-all duration-300 hover:scale-[1.02]">
+            <Input
+              type="text"
+              variant="underlined"
+              placeholder="Nombres y apellidos"
+              size="lg"
+              startContent={
+                <User className="text-2xl text-[#104D7E] pointer-events-none flex-shrink-0" />
+              }
+              classNames={{
+                input: "text-lg",
+                inputWrapper: "pb-2"
+              }}
+            />
+          </div>
+          <div className="group transition-all duration-300 hover:scale-[1.02]">
+            <Input
+              type="email"
+              variant="underlined"
+              placeholder="Correo electrónico"
+              size="lg"
+              startContent={
+                <Mail className="text-2xl text-[#104D7E] pointer-events-none flex-shrink-0" />
+              }
+              classNames={{
+                input: "text-lg",
+                inputWrapper: "pb-2"
+              }}
+            />
+          </div>
+          <div className="group transition-all duration-300 hover:scale-[1.02]">
+            <Input
+              type="tel"
+              variant="underlined"
+              placeholder="Número de contacto"
+              size="lg"
+              startContent={
+                <Phone className="text-2xl text-[#104D7E] pointer-events-none flex-shrink-0" />
+              }
+              inputMode="numeric"
+              pattern="[0-9]*"
+              classNames={{
+                input: "text-lg",
+                inputWrapper: "pb-2"
+              }}
+            />
+          </div>
           <motion.button
             type="submit"
             disabled={loading}
