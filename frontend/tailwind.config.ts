@@ -12,6 +12,12 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        default: "var(--default)"
+      },
+      boxShadow: {
+        'custom-blue': '0px 1px 10px 1px #104D7E',
       },
     },
   },

@@ -24,14 +24,20 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { unlink } from 'fs/promises';
+import { ImageService } from '../imagenes/subir_image.service';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('PopUp')
-@Controller('popUp')
+@Controller('pop-up')
 export class PopUpController {
-  constructor(private readonly popUpService: PopUpService) {}
+  constructor(
+    private readonly popUpService: PopUpService,
+    private readonly imageService: ImageService, // Inyecta el servicio de imágenes
+  ) {}
 
   @Post()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({
     summary: 'Crea un nuevo PopUp',
   })
@@ -42,14 +48,14 @@ export class PopUpController {
       type: 'object',
       properties: {
         estadoPopUp: { type: 'boolean' },
-        image: { type: 'string', format: 'binary' },
+        imagen: { type: 'string', format: 'binary' },
       },
     },
   })
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('imagen', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/popup',
         filename: (req, file, cb) => {
           const randomName = Array(32)
             .fill(null)
@@ -61,23 +67,26 @@ export class PopUpController {
     }),
   )
   async create(
-    @UploadedFile() file: any,
+    @UploadedFile() file: Express.Multer.File,
     @Body() createPopUpDto: CreatePopUpDto,
   ) {
     if (!file) {
       throw new BadRequestException('No se ha subido ninguna imagen');
     }
 
-    const imagePath = `/uploads/${file.filename}`;
+    // Usa el servicio de imágenes para subir la imagen
+    const imagePath = await this.imageService.uploadImages([file], 'popup');
+
     const popUpData = {
       ...createPopUpDto,
-      imagenPopUp: imagePath,
+      imagenPopUp: imagePath[0], // Solo se usa la primera imagen subida
     };
 
     return this.popUpService.create(popUpData);
   }
 
   @Get()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Obtiene todos los PopUps' })
   @ApiResponse({
     status: 200,
@@ -87,7 +96,13 @@ export class PopUpController {
     return this.popUpService.findAll();
   }
 
+  @Get('lista-pop-up')
+  listaPopUp() {
+    return this.popUpService.unPopUp();
+  }
+
   @Get(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Obtiene un PopUp por su ID' })
   @ApiResponse({ status: 200, description: 'PopUp obtenido exitosamente.' })
   @ApiResponse({ status: 404, description: 'PopUp no encontrado.' })
@@ -96,14 +111,26 @@ export class PopUpController {
   }
 
   @Patch(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({
-    summary: 'Actualiza un PopUp',
+    summary:
+      'Actualiza un PopUp, incluida la posibilidad de cambiar el estado y la imagen',
   })
   @ApiResponse({ status: 200, description: 'PopUp actualizado exitosamente.' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        estadoPopUp: { type: 'boolean' },
+        imagen: { type: 'string', format: 'binary' },
+      },
+    },
+  })
   @UseInterceptors(
-    FileInterceptor('image', {
+    FileInterceptor('imagen', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: './uploads/popup',
         filename: (req, file, cb) => {
           const randomName = Array(32)
             .fill(null)
@@ -116,37 +143,33 @@ export class PopUpController {
   )
   async update(
     @Param('id') id: string,
-    @UploadedFile() file: any,
-    @Body() updatePopUpDto: UpdatePopUpDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updatePopUpDto: Partial<UpdatePopUpDto>,
   ) {
     const existingPopUp = await this.popUpService.findOne(id);
     if (!existingPopUp) {
       throw new NotFoundException(`PopUp con id ${id} no encontrado`);
     }
 
-    let updatedData = { ...updatePopUpDto };
+    const updatedData: Partial<UpdatePopUpDto & { imagenPopUp?: string }> = {
+      ...updatePopUpDto,
+    };
 
     if (file) {
-      const oldImagePath = existingPopUp.imagenPopUp;
-      if (oldImagePath) {
-        try {
-          await unlink(`.${oldImagePath}`);
-        } catch {
-          throw new BadRequestException('Error al eliminar la imagen anterior');
-        }
-      }
+      await this.imageService.deleteImages([existingPopUp.imagenPopUp]);
 
-      const newImagePath = `/uploads/${file.filename}`;
-      updatedData = {
-        ...updatedData,
-        imagenPopUp: newImagePath,
-      };
+      const newImagePaths = await this.imageService.uploadImages(
+        [file],
+        'popup',
+      );
+      updatedData.imagenPopUp = newImagePaths[0];
     }
 
     return this.popUpService.update(id, updatedData);
   }
 
   @Delete(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Elimina un PopUp por su ID' })
   @ApiResponse({ status: 200, description: 'PopUp eliminado exitosamente.' })
   @ApiResponse({ status: 404, description: 'PopUp no encontrado.' })
@@ -156,16 +179,8 @@ export class PopUpController {
       throw new NotFoundException(`PopUp con id ${id} no encontrado`);
     }
 
-    const imagePath = popUp.imagenPopUp;
-    if (imagePath) {
-      try {
-        await unlink(`.${imagePath}`);
-      } catch {
-        throw new BadRequestException('Error al eliminar la imagen');
-      }
-    }
+    await this.imageService.deleteImages([popUp.imagenPopUp]);
 
-    await this.popUpService.remove(id);
-    return { message: `PopUp con id ${id} eliminado` };
+    return this.popUpService.remove(id);
   }
 }

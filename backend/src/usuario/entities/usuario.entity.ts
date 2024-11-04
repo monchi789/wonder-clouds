@@ -1,22 +1,36 @@
-import { Rol } from 'src/rol/entities/rol.entity';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Rol } from '../../common/enums/rol.enum';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Usuario {
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   idUsuario: string;
 
   @Column({ type: 'text', unique: true })
-  nombreUsuario: string;
+  usuario: string;
 
-  @Column({ type: 'text', unique: true })
+  @Column({ type: 'text', nullable: false, select: false })
   contrasena: string;
 
   @Column({ type: 'text', unique: true })
   email: string;
 
-  @ManyToOne(() => Rol, (rol) => rol.idRol, {
-    eager: true,
-  })
-  rol: Rol;
+  @Column({ type: 'enum', default: Rol.USUARIO, enum: Rol })
+  rol: string;
+
+  @CreateDateColumn()
+  createAt: Date;
+
+  @UpdateDateColumn()
+  updateAt: Date;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
 }

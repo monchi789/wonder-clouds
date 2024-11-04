@@ -16,12 +16,15 @@ export class Publicacion {
   titulo: string;
 
   @Column({ type: 'text' })
+  autor: string;
+
+  @Column({ type: 'text' })
   contenido: string;
 
   @Column({ nullable: true })
   portada: string;
 
-  @Column({ type: Date })
+  @Column({ type: Date, default: () => 'CURRENT_DATE' })
   fechaPublicacion: Date;
 
   @Column({ type: 'text' })

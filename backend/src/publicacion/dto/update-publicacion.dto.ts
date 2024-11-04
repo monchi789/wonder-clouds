@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsOptional, IsString, MinLength } from 'class-validator';
 
 export class UpdatePublicacionDto {
   @IsString()
@@ -8,20 +8,16 @@ export class UpdatePublicacionDto {
   @Type(() => String)
   titulo: string;
 
+  @IsOptional()
+  @IsString()
+  @Type(() => String)
+  autor?: string;
+
   @IsString()
   @MinLength(5)
   @IsOptional()
   @Type(() => String)
   contenido: string;
-
-  @IsString()
-  @IsOptional()
-  portada: string;
-
-  @IsDate()
-  @IsOptional()
-  @Type(() => Date)
-  fechaPublicacion: Date;
 
   @IsString()
   @IsOptional()

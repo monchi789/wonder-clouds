@@ -8,7 +8,8 @@ export class UpdateServicioDto {
 
   @IsOptional()
   @IsString()
-  logoServicio: string;
+  @MinLength(1)
+  descripcion: string;
 
   @IsOptional()
   @IsDecimal()

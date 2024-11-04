@@ -11,8 +11,11 @@ import { TipoGeneralService } from './tipo-general.service';
 import { CreateTipoGeneralDto } from './dto/create-tipo-general.dto';
 import { UpdateTipoGeneralDto } from './dto/update-tipo-general.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Auth } from 'src/auth/decorators/auth.decorators';
+import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Tipo General')
+@Auth(Rol.ADMIN)
 @Controller('tipo-general')
 export class TipoGeneralController {
   constructor(private readonly tipoGeneralService: TipoGeneralService) {}

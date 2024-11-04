@@ -1,12 +1,9 @@
-import { IsOptional, IsString, MinLength, IsBoolean } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsOptional, IsBoolean } from 'class-validator';
 
 export class UpdatePopUpDto {
   @IsOptional()
   @IsBoolean()
+  @Type(() => Boolean)
   estadoPopUp: boolean;
-
-  @IsString()
-  @IsOptional()
-  @MinLength(5)
-  imagenPopUp: string;
 }

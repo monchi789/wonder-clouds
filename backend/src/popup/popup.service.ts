@@ -1,13 +1,9 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PopUp } from './entities/popup.entity';
 import { CreatePopUpDto } from './dto/create-popuo.dto';
 import { UpdatePopUpDto } from './dto/update-popup.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PopUp } from './entities/popup.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class PopUpService {
@@ -18,6 +14,11 @@ export class PopUpService {
 
   async create(createPopUpDto: CreatePopUpDto) {
     const popUp = this.popUpRepository.create(createPopUpDto);
+
+    if (createPopUpDto.estadoPopUp) {
+      await this.setAllPopUpToFalse();
+    }
+
     return await this.popUpRepository.save(popUp);
   }
 
@@ -25,47 +26,58 @@ export class PopUpService {
     return await this.popUpRepository.find();
   }
 
-  async findOne(idPopUp: string) {
-    try {
-      const popUp = await this.popUpRepository.findOne({
-        where: { idPopUp },
-      });
-
-      if (!popUp) {
-        throw new NotFoundException(
-          `PopUp con el id ${idPopUp} no encontrado.`,
-        );
-      }
-
-      return popUp;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      }
-
-      throw new BadRequestException('El ID proporcionado no es valido');
+  async findOne(idPopUp: string): Promise<PopUp> {
+    const popUp = await this.popUpRepository.findOne({ where: { idPopUp } });
+    if (!popUp) {
+      throw new NotFoundException(`PopUp con id ${idPopUp} no encontrado`);
     }
+    return popUp;
   }
 
-  async update(idPopUp: string, updatePopUpDto: UpdatePopUpDto) {
-    const popUp = this.popUpRepository.update(idPopUp, updatePopUpDto);
+  async update(
+    idPopUp: string,
+    updatePopUpDto: Partial<UpdatePopUpDto & { imagenPopUp?: string }>,
+  ) {
+    const popUp = await this.popUpRepository.preload({
+      idPopUp,
+      ...updatePopUpDto,
+    });
 
-    if ((await popUp).affected === 0) {
-      throw new NotFoundException(`PopUp con el id ${idPopUp} no encontrado`);
+    if (!popUp) {
+      throw new NotFoundException(`PopUp con id ${idPopUp} no encontrado`);
     }
 
-    return this.popUpRepository.findOne({ where: { idPopUp } });
+    return await this.popUpRepository.save(popUp);
   }
 
   async remove(idPopUp: string) {
-    console.log(idPopUp);
+    const popUp = await this.popUpRepository.findOne({ where: { idPopUp } });
+    if (!popUp) {
+      throw new NotFoundException(`PopUp con id ${idPopUp} no encontrado`);
+    }
+    await this.popUpRepository.remove(popUp);
+    return { message: `PopUp con id ${idPopUp} eliminado` };
+  }
 
-    const popUp = await this.popUpRepository.softDelete(idPopUp);
+  async unPopUp() {
+    const popUp = await this.popUpRepository.findOne({
+      where: { estadoPopUp: true },
+      select: ['estadoPopUp', 'imagenPopUp'],
+    });
 
-    if ((await popUp).affected === 0) {
-      throw new NotFoundException(`PopUp con el id ${idPopUp} no encontrada.`);
+    if (!popUp) {
+      throw new NotFoundException(`No hay PopUps para listar`);
     }
 
-    return { message: `PopUp con el id ${idPopUp} eliminada.` };
+    return popUp;
+  }
+
+  private async setAllPopUpToFalse(excludeId?: string) {
+    await this.popUpRepository
+      .createQueryBuilder()
+      .update(PopUp)
+      .set({ estadoPopUp: false })
+      .where('idPopUp != :excludeId', { excludeId: excludeId || '' })
+      .execute();
   }
 }
