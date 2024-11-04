@@ -104,4 +104,39 @@ export class TrabajoService {
 
     return { message: `Trabajo con el id ${idTrabajo} eliminado.` };
   }
+
+  async listaTrabajo() {
+    return await this.trabajoRepository.find({
+      select: [
+        'idTrabajo',
+        'descripcionTrabajo',
+        'fechaTrabajo',
+        'nombreTrabajo',
+        'portadaTrabajo',
+        'tipoTrabajo',
+      ],
+    });
+  }
+
+  async unTrabajo(idTrabajo: string) {
+    const trabajo = await this.trabajoRepository.findOne({
+      where: { idTrabajo },
+      select: [
+        'idTrabajo',
+        'descripcionTrabajo',
+        'fechaTrabajo',
+        'nombreTrabajo',
+        'portadaTrabajo',
+        'tipoTrabajo',
+      ],
+    });
+
+    if (!trabajo) {
+      throw new NotFoundException(
+        `Trabajo con el ID ${idTrabajo} no encontrado`,
+      );
+    }
+
+    return trabajo;
+  }
 }

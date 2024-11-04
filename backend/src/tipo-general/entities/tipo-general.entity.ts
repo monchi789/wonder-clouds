@@ -18,7 +18,7 @@ export class TipoGeneral {
   @Column({ type: 'text', unique: true })
   nombre: string;
 
-  @Column({ type: 'text' })
+  @Column({ nullable: true, type: 'text' })
   descripcion: string;
 
   @Column({ type: 'text' })

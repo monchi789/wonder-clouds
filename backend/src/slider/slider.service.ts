@@ -76,4 +76,10 @@ export class SliderService {
 
     return { message: `Slider con el id ${idSlider} eliminado.` };
   }
+
+  async listaSlider() {
+    return await this.sliderRepository.find({
+      select: ['idSlider', 'estadoSlider', 'imagen'],
+    });
+  }
 }

@@ -21,9 +21,10 @@ import { extname } from 'path';
 import { ImageService } from '../imagenes/subir_image.service';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { ActiveUsuario } from 'src/common/decorators/active-usuario.decorator';
+import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.interface';
 
 @ApiTags('Publicacion')
-@Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
 @Controller('publicacion')
 export class PublicacionController {
   constructor(
@@ -32,6 +33,7 @@ export class PublicacionController {
   ) {}
 
   @Post()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -62,6 +64,7 @@ export class PublicacionController {
   async create(
     @UploadedFile() file: Express.Multer.File,
     @Body() createPublicacionDto: CreatePublicacionDto,
+    @ActiveUsuario() usuario: UsuarioActiveInterface,
   ) {
     if (!file) {
       throw new BadRequestException(
@@ -71,20 +74,37 @@ export class PublicacionController {
 
     const imagePath = await this.imageService.uploadImages([file], 'portadas');
 
-    return this.publicacionService.create(createPublicacionDto, imagePath[0]);
+    return this.publicacionService.create(
+      createPublicacionDto,
+      imagePath[0],
+      usuario,
+    );
   }
 
   @Get()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   findAll() {
     return this.publicacionService.findAll();
   }
 
+  @Get('lista-publicacion')
+  async listaPublicacion() {
+    return this.publicacionService.listaPublicacion();
+  }
+
+  @Get('lista-publicacion/:id')
+  async listaUnPublicacion(@Param('id') id: string) {
+    return this.publicacionService.unPublicacion(id);
+  }
+
   @Get(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   findOne(@Param('id') id: string) {
     return this.publicacionService.findOne(id);
   }
 
   @Patch(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -142,6 +162,7 @@ export class PublicacionController {
   }
 
   @Delete(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   async remove(@Param('id') id: string) {
     const publicacion = await this.publicacionService.findOne(id);
     if (!publicacion) {

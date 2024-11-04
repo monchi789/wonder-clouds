@@ -14,6 +14,11 @@ export class PopUpService {
 
   async create(createPopUpDto: CreatePopUpDto) {
     const popUp = this.popUpRepository.create(createPopUpDto);
+
+    if (createPopUpDto.estadoPopUp) {
+      await this.setAllPopUpToFalse();
+    }
+
     return await this.popUpRepository.save(popUp);
   }
 
@@ -52,5 +57,27 @@ export class PopUpService {
     }
     await this.popUpRepository.remove(popUp);
     return { message: `PopUp con id ${idPopUp} eliminado` };
+  }
+
+  async unPopUp() {
+    const popUp = await this.popUpRepository.findOne({
+      where: { estadoPopUp: true },
+      select: ['estadoPopUp', 'imagenPopUp'],
+    });
+
+    if (!popUp) {
+      throw new NotFoundException(`No hay PopUps para listar`);
+    }
+
+    return popUp;
+  }
+
+  private async setAllPopUpToFalse(excludeId?: string) {
+    await this.popUpRepository
+      .createQueryBuilder()
+      .update(PopUp)
+      .set({ estadoPopUp: false })
+      .where('idPopUp != :excludeId', { excludeId: excludeId || '' })
+      .execute();
   }
 }

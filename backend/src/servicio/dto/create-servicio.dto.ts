@@ -7,6 +7,11 @@ export class CreateServicioDto {
   nombreServicio: string;
 
   @IsNotEmpty()
+  @IsString()
+  @MinLength(1)
+  descripcion: string;
+
+  @IsNotEmpty()
   @IsDecimal()
-  precioServio: number;
+  precioServicio: number;
 }

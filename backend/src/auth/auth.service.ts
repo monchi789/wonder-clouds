@@ -27,7 +27,6 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(contrasena, this.SALT_ROUNDS);
-    console.log('Hashed password on registration:', hashedPassword);
 
     await this.usuarioService.create({
       usuario,
@@ -38,10 +37,7 @@ export class AuthService {
     // Verificar que el hash se guardó correctamente
     const savedUser = await this.usuarioService.findByEmailWithPassword(email);
     if (savedUser?.contrasena !== hashedPassword) {
-      console.error('Hash mismatch after save:', {
-        originalHash: hashedPassword,
-        savedHash: savedUser?.contrasena,
-      });
+      console.error('Contraseña no coinciden');
     }
 
     return {
@@ -50,41 +46,6 @@ export class AuthService {
     };
   }
 
-  // async login({ email, contrasena }: LoginDto) {
-  //   const usuario = await this.usuarioService.findByEmailWithPassword(email);
-
-  //   if (!usuario) {
-  //     throw new UnauthorizedException('Contrasena o Email no son incorrectos');
-  //   }
-
-  //   const contrasenaValida = await bcrypt.compare(
-  //     contrasena,
-  //     usuario.contrasena,
-  //   );
-
-  //   if (!contrasenaValida) {
-  //     throw new UnauthorizedException('Contrasena o Email no son incorrectos');
-  //   }
-
-  //   const payload = {
-  //     email: usuario.email,
-  //     rol: usuario.rol,
-  //     id: usuario.idUsuario,
-  //   };
-
-  //   const accessToken = await this.jwtService.signAsync(payload, {
-  //     secret: process.env.JWT_ACCESS_SECRET,
-  //     expiresIn: '15m',
-  //   });
-
-  //   const refreshToken = await this.jwtService.signAsync(payload, {
-  //     secret: process.env.JWT_REFRESH_SECRET,
-  //     expiresIn: '7d',
-  //   });
-
-  //   return { accessToken, refreshToken, email };
-  // }
-
   async login({ email, contrasena }: LoginDto) {
     // Obtener usuario con contraseña
     const usuario = await this.usuarioService.findByEmailWithPassword(email);
@@ -92,7 +53,6 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
 
-    // Verificar la contraseña
     try {
       const contrasenaValida = await bcrypt.compare(
         contrasena,
@@ -101,8 +61,7 @@ export class AuthService {
       if (!contrasenaValida) {
         throw new UnauthorizedException('Credenciales inválidas');
       }
-    } catch (error) {
-      console.error('Error comparing passwords:', error);
+    } catch {
       throw new UnauthorizedException(
         'Error en la verificación de credenciales',
       );
@@ -113,6 +72,7 @@ export class AuthService {
       email: usuario.email,
       rol: usuario.rol,
       id: usuario.idUsuario,
+      usuario: usuario.usuario,
     };
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -128,6 +88,7 @@ export class AuthService {
 
     return { accessToken, refreshToken, email };
   }
+
   async refreshToken(refreshToken: string) {
     try {
       const payload = await this.jwtService.verifyAsync(refreshToken, {
@@ -172,7 +133,6 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(nuevaContrasena, this.SALT_ROUNDS);
-    console.log('Hashed new password:', hashedPassword);
 
     await this.usuarioService.update(idUsuario, {
       email,

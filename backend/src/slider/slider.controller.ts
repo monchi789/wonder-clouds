@@ -30,7 +30,6 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Slider')
-@Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
 @Controller('slider')
 export class SliderController {
   constructor(
@@ -39,6 +38,7 @@ export class SliderController {
   ) {}
 
   @Post()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Crear un nuevo slider' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({
@@ -89,6 +89,7 @@ export class SliderController {
   }
 
   @Get()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Obtiene todos los sliders' })
   @ApiResponse({
     status: 200,
@@ -98,7 +99,13 @@ export class SliderController {
     return this.sliderService.findAll();
   }
 
+  @Get('lista-slider')
+  async listaSlider() {
+    return this.sliderService.listaSlider();
+  }
+
   @Get(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Obtiene un slider por su ID' })
   @ApiResponse({ status: 200, description: 'Slider obtenido exitosamente.' })
   @ApiResponse({ status: 404, description: 'Slider no encontrado.' })
@@ -108,6 +115,7 @@ export class SliderController {
   }
 
   @Patch(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Actualizar un slider' })
   @ApiConsumes('multipart/form-data')
   @ApiParam({ name: 'id', description: 'ID del slider a actualizar' })
@@ -152,6 +160,7 @@ export class SliderController {
   }
 
   @Delete(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Eliminar un slider' })
   @ApiParam({ name: 'id', description: 'ID del slider a eliminar' })
   @ApiResponse({ status: 200, description: 'Slider eliminado exitosamente.' })

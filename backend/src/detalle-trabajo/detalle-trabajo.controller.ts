@@ -14,9 +14,9 @@ import { ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 
-@ApiTags('DetalleTrabajo')
+@ApiTags('Detalle Trabajo')
 @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
-@Controller('detalleTrabajo')
+@Controller('detalle-trabajo')
 export class DetalleTrabajoController {
   constructor(private readonly detalleTrabajoService: DetalleTrabajoService) {}
 

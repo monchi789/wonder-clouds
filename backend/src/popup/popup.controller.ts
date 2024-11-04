@@ -30,7 +30,7 @@ import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('PopUp')
 @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-@Controller('popUp')
+@Controller('pop-up')
 export class PopUpController {
   constructor(
     private readonly popUpService: PopUpService,
@@ -93,6 +93,11 @@ export class PopUpController {
   })
   findAll() {
     return this.popUpService.findAll();
+  }
+
+  @Get('lista-pop-up')
+  listaPopUp() {
+    return this.popUpService.unPopUp();
   }
 
   @Get(':id')
