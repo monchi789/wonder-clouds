@@ -7,6 +7,11 @@ export class UpdateServicioDto {
   nombreServicio: string;
 
   @IsOptional()
+  @IsString()
+  @MinLength(1)
+  descripcion: string;
+
+  @IsOptional()
   @IsDecimal()
   precioServicio: number;
 }

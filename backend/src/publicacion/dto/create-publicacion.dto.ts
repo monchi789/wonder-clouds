@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class CreatePublicacionDto {
   @IsNotEmpty()
@@ -13,11 +13,6 @@ export class CreatePublicacionDto {
   @MinLength(5)
   @Type(() => String)
   contenido: string;
-
-  @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
-  fechaPublicacion: Date;
 
   @IsNotEmpty()
   @IsString()

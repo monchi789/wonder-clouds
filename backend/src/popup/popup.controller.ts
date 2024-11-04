@@ -29,8 +29,7 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('PopUp')
-@Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-@Controller('popUp')
+@Controller('pop-up')
 export class PopUpController {
   constructor(
     private readonly popUpService: PopUpService,
@@ -38,6 +37,7 @@ export class PopUpController {
   ) {}
 
   @Post()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({
     summary: 'Crea un nuevo PopUp',
   })
@@ -86,6 +86,7 @@ export class PopUpController {
   }
 
   @Get()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Obtiene todos los PopUps' })
   @ApiResponse({
     status: 200,
@@ -95,7 +96,13 @@ export class PopUpController {
     return this.popUpService.findAll();
   }
 
+  @Get('lista-pop-up')
+  listaPopUp() {
+    return this.popUpService.unPopUp();
+  }
+
   @Get(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Obtiene un PopUp por su ID' })
   @ApiResponse({ status: 200, description: 'PopUp obtenido exitosamente.' })
   @ApiResponse({ status: 404, description: 'PopUp no encontrado.' })
@@ -104,6 +111,7 @@ export class PopUpController {
   }
 
   @Patch(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({
     summary:
       'Actualiza un PopUp, incluida la posibilidad de cambiar el estado y la imagen',
@@ -161,6 +169,7 @@ export class PopUpController {
   }
 
   @Delete(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Elimina un PopUp por su ID' })
   @ApiResponse({ status: 200, description: 'PopUp eliminado exitosamente.' })
   @ApiResponse({ status: 404, description: 'PopUp no encontrado.' })

@@ -23,7 +23,6 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Servicio')
-@Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
 @Controller('servicio')
 export class ServicioController {
   constructor(
@@ -32,6 +31,7 @@ export class ServicioController {
   ) {}
 
   @Post()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -71,11 +71,23 @@ export class ServicioController {
   }
 
   @Get()
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   findAll() {
     return this.servicioService.findAll();
   }
 
+  @Get('lista-servicio')
+  async listaServicio() {
+    return this.servicioService.listaServicios();
+  }
+
+  @Get('lista-servicio/:id')
+  async listaUnServicio(@Param('id') id: string) {
+    return this.servicioService.unServicio(id);
+  }
+
   @Get(':id')
+  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   findOne(@Param('id') id: string) {
     return this.servicioService.findOne(id);
   }

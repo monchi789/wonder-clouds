@@ -73,4 +73,35 @@ export class ServicioService {
 
     return { message: `Servicio con el ID ${idServicio} eliminado.` };
   }
+
+  async listaServicios() {
+    return await this.servicioRepository.find({
+      select: [
+        'idServicio',
+        'logoServicio',
+        'nombreServicio',
+        'precioServicio',
+      ],
+    });
+  }
+
+  async unServicio(idServicio: string) {
+    const servicio = await this.servicioRepository.findOne({
+      where: { idServicio },
+      select: [
+        'idServicio',
+        'logoServicio',
+        'nombreServicio',
+        'precioServicio',
+      ],
+    });
+
+    if (!servicio) {
+      throw new NotFoundException(
+        `Servicio con el ID ${idServicio} no encontrado.`,
+      );
+    }
+
+    return servicio;
+  }
 }

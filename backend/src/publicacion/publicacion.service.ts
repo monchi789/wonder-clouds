@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Publicacion } from './entities/publicacion.entity';
 import { Repository } from 'typeorm';
 import { TipoGeneral } from 'src/tipo-general/entities/tipo-general.entity';
+import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.interface';
 
 @Injectable()
 export class PublicacionService {
@@ -16,18 +17,23 @@ export class PublicacionService {
     private readonly tipoGeneralRepository: Repository<TipoGeneral>,
   ) {}
 
-  async create(createPublicacionDto: CreatePublicacionDto, portada: string) {
+  async create(
+    createPublicacionDto: CreatePublicacionDto,
+    portada: string,
+    usuario: UsuarioActiveInterface,
+  ) {
     const tipo = await this.tipoGeneralRepository.findOne({
       where: { nombre: createPublicacionDto.categoriaPublicacion },
     });
 
     if (!tipo) {
-      throw new NotFoundException('El tipo de publicacion no encontrado');
+      throw new NotFoundException('El tipo general no encontrado');
     }
 
     const publicacion = this.publicacionRepository.create({
       ...createPublicacionDto,
       portada,
+      autor: usuario.usuario,
     });
 
     return await this.publicacionRepository.save(publicacion);
@@ -85,5 +91,34 @@ export class PublicacionService {
     }
 
     return { message: `Publicacion con el ID ${idPublicacion} eliminada.` };
+  }
+
+  async listaPublicacion() {
+    return await this.publicacionRepository.find({
+      select: [
+        'idPublicacion',
+        'autor',
+        'categoriaPublicacion',
+        'contenido',
+        'fechaPublicacion',
+        'portada',
+        'titulo',
+      ],
+    });
+  }
+
+  async unPublicacion(idPublicacion: string) {
+    return await this.publicacionRepository.findOne({
+      where: { idPublicacion },
+      select: [
+        'idPublicacion',
+        'autor',
+        'categoriaPublicacion',
+        'contenido',
+        'fechaPublicacion',
+        'portada',
+        'titulo',
+      ],
+    });
   }
 }

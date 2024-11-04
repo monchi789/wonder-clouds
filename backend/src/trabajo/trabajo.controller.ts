@@ -95,6 +95,16 @@ export class TrabajoController {
     return this.trabajoService.findAll();
   }
 
+  @Get('lista-trabajo')
+  listaTrabajo() {
+    return this.trabajoService.listaTrabajo();
+  }
+
+  @Get('lista-trabajo/:id')
+  unTrabajo(@Param('id') id: string) {
+    return this.trabajoService.unTrabajo(id);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Obtiene un trabajo por su ID' })
   @ApiResponse({ status: 200, description: 'Trabajo obtenido exitosamente.' })
