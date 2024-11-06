@@ -10,6 +10,9 @@ import {
   UseInterceptors,
   BadRequestException,
   NotFoundException,
+  Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PublicacionService } from './publicacion.service';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
@@ -23,6 +26,7 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 import { ActiveUsuario } from 'src/common/decorators/active-usuario.decorator';
 import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.interface';
+import { FiltrosPublicacionDto } from './dto/publicacion-filtro.dto';
 
 @ApiTags('Publicacion')
 @Controller('publicacion')
@@ -83,13 +87,15 @@ export class PublicacionController {
 
   @Get()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-  findAll() {
-    return this.publicacionService.findAll();
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  findAll(@Query() filtros: FiltrosPublicacionDto) {
+    return this.publicacionService.findAll(filtros);
   }
 
   @Get('lista-publicacion')
-  async listaPublicacion() {
-    return this.publicacionService.listaPublicacion();
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  async listaPublicacion(@Query() filtros: FiltrosPublicacionDto) {
+    return this.publicacionService.listaPublicacion(filtros);
   }
 
   @Get('lista-publicacion/:id')

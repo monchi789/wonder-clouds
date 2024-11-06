@@ -10,6 +10,9 @@ import {
   UseInterceptors,
   BadRequestException,
   NotFoundException,
+  Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TrabajoService } from './trabajo.service';
 import { CreateTrabajoDto } from './dto/create-trabajo.dto';
@@ -27,9 +30,9 @@ import { extname } from 'path';
 import { ImageService } from '../imagenes/subir_image.service';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { FiltroTrabajoDto } from './dto/trabajo.filtro.dto';
 
 @ApiTags('Trabajo')
-@Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
 @Controller('trabajo')
 export class TrabajoController {
   constructor(
@@ -38,6 +41,7 @@ export class TrabajoController {
   ) {}
 
   @Post()
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -86,18 +90,21 @@ export class TrabajoController {
   }
 
   @Get()
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @ApiOperation({ summary: 'Obtiene todos los trabajos' })
   @ApiResponse({
     status: 200,
     description: 'Lista de trabajos obtenida exitosamente.',
   })
-  findAll() {
-    return this.trabajoService.findAll();
+  findAll(@Query() filtros: FiltroTrabajoDto) {
+    return this.trabajoService.findAll(filtros);
   }
 
   @Get('lista-trabajo')
-  listaTrabajo() {
-    return this.trabajoService.listaTrabajo();
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  listaTrabajo(@Query() filtros: FiltroTrabajoDto) {
+    return this.trabajoService.listaTrabajo(filtros);
   }
 
   @Get('lista-trabajo/:id')
@@ -106,6 +113,7 @@ export class TrabajoController {
   }
 
   @Get(':id')
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiOperation({ summary: 'Obtiene un trabajo por su ID' })
   @ApiResponse({ status: 200, description: 'Trabajo obtenido exitosamente.' })
   @ApiResponse({ status: 404, description: 'Trabajo no encontrado.' })
@@ -114,6 +122,7 @@ export class TrabajoController {
   }
 
   @Patch(':id')
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -169,6 +178,7 @@ export class TrabajoController {
   }
 
   @Delete(':id')
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiOperation({ summary: 'Elimina un trabajo por su ID' })
   @ApiResponse({ status: 200, description: 'Trabajo eliminado exitosamente.' })
   @ApiResponse({ status: 404, description: 'Trabajo no encontrado.' })

@@ -3,7 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateServicioDto } from './dto/create-servicio.dto';
 import { UpdateServicioDto } from './dto/update-servicio.dto';
 import { Servicio } from './entities/servicio.entity';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
+import { FiltroServicioDto } from './dto/servicio-filtro.dto';
 
 @Injectable()
 export class ServicioService {
@@ -11,6 +12,33 @@ export class ServicioService {
     @InjectRepository(Servicio)
     private readonly servicioRepository: Repository<Servicio>,
   ) {}
+
+  private aplicarFiltros(
+    queryBuilder: SelectQueryBuilder<Servicio>,
+    filtros: FiltroServicioDto,
+  ): SelectQueryBuilder<Servicio> {
+    const { nombreServicio, precioMin, precioMax } = filtros;
+
+    if (nombreServicio) {
+      queryBuilder.andWhere('servicio.nombreServicio ILIKE :nombreServicio', {
+        nombreServicio: `%${nombreServicio}%`,
+      });
+    }
+
+    if (precioMin !== undefined) {
+      queryBuilder.andWhere('servicio.precioServicio >= :precioMin', {
+        precioMin,
+      });
+    }
+
+    if (precioMax !== undefined) {
+      queryBuilder.andWhere('servicio.precioServicio <= :precioMax', {
+        precioMax,
+      });
+    }
+
+    return queryBuilder;
+  }
 
   async create(createServicioDto: CreateServicioDto, logoServicio: string) {
     const servicio = this.servicioRepository.create({
@@ -21,8 +49,9 @@ export class ServicioService {
     return await this.servicioRepository.save(servicio);
   }
 
-  async findAll() {
-    return await this.servicioRepository.find();
+  async findAll(filtros: FiltroServicioDto) {
+    const queryBuilder = this.servicioRepository.createQueryBuilder('servicio');
+    return await this.aplicarFiltros(queryBuilder, filtros).getMany();
   }
 
   async findOne(idServicio: string) {
@@ -74,15 +103,21 @@ export class ServicioService {
     return { message: `Servicio con el ID ${idServicio} eliminado.` };
   }
 
-  async listaServicios() {
-    return await this.servicioRepository.find({
-      select: [
-        'idServicio',
-        'logoServicio',
-        'nombreServicio',
-        'precioServicio',
-      ],
-    });
+  async listaServicios(filtros?: FiltroServicioDto) {
+    const queryBuilder = this.servicioRepository
+      .createQueryBuilder('servicio')
+      .select([
+        'servicio.idServicio',
+        'servicio.logoServicio',
+        'servicio.nombreServicio',
+        'servicio.precioServicio',
+      ]);
+
+    if (filtros) {
+      this.aplicarFiltros(queryBuilder, filtros);
+    }
+
+    return await queryBuilder.getMany();
   }
 
   async unServicio(idServicio: string) {

@@ -10,6 +10,9 @@ import {
   UseInterceptors,
   BadRequestException,
   NotFoundException,
+  Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ServicioService } from './servicio.service';
 import { CreateServicioDto } from './dto/create-servicio.dto';
@@ -21,6 +24,7 @@ import { extname } from 'path';
 import { ImageService } from '../imagenes/subir_image.service';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { FiltroServicioDto } from './dto/servicio-filtro.dto';
 
 @ApiTags('Servicio')
 @Controller('servicio')
@@ -72,13 +76,15 @@ export class ServicioController {
 
   @Get()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-  findAll() {
-    return this.servicioService.findAll();
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  findAll(@Query() filtros: FiltroServicioDto) {
+    return this.servicioService.findAll(filtros);
   }
 
   @Get('lista-servicio')
-  async listaServicio() {
-    return this.servicioService.listaServicios();
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  async listaServicio(@Query() filtros: FiltroServicioDto) {
+    return this.servicioService.listaServicios(filtros);
   }
 
   @Get('lista-servicio/:id')
