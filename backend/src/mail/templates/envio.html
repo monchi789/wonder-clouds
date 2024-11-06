@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo Mensaje de Contacto</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333333;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 30px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      border-top: 4px solid #2b3e50;
+      position: relative;
+    }
+
+    h2 {
+      color: #2b3e50;
+      font-size: 1.6em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    p {
+      line-height: 1.6;
+      font-size: 1em;
+      color: #555555;
+      margin: 0 0 10px;
+    }
+
+    .message {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-left: 4px solid #2b3e50;
+      border-radius: 4px;
+      color: #333333;
+      font-style: italic;
+      margin-top: 20px;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777777;
+      text-align: center;
+      border-top: 1px solid #dddddd;
+      padding-top: 15px;
+    }
+
+    .info {
+      margin-top: 20px;
+    }
+
+    .logo {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      max-width: 80px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <h2>Nuevo mensaje de contacto</h2>
+    <p>Se ha recibido un nuevo mensaje a través del formulario de contacto:</p>
+    <div class="info">
+      <p><strong>Nombre:</strong> {{nombre}}</p>
+      <p><strong>Correo:</strong> {{correo}}</p>
+      <p><strong>Teléfono:</strong> {{numero}}</p>
+    </div>
+    <div class="message">
+      <p><strong>Mensaje:</strong> {{mensaje}}</p>
+    </div>
+    <footer>Saludos,<br>El equipo de Soporte de Wonder Clouds</footer>
+  </div>
+</body>
+</html>
