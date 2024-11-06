@@ -6,7 +6,7 @@ import { Publicacion } from './entities/publicacion.entity';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { TipoGeneral } from 'src/tipo-general/entities/tipo-general.entity';
 import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.interface';
-import { FiltrosPublicacion } from './interfaces/publicacion-filtro.interface';
+import { FiltrosPublicacionDto } from './dto/publicacion-filtro.dto';
 
 @Injectable()
 export class PublicacionService {
@@ -20,22 +20,23 @@ export class PublicacionService {
 
   private aplicarFiltros(
     queryBuilder: SelectQueryBuilder<Publicacion>,
-    filtros: FiltrosPublicacion,
+    filtros: FiltrosPublicacionDto,
   ): SelectQueryBuilder<Publicacion> {
     const { categoria, autor, fechaDesde, fechaHasta, busqueda } = filtros;
 
+    // Filtrar por categoría
     if (categoria) {
       queryBuilder.andWhere('publicacion.categoriaPublicacion = :categoria', {
         categoria,
       });
     }
 
+    // Filtrar por autor
     if (autor) {
-      queryBuilder.andWhere('publicacion.autor = :autor', {
-        autor,
-      });
+      queryBuilder.andWhere('publicacion.autor = :autor', { autor });
     }
 
+    // Filtrar por rango de fechas
     if (fechaDesde && fechaHasta) {
       queryBuilder.andWhere(
         'publicacion.fechaPublicacion BETWEEN :fechaDesde AND :fechaHasta',
@@ -46,6 +47,7 @@ export class PublicacionService {
       );
     }
 
+    // Búsqueda en título o contenido (case-insensitive)
     if (busqueda) {
       queryBuilder.andWhere(
         '(publicacion.titulo ILIKE :busqueda OR publicacion.contenido ILIKE :busqueda)',
@@ -78,7 +80,7 @@ export class PublicacionService {
     return await this.publicacionRepository.save(publicacion);
   }
 
-  async findAll(filtros: FiltrosPublicacion) {
+  async findAll(filtros: FiltrosPublicacionDto) {
     const queryBuilder =
       this.publicacionRepository.createQueryBuilder('publicacion');
 
@@ -135,7 +137,7 @@ export class PublicacionService {
     return { message: `Publicacion con el ID ${idPublicacion} eliminada.` };
   }
 
-  async listaPublicacion(filtros: FiltrosPublicacion) {
+  async listaPublicacion(filtros: FiltrosPublicacionDto) {
     const queryBuilder = this.publicacionRepository
       .createQueryBuilder('publicacion')
       .select([

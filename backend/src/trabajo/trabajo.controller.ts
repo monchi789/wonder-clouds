@@ -11,6 +11,8 @@ import {
   BadRequestException,
   NotFoundException,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TrabajoService } from './trabajo.service';
 import { CreateTrabajoDto } from './dto/create-trabajo.dto';
@@ -28,6 +30,7 @@ import { extname } from 'path';
 import { ImageService } from '../imagenes/subir_image.service';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { FiltroTrabajoDto } from './dto/trabajo.filtro.dto';
 
 @ApiTags('Trabajo')
 @Controller('trabajo')
@@ -88,46 +91,20 @@ export class TrabajoController {
 
   @Get()
   @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
   @ApiOperation({ summary: 'Obtiene todos los trabajos' })
   @ApiResponse({
     status: 200,
     description: 'Lista de trabajos obtenida exitosamente.',
   })
-  findAll(
-    @Query('nombre') nombre?: string,
-    @Query('visibilidadTrabajo') visibilidadTrabajo?: boolean,
-    @Query('fechaTrabajoDesde') fechaTrabajoDesde?: Date,
-    @Query('fechaTrabajoHasta') fechaTrabajoHasta?: Date,
-    @Query('tipoTrabajo') tipoTrabajo?: string,
-    @Query('ordenFecha') ordenFecha?: 'ASC' | 'DESC',
-  ) {
-    return this.trabajoService.findAll({
-      nombre,
-      visibilidadTrabajo,
-      fechaTrabajoDesde,
-      fechaTrabajoHasta,
-      tipoTrabajo,
-      ordenFecha,
-    });
+  findAll(@Query() filtros: FiltroTrabajoDto) {
+    return this.trabajoService.findAll(filtros);
   }
 
   @Get('lista-trabajo')
-  listaTrabajo(
-    @Query('nombre') nombre?: string,
-    @Query('visibilidadTrabajo') visibilidadTrabajo?: boolean,
-    @Query('fechaTrabajoDesde') fechaTrabajoDesde?: Date,
-    @Query('fechaTrabajoHasta') fechaTrabajoHasta?: Date,
-    @Query('tipoTrabajo') tipoTrabajo?: string,
-    @Query('ordenFecha') ordenFecha?: 'ASC' | 'DESC',
-  ) {
-    return this.trabajoService.listaTrabajo({
-      nombre,
-      visibilidadTrabajo,
-      fechaTrabajoDesde,
-      fechaTrabajoHasta,
-      tipoTrabajo,
-      ordenFecha,
-    });
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  listaTrabajo(@Query() filtros: FiltroTrabajoDto) {
+    return this.trabajoService.listaTrabajo(filtros);
   }
 
   @Get('lista-trabajo/:id')

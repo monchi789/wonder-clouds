@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Cliente } from './entities/cliente.entity';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { TipoGeneral } from 'src/tipo-general/entities/tipo-general.entity';
-import { FiltrosCliente } from './interfaces/cliente-filtro.interface';
+import { FiltroClienteDto } from './dto/cliente-filtro.dto';
 
 @Injectable()
 export class ClienteService {
@@ -23,19 +23,10 @@ export class ClienteService {
 
   private aplicarFiltros(
     queryBuilder: SelectQueryBuilder<Cliente>,
-    filtros: FiltrosCliente,
+    filtros: FiltroClienteDto,
   ): SelectQueryBuilder<Cliente> {
-    const {
-      nombre,
-      apellidoPaterno,
-      nroDocumento,
-      rubro,
-      tipoDocumento,
-      tipoCliente,
-      fechaCreacionDesde,
-      fechaCreacionHasta,
-      ordenFecha,
-    } = filtros;
+    const { nombre, apellidoPaterno, nroDocumento, rubro, tipoCliente } =
+      filtros;
 
     // Filtro por nombre (case insensitive)
     if (nombre) {
@@ -66,37 +57,11 @@ export class ClienteService {
       queryBuilder.andWhere('cliente.rubro = :rubro', { rubro });
     }
 
-    // Filtro por tipo de documento
-    if (tipoDocumento) {
-      queryBuilder.andWhere('cliente.tipoDocumento = :tipoDocumento', {
-        tipoDocumento,
-      });
-    }
-
     // Filtro por tipo de cliente
     if (tipoCliente) {
       queryBuilder.andWhere('cliente.tipoCliente = :tipoCliente', {
         tipoCliente,
       });
-    }
-
-    // Rango de fechas de creación
-    if (fechaCreacionDesde && fechaCreacionHasta) {
-      queryBuilder.andWhere(
-        'cliente.createAt BETWEEN :fechaCreacionDesde AND :fechaCreacionHasta',
-        {
-          fechaCreacionDesde,
-          fechaCreacionHasta,
-        },
-      );
-    }
-
-    // Ordenamiento por fecha de creación
-    if (ordenFecha) {
-      queryBuilder.orderBy('cliente.createAt', ordenFecha);
-    } else {
-      // Por defecto, ordenar por fecha de creación descendente
-      queryBuilder.orderBy('cliente.createAt', 'DESC');
     }
 
     return queryBuilder;
@@ -167,7 +132,7 @@ export class ClienteService {
     return this.clienteRepository.findOne({ where: { idCliente } });
   }
 
-  async findAll(filtros: FiltrosCliente) {
+  async findAll(filtros: FiltroClienteDto) {
     const queryBuilder = this.clienteRepository.createQueryBuilder('cliente');
     return await this.aplicarFiltros(queryBuilder, filtros).getMany();
   }

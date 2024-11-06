@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Trabajo } from './entities/trabajo.entity';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
-import { FiltrosTrabajo } from './interfaces/trabajo-filtro.interface';
+import { FiltroTrabajoDto } from './dto/trabajo.filtro.dto';
 
 @Injectable()
 export class TrabajoService {
@@ -18,28 +18,46 @@ export class TrabajoService {
 
   private aplicarFiltros(
     queryBuilder: SelectQueryBuilder<Trabajo>,
-    filtros: FiltrosTrabajo,
+    filtros: FiltroTrabajoDto,
   ): SelectQueryBuilder<Trabajo> {
     const {
-      nombre,
-      visibilidadTrabajo,
-      fechaTrabajoDesde,
-      fechaTrabajoHasta,
+      nombreTrabajo,
+      fechaDesde,
+      fechaHasta,
       tipoTrabajo,
-      ordenFecha,
+      visibilidadTrabajo,
     } = filtros;
 
-    // Filtro por nombre (case insensitive)
-    if (nombre) {
-      queryBuilder.andWhere(
-        'LOWER(trabajo.nombreTrabajo) LIKE LOWER(:nombre)',
-        {
-          nombre: `%${nombre}%`,
-        },
-      );
+    if (nombreTrabajo) {
+      queryBuilder.andWhere('trabajo.nombreTrabajo ILIKE :nombreTrabajo', {
+        nombreTrabajo: `%${nombreTrabajo}%`,
+      });
     }
 
-    // Filtro por visibilidad
+    if (fechaDesde && fechaHasta) {
+      queryBuilder.andWhere(
+        'trabajo.fechaTrabajo BETWEEN :fechaDesde AND :fechaHasta',
+        {
+          fechaDesde,
+          fechaHasta,
+        },
+      );
+    } else if (fechaDesde) {
+      queryBuilder.andWhere('trabajo.fechaTrabajo >= :fechaDesde', {
+        fechaDesde,
+      });
+    } else if (fechaHasta) {
+      queryBuilder.andWhere('trabajo.fechaTrabajo <= :fechaHasta', {
+        fechaHasta,
+      });
+    }
+
+    if (tipoTrabajo) {
+      queryBuilder.andWhere('trabajo.tipoTrabajo = :tipoTrabajo', {
+        tipoTrabajo,
+      });
+    }
+
     if (visibilidadTrabajo !== undefined) {
       queryBuilder.andWhere(
         'trabajo.visibilidadTrabajo = :visibilidadTrabajo',
@@ -47,32 +65,6 @@ export class TrabajoService {
           visibilidadTrabajo,
         },
       );
-    }
-
-    // Rango de fechas de trabajo
-    if (fechaTrabajoDesde && fechaTrabajoHasta) {
-      queryBuilder.andWhere(
-        'trabajo.fechaTrabajo BETWEEN :fechaTrabajoDesde AND :fechaTrabajoHasta',
-        {
-          fechaTrabajoDesde,
-          fechaTrabajoHasta,
-        },
-      );
-    }
-
-    // Filtro por tipo de trabajo
-    if (tipoTrabajo) {
-      queryBuilder.andWhere('trabajo.tipoTrabajo = :tipoTrabajo', {
-        tipoTrabajo,
-      });
-    }
-
-    // Ordenamiento por fecha de creación
-    if (ordenFecha) {
-      queryBuilder.orderBy('trabajo.createAt', ordenFecha);
-    } else {
-      // Por defecto, ordenar por fecha de trabajo descendente
-      queryBuilder.orderBy('trabajo.fechaTrabajo', 'DESC');
     }
 
     return queryBuilder;
@@ -98,7 +90,7 @@ export class TrabajoService {
     return await this.trabajoRepository.save(trabajo);
   }
 
-  async findAll(filtros: FiltrosTrabajo) {
+  async findAll(filtros: FiltroTrabajoDto) {
     const queryBuilder = this.trabajoRepository.createQueryBuilder('trabajo');
     return await this.aplicarFiltros(queryBuilder, filtros).getMany();
   }
@@ -167,7 +159,7 @@ export class TrabajoService {
     return { message: `Trabajo con el id ${idTrabajo} eliminado.` };
   }
 
-  async listaTrabajo(filtros?: FiltrosTrabajo) {
+  async listaTrabajo(filtros?: FiltroTrabajoDto) {
     const queryBuilder = this.trabajoRepository
       .createQueryBuilder('trabajo')
       .select([

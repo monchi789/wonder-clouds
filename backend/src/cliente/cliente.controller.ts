@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
@@ -21,6 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { FiltroClienteDto } from './dto/cliente-filtro.dto';
 
 @ApiTags('Cliente')
 @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
@@ -54,28 +57,9 @@ export class ClienteController {
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los clientes' })
-  findAll(
-    @Query('nombre') nombre?: string,
-    @Query('apellidoPaterno') apellidoPaterno?: string,
-    @Query('nroDocumento') nroDocumento?: string,
-    @Query('rubro') rubro?: string,
-    @Query('tipoDocumento') tipoDocumento?: string,
-    @Query('tipoCliente') tipoCliente?: string,
-    @Query('fechaCreacionDesde') fechaCreacionDesde?: Date,
-    @Query('fechaCreacionHasta') fechaCreacionHasta?: Date,
-    @Query('ordenFecha') ordenFecha?: 'ASC' | 'DESC',
-  ) {
-    return this.clienteService.findAll({
-      nombre,
-      apellidoPaterno,
-      nroDocumento,
-      rubro,
-      tipoDocumento,
-      tipoCliente,
-      fechaCreacionDesde,
-      fechaCreacionHasta,
-      ordenFecha,
-    });
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  findAll(@Query() filtros: FiltroClienteDto) {
+    return this.clienteService.findAll(filtros);
   }
 
   @Get(':id')

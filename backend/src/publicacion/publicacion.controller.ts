@@ -11,6 +11,8 @@ import {
   BadRequestException,
   NotFoundException,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PublicacionService } from './publicacion.service';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
@@ -24,6 +26,7 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 import { ActiveUsuario } from 'src/common/decorators/active-usuario.decorator';
 import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.interface';
+import { FiltrosPublicacionDto } from './dto/publicacion-filtro.dto';
 
 @ApiTags('Publicacion')
 @Controller('publicacion')
@@ -84,37 +87,15 @@ export class PublicacionController {
 
   @Get()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-  findAll(
-    @Query('categoria') categoria?: string,
-    @Query('autor') autor?: string,
-    @Query('fechaDesde') fechaDesde?: Date,
-    @Query('fechaHasta') fechaHasta?: Date,
-    @Query('busqueda') busqueda?: string,
-  ) {
-    return this.publicacionService.findAll({
-      categoria,
-      autor,
-      fechaDesde,
-      fechaHasta,
-      busqueda,
-    });
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  findAll(@Query() filtros: FiltrosPublicacionDto) {
+    return this.publicacionService.findAll(filtros);
   }
 
   @Get('lista-publicacion')
-  async listaPublicacion(
-    @Query('categoria') categoria?: string,
-    @Query('autor') autor?: string,
-    @Query('fechaDesde') fechaDesde?: Date,
-    @Query('fechaHasta') fechaHasta?: Date,
-    @Query('busqueda') busqueda?: string,
-  ) {
-    return this.publicacionService.listaPublicacion({
-      categoria,
-      autor,
-      fechaDesde,
-      fechaHasta,
-      busqueda,
-    });
+  @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
+  async listaPublicacion(@Query() filtros: FiltrosPublicacionDto) {
+    return this.publicacionService.listaPublicacion(filtros);
   }
 
   @Get('lista-publicacion/:id')

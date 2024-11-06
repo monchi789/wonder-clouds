@@ -4,7 +4,7 @@ import { CreateServicioDto } from './dto/create-servicio.dto';
 import { UpdateServicioDto } from './dto/update-servicio.dto';
 import { Servicio } from './entities/servicio.entity';
 import { Repository, SelectQueryBuilder } from 'typeorm';
-import { FiltrosServicio } from './interfaces/servicio-filtro.interface';
+import { FiltroServicioDto } from './dto/servicio-filtro.dto';
 
 @Injectable()
 export class ServicioService {
@@ -15,57 +15,26 @@ export class ServicioService {
 
   private aplicarFiltros(
     queryBuilder: SelectQueryBuilder<Servicio>,
-    filtros: FiltrosServicio,
+    filtros: FiltroServicioDto,
   ): SelectQueryBuilder<Servicio> {
-    const {
-      nombre,
-      precioMinimo,
-      precioMaximo,
-      ordenPrecio,
-      fechaCreacionDesde,
-      fechaCreacionHasta,
-    } = filtros;
+    const { nombreServicio, precioMin, precioMax } = filtros;
 
-    // Búsqueda por nombre (case insensitive)
-    if (nombre) {
-      queryBuilder.andWhere(
-        'LOWER(servicio.nombreServicio) LIKE LOWER(:nombre)',
-        {
-          nombre: `%${nombre}%`,
-        },
-      );
-    }
-
-    // Rango de precios
-    if (precioMinimo !== undefined) {
-      queryBuilder.andWhere('servicio.precioServicio >= :precioMinimo', {
-        precioMinimo,
+    if (nombreServicio) {
+      queryBuilder.andWhere('servicio.nombreServicio ILIKE :nombreServicio', {
+        nombreServicio: `%${nombreServicio}%`,
       });
     }
 
-    if (precioMaximo !== undefined) {
-      queryBuilder.andWhere('servicio.precioServicio <= :precioMaximo', {
-        precioMaximo,
+    if (precioMin !== undefined) {
+      queryBuilder.andWhere('servicio.precioServicio >= :precioMin', {
+        precioMin,
       });
     }
 
-    // Rango de fechas de creación
-    if (fechaCreacionDesde && fechaCreacionHasta) {
-      queryBuilder.andWhere(
-        'servicio.createAt BETWEEN :fechaCreacionDesde AND :fechaCreacionHasta',
-        {
-          fechaCreacionDesde,
-          fechaCreacionHasta,
-        },
-      );
-    }
-
-    // Ordenamiento por precio
-    if (ordenPrecio) {
-      queryBuilder.orderBy('servicio.precioServicio', ordenPrecio);
-    } else {
-      // Por defecto, ordenar por fecha de creación descendente
-      queryBuilder.orderBy('servicio.createAt', 'DESC');
+    if (precioMax !== undefined) {
+      queryBuilder.andWhere('servicio.precioServicio <= :precioMax', {
+        precioMax,
+      });
     }
 
     return queryBuilder;
@@ -80,7 +49,7 @@ export class ServicioService {
     return await this.servicioRepository.save(servicio);
   }
 
-  async findAll(filtros: FiltrosServicio) {
+  async findAll(filtros: FiltroServicioDto) {
     const queryBuilder = this.servicioRepository.createQueryBuilder('servicio');
     return await this.aplicarFiltros(queryBuilder, filtros).getMany();
   }
@@ -134,7 +103,7 @@ export class ServicioService {
     return { message: `Servicio con el ID ${idServicio} eliminado.` };
   }
 
-  async listaServicios(filtros?: FiltrosServicio) {
+  async listaServicios(filtros?: FiltroServicioDto) {
     const queryBuilder = this.servicioRepository
       .createQueryBuilder('servicio')
       .select([
