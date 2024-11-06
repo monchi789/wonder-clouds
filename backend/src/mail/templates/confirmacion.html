@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación de Mensaje</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #3a6282;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      position: relative;
+      max-width: 600px;
+      padding: 30px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      border-top: 4px solid #3a6282;
+    }
+
+    .logo {
+      position: absolute;
+      top: 10px;
+      right: 40px;
+      width: 100px;
+      height: auto;
+    }
+
+    h2 {
+      color: #3a6282;
+      font-size: 1.6em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    p {
+      line-height: 1.6;
+      font-size: 1em;
+      color: #555555;
+      margin: 0 0 15px;
+    }
+
+    .message {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-left: 4px solid #2b3e50;
+      border-radius: 4px;
+      margin: 20px 0;
+      color: #333333;
+      font-style: italic;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #777777;
+      text-align: center;
+      border-top: 1px solid #dddddd;
+      padding-top: 15px;
+    }
+
+    a {
+      color: #2b3e50;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: #1e2c3a;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <img src="cid:logo@wonderclouds.com" alt="WonderClouds Logo" class="logo" style="max-width: 100px; height: auto;">
+
+    <h2>Hola {{nombre}},</h2>
+    <p>Gracias por contactarnos. Hemos recibido tu mensaje y te responderemos a la brevedad.</p>
+    <p><strong>Tu mensaje:</strong></p>
+    <div class="message">
+      <p>{{mensaje}}</p>
+    </div>
+    <p>Teléfono: +51 946899196</p>
+    <p>Correo Electrónico: wonderclouds.cusco@gmail.com</p>
+    <footer>Saludos,<br>El equipo de Soporte de Wonder Clouds</footer>
+  </div>
+</body>
+
+</html>
