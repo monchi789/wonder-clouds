@@ -7,8 +7,9 @@ import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cliente } from './entities/cliente.entity';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { TipoGeneral } from 'src/tipo-general/entities/tipo-general.entity';
+import { FiltrosCliente } from './interfaces/cliente-filtro.interface';
 
 @Injectable()
 export class ClienteService {
@@ -19,6 +20,87 @@ export class ClienteService {
     @InjectRepository(TipoGeneral)
     private readonly tipoGeneralRepository: Repository<TipoGeneral>,
   ) {}
+
+  private aplicarFiltros(
+    queryBuilder: SelectQueryBuilder<Cliente>,
+    filtros: FiltrosCliente,
+  ): SelectQueryBuilder<Cliente> {
+    const {
+      nombre,
+      apellidoPaterno,
+      nroDocumento,
+      rubro,
+      tipoDocumento,
+      tipoCliente,
+      fechaCreacionDesde,
+      fechaCreacionHasta,
+      ordenFecha,
+    } = filtros;
+
+    // Filtro por nombre (case insensitive)
+    if (nombre) {
+      queryBuilder.andWhere('LOWER(cliente.nombre) LIKE LOWER(:nombre)', {
+        nombre: `%${nombre}%`,
+      });
+    }
+
+    // Filtro por apellido paterno
+    if (apellidoPaterno) {
+      queryBuilder.andWhere(
+        'LOWER(cliente.apellidoPaterno) LIKE LOWER(:apellidoPaterno)',
+        {
+          apellidoPaterno: `%${apellidoPaterno}%`,
+        },
+      );
+    }
+
+    // Filtro por número de documento
+    if (nroDocumento) {
+      queryBuilder.andWhere('cliente.nroDocumento = :nroDocumento', {
+        nroDocumento,
+      });
+    }
+
+    // Filtro por rubro
+    if (rubro) {
+      queryBuilder.andWhere('cliente.rubro = :rubro', { rubro });
+    }
+
+    // Filtro por tipo de documento
+    if (tipoDocumento) {
+      queryBuilder.andWhere('cliente.tipoDocumento = :tipoDocumento', {
+        tipoDocumento,
+      });
+    }
+
+    // Filtro por tipo de cliente
+    if (tipoCliente) {
+      queryBuilder.andWhere('cliente.tipoCliente = :tipoCliente', {
+        tipoCliente,
+      });
+    }
+
+    // Rango de fechas de creación
+    if (fechaCreacionDesde && fechaCreacionHasta) {
+      queryBuilder.andWhere(
+        'cliente.createAt BETWEEN :fechaCreacionDesde AND :fechaCreacionHasta',
+        {
+          fechaCreacionDesde,
+          fechaCreacionHasta,
+        },
+      );
+    }
+
+    // Ordenamiento por fecha de creación
+    if (ordenFecha) {
+      queryBuilder.orderBy('cliente.createAt', ordenFecha);
+    } else {
+      // Por defecto, ordenar por fecha de creación descendente
+      queryBuilder.orderBy('cliente.createAt', 'DESC');
+    }
+
+    return queryBuilder;
+  }
 
   async create(createClienteDto: CreateClienteDto) {
     const tipoDocumento = await this.tipoGeneralRepository.findOne({
@@ -85,8 +167,9 @@ export class ClienteService {
     return this.clienteRepository.findOne({ where: { idCliente } });
   }
 
-  async findAll() {
-    return await this.clienteRepository.find();
+  async findAll(filtros: FiltrosCliente) {
+    const queryBuilder = this.clienteRepository.createQueryBuilder('cliente');
+    return await this.aplicarFiltros(queryBuilder, filtros).getMany();
   }
 
   async findOne(idCliente: string) {

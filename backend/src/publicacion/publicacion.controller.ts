@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   BadRequestException,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { PublicacionService } from './publicacion.service';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
@@ -83,13 +84,37 @@ export class PublicacionController {
 
   @Get()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-  findAll() {
-    return this.publicacionService.findAll();
+  findAll(
+    @Query('categoria') categoria?: string,
+    @Query('autor') autor?: string,
+    @Query('fechaDesde') fechaDesde?: Date,
+    @Query('fechaHasta') fechaHasta?: Date,
+    @Query('busqueda') busqueda?: string,
+  ) {
+    return this.publicacionService.findAll({
+      categoria,
+      autor,
+      fechaDesde,
+      fechaHasta,
+      busqueda,
+    });
   }
 
   @Get('lista-publicacion')
-  async listaPublicacion() {
-    return this.publicacionService.listaPublicacion();
+  async listaPublicacion(
+    @Query('categoria') categoria?: string,
+    @Query('autor') autor?: string,
+    @Query('fechaDesde') fechaDesde?: Date,
+    @Query('fechaHasta') fechaHasta?: Date,
+    @Query('busqueda') busqueda?: string,
+  ) {
+    return this.publicacionService.listaPublicacion({
+      categoria,
+      autor,
+      fechaDesde,
+      fechaHasta,
+      busqueda,
+    });
   }
 
   @Get('lista-publicacion/:id')

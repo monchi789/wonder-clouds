@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   BadRequestException,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { TrabajoService } from './trabajo.service';
 import { CreateTrabajoDto } from './dto/create-trabajo.dto';
@@ -29,7 +30,6 @@ import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 
 @ApiTags('Trabajo')
-@Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
 @Controller('trabajo')
 export class TrabajoController {
   constructor(
@@ -38,6 +38,7 @@ export class TrabajoController {
   ) {}
 
   @Post()
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -86,18 +87,47 @@ export class TrabajoController {
   }
 
   @Get()
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiOperation({ summary: 'Obtiene todos los trabajos' })
   @ApiResponse({
     status: 200,
     description: 'Lista de trabajos obtenida exitosamente.',
   })
-  findAll() {
-    return this.trabajoService.findAll();
+  findAll(
+    @Query('nombre') nombre?: string,
+    @Query('visibilidadTrabajo') visibilidadTrabajo?: boolean,
+    @Query('fechaTrabajoDesde') fechaTrabajoDesde?: Date,
+    @Query('fechaTrabajoHasta') fechaTrabajoHasta?: Date,
+    @Query('tipoTrabajo') tipoTrabajo?: string,
+    @Query('ordenFecha') ordenFecha?: 'ASC' | 'DESC',
+  ) {
+    return this.trabajoService.findAll({
+      nombre,
+      visibilidadTrabajo,
+      fechaTrabajoDesde,
+      fechaTrabajoHasta,
+      tipoTrabajo,
+      ordenFecha,
+    });
   }
 
   @Get('lista-trabajo')
-  listaTrabajo() {
-    return this.trabajoService.listaTrabajo();
+  listaTrabajo(
+    @Query('nombre') nombre?: string,
+    @Query('visibilidadTrabajo') visibilidadTrabajo?: boolean,
+    @Query('fechaTrabajoDesde') fechaTrabajoDesde?: Date,
+    @Query('fechaTrabajoHasta') fechaTrabajoHasta?: Date,
+    @Query('tipoTrabajo') tipoTrabajo?: string,
+    @Query('ordenFecha') ordenFecha?: 'ASC' | 'DESC',
+  ) {
+    return this.trabajoService.listaTrabajo({
+      nombre,
+      visibilidadTrabajo,
+      fechaTrabajoDesde,
+      fechaTrabajoHasta,
+      tipoTrabajo,
+      ordenFecha,
+    });
   }
 
   @Get('lista-trabajo/:id')
@@ -106,6 +136,7 @@ export class TrabajoController {
   }
 
   @Get(':id')
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiOperation({ summary: 'Obtiene un trabajo por su ID' })
   @ApiResponse({ status: 200, description: 'Trabajo obtenido exitosamente.' })
   @ApiResponse({ status: 404, description: 'Trabajo no encontrado.' })
@@ -114,6 +145,7 @@ export class TrabajoController {
   }
 
   @Patch(':id')
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {
@@ -169,6 +201,7 @@ export class TrabajoController {
   }
 
   @Delete(':id')
+  @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
   @ApiOperation({ summary: 'Elimina un trabajo por su ID' })
   @ApiResponse({ status: 200, description: 'Trabajo eliminado exitosamente.' })
   @ApiResponse({ status: 404, description: 'Trabajo no encontrado.' })

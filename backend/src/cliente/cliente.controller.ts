@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ClienteService } from './cliente.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
@@ -53,8 +54,28 @@ export class ClienteController {
 
   @Get()
   @ApiOperation({ summary: 'Obtener todos los clientes' })
-  findAll() {
-    return this.clienteService.findAll();
+  findAll(
+    @Query('nombre') nombre?: string,
+    @Query('apellidoPaterno') apellidoPaterno?: string,
+    @Query('nroDocumento') nroDocumento?: string,
+    @Query('rubro') rubro?: string,
+    @Query('tipoDocumento') tipoDocumento?: string,
+    @Query('tipoCliente') tipoCliente?: string,
+    @Query('fechaCreacionDesde') fechaCreacionDesde?: Date,
+    @Query('fechaCreacionHasta') fechaCreacionHasta?: Date,
+    @Query('ordenFecha') ordenFecha?: 'ASC' | 'DESC',
+  ) {
+    return this.clienteService.findAll({
+      nombre,
+      apellidoPaterno,
+      nroDocumento,
+      rubro,
+      tipoDocumento,
+      tipoCliente,
+      fechaCreacionDesde,
+      fechaCreacionHasta,
+      ordenFecha,
+    });
   }
 
   @Get(':id')

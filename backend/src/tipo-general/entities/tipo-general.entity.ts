@@ -1,3 +1,4 @@
+import { Tipo } from 'src/common/enums/tipo.enum';
 import {
   Column,
   CreateDateColumn,
@@ -21,7 +22,7 @@ export class TipoGeneral {
   @Column({ nullable: true, type: 'text' })
   descripcion: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'enum', default: Tipo.GENERAL, enum: Tipo })
   tipo: string;
 
   @Column({ type: 'boolean' })

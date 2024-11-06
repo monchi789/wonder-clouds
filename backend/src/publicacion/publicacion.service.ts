@@ -3,9 +3,10 @@ import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { UpdatePublicacionDto } from './dto/update-publicacion.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Publicacion } from './entities/publicacion.entity';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { TipoGeneral } from 'src/tipo-general/entities/tipo-general.entity';
 import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.interface';
+import { FiltrosPublicacion } from './interfaces/publicacion-filtro.interface';
 
 @Injectable()
 export class PublicacionService {
@@ -16,6 +17,44 @@ export class PublicacionService {
     @InjectRepository(TipoGeneral)
     private readonly tipoGeneralRepository: Repository<TipoGeneral>,
   ) {}
+
+  private aplicarFiltros(
+    queryBuilder: SelectQueryBuilder<Publicacion>,
+    filtros: FiltrosPublicacion,
+  ): SelectQueryBuilder<Publicacion> {
+    const { categoria, autor, fechaDesde, fechaHasta, busqueda } = filtros;
+
+    if (categoria) {
+      queryBuilder.andWhere('publicacion.categoriaPublicacion = :categoria', {
+        categoria,
+      });
+    }
+
+    if (autor) {
+      queryBuilder.andWhere('publicacion.autor = :autor', {
+        autor,
+      });
+    }
+
+    if (fechaDesde && fechaHasta) {
+      queryBuilder.andWhere(
+        'publicacion.fechaPublicacion BETWEEN :fechaDesde AND :fechaHasta',
+        {
+          fechaDesde,
+          fechaHasta,
+        },
+      );
+    }
+
+    if (busqueda) {
+      queryBuilder.andWhere(
+        '(publicacion.titulo ILIKE :busqueda OR publicacion.contenido ILIKE :busqueda)',
+        { busqueda: `%${busqueda}%` },
+      );
+    }
+
+    return queryBuilder;
+  }
 
   async create(
     createPublicacionDto: CreatePublicacionDto,
@@ -39,8 +78,11 @@ export class PublicacionService {
     return await this.publicacionRepository.save(publicacion);
   }
 
-  async findAll() {
-    return await this.publicacionRepository.find();
+  async findAll(filtros: FiltrosPublicacion) {
+    const queryBuilder =
+      this.publicacionRepository.createQueryBuilder('publicacion');
+
+    return await this.aplicarFiltros(queryBuilder, filtros).getMany();
   }
 
   async findOne(idPublicacion: string) {
@@ -93,18 +135,20 @@ export class PublicacionService {
     return { message: `Publicacion con el ID ${idPublicacion} eliminada.` };
   }
 
-  async listaPublicacion() {
-    return await this.publicacionRepository.find({
-      select: [
-        'idPublicacion',
-        'autor',
-        'categoriaPublicacion',
-        'contenido',
-        'fechaPublicacion',
-        'portada',
-        'titulo',
-      ],
-    });
+  async listaPublicacion(filtros: FiltrosPublicacion) {
+    const queryBuilder = this.publicacionRepository
+      .createQueryBuilder('publicacion')
+      .select([
+        'publicacion.idPublicacion',
+        'publicacion.autor',
+        'publicacion.categoriaPublicacion',
+        'publicacion.contenido',
+        'publicacion.fechaPublicacion',
+        'publicacion.portada',
+        'publicacion.titulo',
+      ]);
+
+    return await this.aplicarFiltros(queryBuilder, filtros).getMany();
   }
 
   async unPublicacion(idPublicacion: string) {

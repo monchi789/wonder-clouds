@@ -10,6 +10,7 @@ import {
   UseInterceptors,
   BadRequestException,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { ServicioService } from './servicio.service';
 import { CreateServicioDto } from './dto/create-servicio.dto';
@@ -72,13 +73,41 @@ export class ServicioController {
 
   @Get()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-  findAll() {
-    return this.servicioService.findAll();
+  findAll(
+    @Query('nombre') nombre?: string,
+    @Query('precioMinimo') precioMinimo?: number,
+    @Query('precioMaximo') precioMaximo?: number,
+    @Query('ordenPrecio') ordenPrecio?: 'ASC' | 'DESC',
+    @Query('fechaCreacionDesde') fechaCreacionDesde?: Date,
+    @Query('fechaCreacionHasta') fechaCreacionHasta?: Date,
+  ) {
+    return this.servicioService.findAll({
+      nombre,
+      precioMinimo,
+      precioMaximo,
+      ordenPrecio,
+      fechaCreacionDesde,
+      fechaCreacionHasta,
+    });
   }
 
   @Get('lista-servicio')
-  async listaServicio() {
-    return this.servicioService.listaServicios();
+  async listaServicio(
+    @Query('nombre') nombre?: string,
+    @Query('precioMinimo') precioMinimo?: number,
+    @Query('precioMaximo') precioMaximo?: number,
+    @Query('ordenPrecio') ordenPrecio?: 'ASC' | 'DESC',
+    @Query('fechaCreacionDesde') fechaCreacionDesde?: Date,
+    @Query('fechaCreacionHasta') fechaCreacionHasta?: Date,
+  ) {
+    return this.servicioService.listaServicios({
+      nombre,
+      precioMinimo,
+      precioMaximo,
+      ordenPrecio,
+      fechaCreacionDesde,
+      fechaCreacionHasta,
+    });
   }
 
   @Get('lista-servicio/:id')
