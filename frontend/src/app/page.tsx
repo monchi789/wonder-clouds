@@ -1,9 +1,9 @@
-import InicioWritting from "@/components/public/inicio/InicioWritting";
+import InicioWritting from "@/app/components/InicioWritting";
 import MovingCirclesBackground from "@/components/public/ui/MovingCirclesBackground";
-import Services from "@/components/public/inicio/Services";
-import ProjectsCarousel from "@/components/public/inicio/ProjectsCarousel";
-import WonderClouds from "@/components/public/inicio/WonderClouds";
-import ContactUsForm from "@/components/public/inicio/ContactUsForm";
+import Services from "@/app/components/Services";
+import ProjectsCarousel from "@/app/components/ProjectsCarousel";
+import WonderClouds from "@/app/components/WonderClouds";
+import ContactUsForm from "@/app/components/ContactUsForm";
 
 const Inicio = () => {
   return (

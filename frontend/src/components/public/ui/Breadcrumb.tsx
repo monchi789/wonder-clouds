@@ -32,7 +32,7 @@ const Breadcrumb = ({
               <span className="mx-2"><ChevronsRight color="#FFA947" /></span>
               {!isLast ? (
                 <Link href={href}>
-                  <a className="text-blue-500 capitalize">{segment}</a>
+                  {segment}
                 </Link>
               ) : (
                 <span className="capitalize">{segment}</span>

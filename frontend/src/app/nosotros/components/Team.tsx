@@ -14,7 +14,7 @@ const Team = () => {
 
   return (
     <motion.div
-      className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-10 mt-12 p-5 max-w-6xl"
+      className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-x-20 gap-y-10 mt-16 max-w-6xl p-5"
       initial="hidden"
       whileInView="visible"
       variants={fadeInUp}
@@ -23,7 +23,7 @@ const Team = () => {
       <TeamCard
         name="Jayo Baez"
         role="Especialista en Marketing Digital"
-        imageSrc="/static/images/wonder.png"
+        imageSrc="/static/images/team/JayoBaez.webp"
         githubUrl="https://github.com/"
         instagramUrl="https://www.instagram.com/"
         linkedinUrl="https://www.linkedin.com/"
@@ -31,7 +31,7 @@ const Team = () => {
       <TeamCard
         name="Christian Monzon"
         role="Desarrollador de software"
-        imageSrc="/static/images/wonder.png"
+        imageSrc="/static/logos/wonder.webp"
         githubUrl="https://github.com/"
         instagramUrl="https://www.instagram.com/"
         linkedinUrl="https://www.linkedin.com/"
@@ -39,39 +39,39 @@ const Team = () => {
       <TeamCard
         name="Sergio Salazar"
         role="Desarrollador de software"
-        imageSrc="/static/images/wonder.png"
+        imageSrc="/static/logos/wonder.webp"
         githubUrl="https://github.com/"
         instagramUrl="https://www.instagram.com/"
         linkedinUrl="https://www.linkedin.com/"
       />
       <TeamCard
-        name="Robby"
-        role="Especialista en Marketing Digital"
-        imageSrc="/static/images/wonder.png"
+        name="Robby Villano"
+        role="Desarrollador de software"
+        imageSrc="/static/logos/wonder.webp"
         githubUrl="https://github.com/"
         instagramUrl="https://www.instagram.com/"
         linkedinUrl="https://www.linkedin.com/"
       />
       <TeamCard
         name="Andrés Tejada"
-        role="Desarrollador de software"
-        imageSrc="/static/images/wonder.png"
+        role="Especialista en base de datos"
+        imageSrc="/static/logos/wonder.webp"
         githubUrl="https://github.com/"
         instagramUrl="https://www.instagram.com/"
         linkedinUrl="https://www.linkedin.com/"
       />
       <TeamCard
-        name="Leslie"
-        role="Desarrollador de software"
-        imageSrc="/static/images/wonder.png"
+        name="Leslie Vargas"
+        role="Diseñadora web"
+        imageSrc="/static/logos/wonder.webp"
         githubUrl="https://github.com/"
         instagramUrl="https://www.instagram.com/"
         linkedinUrl="https://www.linkedin.com/"
       />
       <TeamCard
-        name="Kiara"
-        role="Desarrollador de software"
-        imageSrc="/static/images/wonder.png"
+        name="Kiara Oquendo"
+        role="Diseñadora de contenidos"
+        imageSrc="/static/logos/wonder.webp"
         githubUrl="https://github.com/"
         instagramUrl="https://www.instagram.com/"
         linkedinUrl="https://www.linkedin.com/"
