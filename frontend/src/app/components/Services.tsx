@@ -7,33 +7,33 @@ export default function Services() {
 
   const services = [
     {
-      title: "Presencia Digital de Marca",
+      title: "Marketing digital",
       imageSrc: "/static/images/service_01.svg",
       imageAlt: "Servicio numero uno"
     },
     {
-      title: "Marketing Digital 360",
-      imageSrc: "/static/images/service_02.svg",
+      title: "Desarrollo de páginas web",
+      imageSrc: "/static/images/service_02.webp",
       imageAlt: "Servicio numero dos"
     },
     {
-      title: "Branding e Identidad de Marca",
+      title: "Desarrollo de software a medida",
       imageSrc: "/static/images/service_03.svg",
       imageAlt: "Servicio numero tres"
     },
     {
-      title: "Organización de Eventos",
-      imageSrc: "/static/images/service_04.svg",
+      title: "Integración del Chatbots para respuestas automatizadas",
+      imageSrc: "/static/images/service_04.webp",
       imageAlt: "Servicio numero cuatro"
     },
     {
-      title: "Desarrollo Web Personalizado",
-      imageSrc: "/static/images/service_05.svg",
+      title: "Instalación de cámaras",
+      imageSrc: "/static/images/service_05.webp",
       imageAlt: "Servicio numero cinco"
     },
     {
-      title: "Gestión de Redes Sociales",
-      imageSrc: "/static/images/service_06.svg",
+      title: "Delivery de servicio técnico",
+      imageSrc: "/static/images/service_06.webp",
       imageAlt: "Servicio numero seis"
     }
   ]
