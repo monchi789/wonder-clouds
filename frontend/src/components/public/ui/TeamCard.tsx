@@ -22,10 +22,10 @@ const TeamCard = ({
 }: TeamCardProps) => {
   return (
     <div className="flex flex-col text-color">
-      <Image className="w-full max-h-80 object-contain" src={imageSrc} width={250} height={250} alt={name} />
-      <span className="text-xl text-color font-semibold mt-3 px-10">{name}</span>
-      <span className="text-medium text-[#9EA1ADEE] px-10">{role}</span>
-      <div className="flex flex-row space-x-2 mt-1 px-10">
+      <Image className="w-full max-h-80 object-cover rounded-2xl" src={imageSrc} width={800} height={800} alt={name} />
+      <span className="text-xl text-color font-semibold mt-3">{name}</span>
+      <span className="text-medium text-[#9EA1ADEE]">{role}</span>
+      <div className="flex flex-row space-x-2 mt-1">
         {linkedinUrl && (
           <a href={linkedinUrl} target="_blank" rel="noopener noreferrer">
             <CiLinkedin size={25} />

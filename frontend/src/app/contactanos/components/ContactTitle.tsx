@@ -15,7 +15,7 @@ const ContactTitle = () => {
   return (
     <>
       <motion.div
-        className="flex flex-col items-center py-6"
+        className="flex flex-col items-center py-12"
         initial="hidden"
         whileInView="visible"
         variants={fadeIn}

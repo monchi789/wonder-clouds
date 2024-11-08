@@ -97,10 +97,10 @@ export default function Footer() {
               <Link href="/">
                 <Image 
                   className="w-32 sm:w-40 md:w-48 lg:w-full max-w-[200px]"
-                  src="/static/images/clouds.png"
+                  src="/static/logos/clouds.webp"
                   alt="Logo Wonder Clouds"
-                  width={1000}
-                  height={1000}
+                  width={800}
+                  height={800}
                   priority
                 />
               </Link>

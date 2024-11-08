@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
@@ -33,7 +33,7 @@ const Header = () => {
           >
             <Link href={"/"}>
             <Image
-              src="/static/images/wonder.webp"
+              src="/static/logos/wonder.webp"
               alt="Logo Wonder Clouds Cusco"
               width={80}
               height={80}
@@ -54,7 +54,7 @@ const Header = () => {
                 key={link.label}
                 href={link.href}
                 className={`text-lg font-medium relative transition-colors 
-                  ${pathname === link.href ? 'text-secondary border-b-2 border-secondary' : 'text-default hover:text-secondary hover:border-b-2 hover:border-secondary'} `}
+                  ${pathname === link.href ? 'text-secondary font-semibold border-b-2 border-secondary' : 'text-default hover:text-secondary hover:border-b-2 hover:border-secondary'} `}
               >
                 {link.label}
               </Link>

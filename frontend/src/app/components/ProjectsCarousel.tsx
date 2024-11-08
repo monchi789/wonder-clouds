@@ -5,7 +5,7 @@
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
-import ProjectCarouselCard from '../ui/ProjectCarouselCard';
+import ProjectCarouselCard from '../../components/public/ui/ProjectCarouselCard';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';

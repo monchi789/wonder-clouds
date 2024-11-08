@@ -19,8 +19,8 @@ const MovingCirclesBackground: React.FC = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const colors = [
-    '62, 216, 179',  // #3ED8B3
-    '255, 169, 71',  // #FFA947
+    '123, 172, 224',  // #4693C0
+    '108, 108, 209',  // #6C6CD1
     '255, 95, 140',  // #FF5F8C
   ];
 
