@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 function WhatsAppButton() {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP;
+  //const number = process.env.NEXT_PUBLIC_WHATSAPP;
 
   return (
     <a
