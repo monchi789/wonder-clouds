@@ -1,5 +1,5 @@
-import Breadcrumb from "@/components/public/ui/Breadcrumb";
-import FeatureCard from "@/components/public/ui/FeatureCard";
+import Breadcrumb from "@/components/ui/Breadcrumb";
+import FeatureCard from "@/components/ui/FeatureCard";
 
 function Servicios() {
   return (

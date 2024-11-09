@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const { nextui } = require("@nextui-org/react");
 
 const config: Config = {
   content: [
@@ -16,11 +17,21 @@ const config: Config = {
         secondary: "var(--secondary)",
         default: "var(--default)"
       },
+      keyframes: {
+        efecto: {
+          '0%': { boxShadow: '0 0 0 0 rgba(9, 145, 5, 0.85)' },
+          '100%': { boxShadow: '0 0 0 25px rgba(50, 121, 3, 0)' },
+        },
+      },
+      animation: {
+        efecto: 'efecto 1s infinite',
+      },
       boxShadow: {
         'custom-blue': '0px 1px 10px 1px #104D7E',
       },
     },
   },
-  plugins: [],
+  darkMode: "class",
+  plugins: [nextui()]
 };
 export default config;

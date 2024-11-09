@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
-import Header from "@/components/public/layouts/Header";
-import Footer from "@/components/public/layouts/Footer";
+import Header from "@/components/layouts/Header";
+import Footer from "@/components/layouts/Footer";
 
 import "../assets/styles/globals.css";
+import WhatsAppButton from "@/components/ui/WhatsappButton";
 
 export const metadata: Metadata = {
   title: "Wonder Clouds",
@@ -32,9 +33,10 @@ export default function RootLayout({
       <body
         className={quicksand.className}
       >
-        <Header />
-        {children}
-        <Footer />
+          <Header />
+          {children}
+          <WhatsAppButton />
+          <Footer />
       </body>
     </html>
   );

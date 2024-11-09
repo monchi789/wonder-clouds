@@ -2,7 +2,7 @@
 
 "use client"
 
-import TeamCard from "@/components/public/ui/TeamCard";
+import TeamCard from "@/components/ui/TeamCard";
 import { motion } from "framer-motion";
 
 const Team = () => {

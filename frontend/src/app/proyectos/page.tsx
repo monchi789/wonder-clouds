@@ -1,5 +1,5 @@
 import ProjectsList from "@/app/proyectos/components/ProjectsList"
-import Breadcrumb from "@/components/public/ui/Breadcrumb"
+import Breadcrumb from "@/components/ui/Breadcrumb"
 
 const Proyectos = () => {
   return (

@@ -5,7 +5,7 @@
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, Navigation, Autoplay } from 'swiper/modules';
-import ProjectCarouselCard from '../../components/public/ui/ProjectCarouselCard';
+import ProjectCarouselCard from '../../components/ui/ProjectCarouselCard';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -42,10 +42,10 @@ const ProjectsCarousel = () => {
         transition={{ duration: 0.6, ease: "easeOut" }} // Controla duración y suavidad
         viewport={{ once: true, amount: 0.2 }} // Animación solo una vez cuando esté 30% visible
       >
-          Nuestro <span className="ps-2 text-primary">Trabajo</span>
+          Nuestro<span className="ps-2 text-primary">Trabajo</span>
       </motion.h2>
 
-      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+      <div className="w-full max-w-[1400px] mx-auto lg:px-8 mt-16">
         <Swiper
           effect={'coverflow'}
           grabCursor={true}
@@ -56,12 +56,6 @@ const ProjectsCarousel = () => {
             delay: 3000,
             disableOnInteraction: false,
             pauseOnMouseEnter: true
-          }}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 0,
-            depth: 100,
-            modifier: 2.5,
           }}
           pagination={{
             el: '.swiper-pagination',
@@ -76,12 +70,12 @@ const ProjectsCarousel = () => {
           className="w-full py-8 sm:py-12"
         >
           {projects.map((project, index) => (
-            <SwiperSlide key={index} className="!w-[280px] sm:!w-[340px] md:!w-[400px] lg:!w-[560px] rounded-lg">
+            <SwiperSlide key={index} className="!w-[300px] sm:!w-[340px] md:!w-[400px] lg:!w-[560px] rounded-lg">
               <motion.div
-                initial={{ opacity: 0, y: 50 }} // Inicia transparente y un poco abajo
-                whileInView={{ opacity: 1, y: 0 }} // Aparece y sube al estar en vista
-                transition={{ duration: 0.6, ease: "easeOut" }} // Controla duración y suavidad
-                viewport={{ once: true, amount: 0.2 }} // Animación solo una vez cuando esté 30% visible
+                initial={{ opacity: 0, y: 50 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                transition={{ duration: 0.6, ease: "easeOut" }} 
+                viewport={{ once: true, amount: 0.2 }} 
               >
                 <ProjectCarouselCard
                   title={project.title}
@@ -118,14 +112,6 @@ const ProjectsCarousel = () => {
           background: #104D7E;
           width: 24px;
           border-radius: 5px;
-        }
-
-        /* Custom slide shadows */
-        .swiper-slide-shadow-left,
-        .swiper-slide-shadow-right {
-          background-image: none;
-          background: rgba(0, 0, 0, 0.1);
-          backdrop-filter: blur(2px);
         }
 
         /* Responsive adjustments */

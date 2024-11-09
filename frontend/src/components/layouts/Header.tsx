@@ -35,9 +35,9 @@ const Header = () => {
             <Image
               src="/static/logos/wonder.webp"
               alt="Logo Wonder Clouds Cusco"
-              width={80}
-              height={80}
-              className="w-auto h-auto"
+              width={100}
+              height={100}
+              className="w-4/6 xl:w-5/6 h-auto"
             />
             </Link>
           </motion.div>

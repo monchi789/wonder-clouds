@@ -3,7 +3,7 @@
 "use client"
 
 import { motion } from "framer-motion"; // Importa motion
-import Breadcrumb from "@/components/public/ui/Breadcrumb";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 
 const ContactTitle = () => {
 
