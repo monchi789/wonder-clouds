@@ -2,7 +2,7 @@
 
 "use client"
 
-import Breadcrumb from "@/components/public/ui/Breadcrumb";
+import Breadcrumb from "@/components/ui/Breadcrumb";
 import Image from "next/image";
 import { motion } from "framer-motion";
 

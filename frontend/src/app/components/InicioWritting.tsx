@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from "next/image";
+import Link from 'next/link';
 import { Button } from "@nextui-org/button";
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 
@@ -35,9 +36,9 @@ export default function InicioWritting() {
             hacia nuevos horizontes y conectar con audiencias globales de manera impactante.
           </span>
           <Button size='lg' className="w-fit flex items-center group text-2xl text-white bg-primary rounded-xl transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95 gap-2 mt-5 px-5">
-            <span className="transition-all duration-500 group-hover:translate-x-1">
+            <Link href={"/contactanos"} className="transition-all duration-500 group-hover:translate-x-1">
               Contáctanos
-            </span>
+            </Link>
             <svg
               className="w-7 h-7 transition-transform duration-500 group-hover:translate-x-1"
               aria-hidden="true"

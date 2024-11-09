@@ -1,9 +1,28 @@
 "use client"
 
 import { motion } from 'framer-motion';
+import { Cloud, Sparkles, Stars } from 'lucide-react';
 import Image from "next/image";
+import Link from 'next/link';
 
 export default function WonderClouds() {
+  const fadeInUpVariant = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const statsData = [
+    { label: "Años de trayectoria", value: "2+" },
+    { label: "Clientes satisfechos", value: "10+" },
+    { label: "Proyectos completados", value: "15+" }
+  ];
   return (
     <>
       <motion.div
@@ -21,58 +40,123 @@ export default function WonderClouds() {
         />
       </motion.div>
       <motion.div
-        className="flex flex-col justify-center items-center text-white bg-primary relative -mt-5 md:-mt-20 px-10 pb-20"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.2 }}        
+        className="flex flex-col items-center text-white bg-gradient-to-b from-primary to-primary/90 relative min-h-[80vh] px-4 md:px-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
       >
-        {/* Título */}
-        <motion.h1
-          className="text-7xl font-bold"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 20 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+        {/* Elementos decorativos */}
+        <motion.div
+          className="absolute top-10 right-10 text-white/20"
+          animate={{
+            rotate: -360,
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
         >
-          Wonder Clouds
-        </motion.h1>
+          <Stars size={60} />
+        </motion.div>
 
-        {/* Descripción */}
-        <motion.p
-          className="text-2xl text-center mx-24 mt-10"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 20 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+        <motion.div
+          className="absolute bottom-72 left-10 text-white/20"
+          animate={{
+            rotate: 360,
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
         >
-          En Wonder clouds nos encargamos de diseñar estrategias innovadoras para impulsar tu marca hacia nuevos horizontes y conectar con audiencias globales de manera impactante.
+          <Cloud size={80} />
+        </motion.div>
+
+        <motion.div
+          className="relative"
+          variants={fadeInUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <motion.div
+            className="absolute hidden md:block -top-5 -left-8 text-yellow-300"
+            animate={{
+              rotate: -360,
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          >
+            <Sparkles size={24} />
+          </motion.div>
+
+          <h1 className="text-5xl md:text-7xl font-bold text-white text-center">
+            Wonder Clouds
+          </h1>
+        </motion.div>
+
+
+        <motion.p
+          className="text-xl md:text-2xl text-center max-w-4xl mt-10 text-white/90"
+          variants={fadeInUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          En Wonder Clouds nos encargamos de diseñar estrategias innovadoras para
+          impulsar tu marca hacia nuevos horizontes y conectar con audiencias
+          globales de manera impactante.
         </motion.p>
 
-        {/* Texto de expertos */}
-        <motion.span
-          className="text-3xl font-semibold mt-5"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 20 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          Nuestros expertos están listos para ayudarte
-        </motion.span>
-
-        {/* Información de experiencia y clientes */}
         <motion.div
-          className="flex flex-row space-x-20 mt-5"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 20 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-10"
+          variants={fadeInUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
         >
-          <div className="flex flex-col text-center space-y-5">
-            <span className="text-xl font-semibold">Experiencia</span>
-            <span className="text-5xl font-bold">2+</span>
-          </div>
-          <div className="flex flex-col text-center space-y-5">
-            <span className="text-xl font-semibold">Clientes satisfechos</span>
-            <span className="text-5xl font-bold">10+</span>
-          </div>
+          <h2 className="text-2xl md:text-3xl font-semibold text-center">
+            Nuestros expertos están listos para ayudarte
+          </h2>
         </motion.div>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-16"
+          variants={fadeInUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {statsData.map((stat, index) => (
+            <motion.div
+              key={index}
+              className="flex flex-col items-center space-y-3 p-6 rounded-xl bg-white/5 backdrop-blur-sm"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <span className="text-lg font-semibold text-white/80">{stat.label}</span>
+              <span className="text-4xl md:text-5xl font-bold">{stat.value}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <Link href="/contactanos" className="inline-block">
+          <motion.div
+            className="bg-white text-primary rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all mt-16 px-8 py-4 cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Comienza ahora
+          </motion.div>
+        </Link>
       </motion.div>
     </>
   );

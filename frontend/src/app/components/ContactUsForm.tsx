@@ -1,10 +1,9 @@
-
 "use client"
 
 import Image from "next/image";
 import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
-import { MailIcon, Phone, Send, User } from "lucide-react";
+import { Input, Textarea } from "@nextui-org/input";
+import { MailIcon, Phone, Send, User, MessageCircle } from "lucide-react";
 import { motion } from 'framer-motion';
 
 const ContactUsForm = () => {
@@ -16,9 +15,9 @@ const ContactUsForm = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.2 }}
-          className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-center mb-8 sm:mb-12"
+          className="text-3xl lg:text-4xl font-semibold text-default text-center mb-8 sm:mb-12"
         >
-          <span className="text-primary">Comunícate</span> con nosotros
+          Comunícate con<span className="ps-2 text-primary">Nosotros</span>
         </motion.h2>
 
         <div className="w-full flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12">
@@ -29,14 +28,39 @@ const ContactUsForm = () => {
             viewport={{ once: true, amount: 0.2 }}
             className="hidden lg:block lg:w-1/2"
           >
-            <Image
-              className="w-full h-auto max-w-lg mx-auto"
-              src="/static/images/info.svg"
-              width={800}
-              height={800}
-              alt="Imagen representativa"
-              priority
-            />
+            <motion.div
+              animate={{
+                y: [-10, 10, -10], // Movimiento vertical suave
+                rotate: [-2, 2, -2], // Ligera rotación
+              }}
+              transition={{
+                duration: 4,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+            >
+              <motion.div
+                // Efecto de propulsión
+                whileInView={{
+                  scale: [1, 1.02, 1],
+                  transition: {
+                    duration: 2,
+                    ease: "easeInOut",
+                    repeat: Infinity
+                  }
+                }}
+              >
+                <Image
+                  className="w-full h-auto max-w-2xl mx-auto"
+                  src="/static/images/plane.webp"
+                  width={1400}
+                  height={1400}
+                  alt="Imagen representativa"
+                  priority
+                />
+              </motion.div>
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -44,14 +68,13 @@ const ContactUsForm = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true, amount: 0.2 }}
-            className="w-full lg:w-1/2 max-w-md mx-auto lg:max-w-none"
+            className="w-full lg:w-1/2 max-w-md mx-auto lg:max-w-none rounded-2xl bg-gray-100 bg-opacity-40 p-10"
           >
             <div className="text-default mb-6 sm:mb-8">
-              <h3 className="text-base sm:text-lg font-semibold mb-2">
-                ¿Necesitas soluciones digitales?
-              </h3>
-              <p className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
-                No dudes en contactarnos
+              <h3 className="text-lg font-semibold mb-2 text-primary">¿Necesitas soluciones digitales?</h3>
+              <p className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-primary">No dudes en contactarnos</p>
+              <p className="text-lg sm:text-xl text-gray-600 mt-4">
+                Estamos aquí para ayudarte con cualquier pregunta o solicitud que tengas. Nuestro equipo de expertos está listo para brindarte las mejores soluciones. ¡Esperamos tu mensaje!
               </p>
             </div>
 
@@ -64,14 +87,14 @@ const ContactUsForm = () => {
               >
                 <Input
                   type="text"
-                  variant="underlined"
+                  variant="flat"
                   placeholder="Nombre"
                   classNames={{
-                    input: "text-base sm:text-lg",
-                    inputWrapper: "h-12"
+                    input: "text-lg sm:text-xl",
+                    inputWrapper: "h-14"
                   }}
                   startContent={
-                    <User className="text-xl sm:text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    <User className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                   }
                 />
               </motion.div>
@@ -83,14 +106,14 @@ const ContactUsForm = () => {
               >
                 <Input
                   type="email"
-                  variant="underlined"
-                  placeholder="Correo"
+                  variant="flat"
+                  placeholder="Correo electrónico"
                   classNames={{
-                    input: "text-base sm:text-lg",
-                    inputWrapper: "h-12"
+                    input: "text-lg sm:text-xl",
+                    inputWrapper: "h-14"
                   }}
                   startContent={
-                    <MailIcon className="text-xl sm:text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                   }
                 />
               </motion.div>
@@ -103,14 +126,14 @@ const ContactUsForm = () => {
               >
                 <Input
                   type="tel"
-                  variant="underlined"
+                  variant="flat"
                   placeholder="Teléfono"
                   classNames={{
-                    input: "text-base sm:text-lg",
-                    inputWrapper: "h-12"
+                    input: "text-lg sm:text-xl",
+                    inputWrapper: "h-14"
                   }}
                   startContent={
-                    <Phone className="text-xl sm:text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    <Phone className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                   }
                 />
               </motion.div>
@@ -121,8 +144,25 @@ const ContactUsForm = () => {
                 transition={{ duration: 1.2, ease: "easeOut" }}
                 viewport={{ once: true, amount: 0.2 }}
               >
+                <Textarea
+                  variant="flat"
+                  labelPlacement="outside"
+                  placeholder="Envíanos un mensaje"
+                  classNames={{
+                    input: "text-lg sm:text-xl",
+                    inputWrapper: "h-14"
+                  }}
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.4, ease: "easeOut" }}
+                viewport={{ once: true, amount: 0.2 }}
+              >
                 <Button
-                  className="bg-[#104D7E] text-white w-full sm:w-auto sm:self-center px-8 py-6 text-base sm:text-lg rounded-lg hover:opacity-90 transition-opacity"
+                  className="bg-primary text-white w-full sm:w-auto sm:self-center px-8 py-4 text-lg sm:text-xl rounded-lg hover:opacity-90 transition-opacity focus:ring-2 focus:ring-primary"
                   startContent={<Send className="h-5 w-5" />}
                 >
                   Enviar
