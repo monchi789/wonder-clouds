@@ -1,4 +1,4 @@
-import InicioWritting from "@/app/components/InicioWritting";
+import InicioWritting from "@/app/components/HeroSection";
 import MovingCirclesBackground from "@/components/ui/MovingCirclesBackground";
 import Services from "@/app/components/Services";
 import ProjectsCarousel from "@/app/components/ProjectsCarousel";

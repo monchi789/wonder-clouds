@@ -20,7 +20,7 @@ export default function WonderClouds() {
 
   const statsData = [
     { label: "Años de trayectoria", value: "2+" },
-    { label: "Clientes satisfechos", value: "10+" },
+    { label: "Aliados estratégicos", value: "10+" },
     { label: "Proyectos completados", value: "15+" }
   ];
   return (

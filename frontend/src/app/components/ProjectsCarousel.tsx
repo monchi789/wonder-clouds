@@ -16,19 +16,27 @@ import 'swiper/css/autoplay';
 const projects = [
   {
     title: "Proyecto Paltos - Geragri",
-    imageSrc: "/static/images/prueba.png"
+    imageSrc: "/static/images/prueba.png",
+    description: "asdasdsadas asdasdsadas asdasdsadas asdasdsadas asdasdsadasasdasdsadas",
+    tags: ["React", "NextJS", "TypeScript"]
   },
   {
     title: "CORLAD - Cusco",
-    imageSrc: "/static/images/prueba2.png"
+    imageSrc: "/static/images/prueba2.png",
+    description: "asdasdsadas asdasdsadas asdasdsadas asdasdsadas asdasdsadasasdasdsadas",
+    tags: ["React", "NextJS", "TypeScript"]
   },
   {
     title: "AER. Athletic Club",
-    imageSrc: "/static/images/prueba3.png"
+    imageSrc: "/static/images/prueba3.png",
+    description: "asdasdsadas asdasdsadas asdasdsadas asdasdsadas asdasdsadasasdasdsadas",
+    tags: ["React", "NextJS", "TypeScript"]
   },
   {
     title: "Peruvian Cusco Travel",
-    imageSrc: "/static/images/prueba4.png"
+    imageSrc: "/static/images/prueba4.png",
+    description: "asdasdsadas asdasdsadas asdasdsadas asdasdsadas asdasdsadasasdasdsadas",
+    tags: ["React", "NextJS", "TypeScript"]
   }
 ];
 
@@ -42,7 +50,7 @@ const ProjectsCarousel = () => {
         transition={{ duration: 0.6, ease: "easeOut" }} // Controla duración y suavidad
         viewport={{ once: true, amount: 0.2 }} // Animación solo una vez cuando esté 30% visible
       >
-          Nuestro<span className="ps-2 text-primary">Trabajo</span>
+        Nuestro<span className="ps-2 text-primary">Trabajo</span>
       </motion.h2>
 
       <div className="w-full max-w-[1400px] mx-auto lg:px-8 mt-16">
@@ -56,6 +64,12 @@ const ProjectsCarousel = () => {
             delay: 3000,
             disableOnInteraction: false,
             pauseOnMouseEnter: true
+          }}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 2.5,
           }}
           pagination={{
             el: '.swiper-pagination',
@@ -72,14 +86,16 @@ const ProjectsCarousel = () => {
           {projects.map((project, index) => (
             <SwiperSlide key={index} className="!w-[300px] sm:!w-[340px] md:!w-[400px] lg:!w-[560px] rounded-lg">
               <motion.div
-                initial={{ opacity: 0, y: 50 }} 
-                whileInView={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 0.6, ease: "easeOut" }} 
-                viewport={{ once: true, amount: 0.2 }} 
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                viewport={{ once: true, amount: 0.2 }}
               >
                 <ProjectCarouselCard
                   title={project.title}
                   imageSrc={project.imageSrc}
+                  description={project.description}
+                  tags={project.tags}
                 />
               </motion.div>
             </SwiperSlide>

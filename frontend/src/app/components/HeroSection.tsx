@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Button } from "@nextui-org/button";
 import { useTypewriter, Cursor } from 'react-simple-typewriter';
 
-export default function InicioWritting() {
+const HeroSection = () => {
   const [text] = useTypewriter({
     words: ['TU MARCA', 'TU NEGOCIO', 'TU EMPRESA'],
     loop: 0,
@@ -88,3 +88,5 @@ export default function InicioWritting() {
     </>
   )
 }
+
+export default HeroSection;
