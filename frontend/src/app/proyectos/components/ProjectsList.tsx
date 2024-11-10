@@ -1,4 +1,4 @@
-import CardProject from "@/components/ui/CardProject"
+import CardProject from "@/components/ui/ProjectCard"
 
 const ProjectsList = () => {
   return (
