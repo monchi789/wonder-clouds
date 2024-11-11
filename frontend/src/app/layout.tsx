@@ -30,13 +30,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body
         className={quicksand.className}
       >
-          <Header />
-          {children}
-          <WhatsAppButton />
-          <Footer />
+        <Header />
+        {children}
+        <WhatsAppButton />
+        <Footer />
       </body>
     </html>
   );

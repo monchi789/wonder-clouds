@@ -33,10 +33,10 @@ const Header = () => {
           >
             <Link href={"/"}>
             <Image
-              src="/static/logos/wonder.webp"
+              src="/static/logos/wonderclouds.webp"
               alt="Logo Wonder Clouds Cusco"
-              width={100}
-              height={100}
+              width={200}
+              height={200}
               className="w-4/6 xl:w-5/6 h-auto"
             />
             </Link>

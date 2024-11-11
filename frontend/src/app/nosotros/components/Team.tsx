@@ -75,7 +75,7 @@ const Team = () => {
           linkedinUrl="https://www.linkedin.com/"
         />
         <TeamCard
-          name="Christian Monzon"
+          name="Cristian Monzon"
           role="Desarrollador de software"
           imageSrc="/static/images/team/monchi.webp"
           githubUrl="https://github.com/"
