@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Nuevo Mensaje de Contacto</title>
+</head>
+
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; line-height: 1.6; color: #333333;">
+	<div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+		<div style="text-align: center; margin-bottom: 30px;">
+			<img src="cid:logo.webp" alt="Wonder Clouds Logo" style="max-width: 200px; height: auto;">
+		</div>
+
+		<div
+			style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+			<h2 style="color: #2c5282; margin-bottom: 20px;">Nuevo mensaje de contacto</h2>
+
+			<p style="margin-bottom: 20px;">
+				Se ha recibido un nuevo mensaje a través del formulario de contacto:
+			</p>
+
+			<div style="background-color: #f7fafc; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+				<p style="margin: 5px 0;">
+					<strong>Nombre:</strong> {{nombre}}
+				</p>
+				<p style="margin: 5px 0;">
+					<strong>Correo:</strong>
+					<a href="mailto:{{correo}}" style="color: #4299e1; text-decoration: none;">{{correo}}</a>
+				</p>
+				<p style="margin: 5px 0;">
+					<strong>Teléfono:</strong>
+					<a href="tel:{{numero}}" style="color: #4299e1; text-decoration: none;">{{numero}}</a>
+				</p>
+
+				<div style="margin-top: 15px;">
+					<strong>Mensaje:</strong>
+					<p style="margin: 10px 0; white-space: pre-wrap;">{{mensaje}}</p>
+				</div>
+			</div>
+
+			<div style="margin-top: 30px;">
+				<p style="margin-bottom: 5px;">Saludos,</p>
+				<p style="margin-top: 0; font-weight: bold;">El equipo de Soporte de Wonder Clouds</p>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
