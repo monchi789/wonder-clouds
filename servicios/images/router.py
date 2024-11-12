@@ -10,7 +10,7 @@ router = APIRouter(
     tags=['Images'],
 )
 
-VALID_FORMATS = {"BMP", "DDS", "GIF", "ICO", "JPEG", "PNG", "WEBP", "JPG"}
+VALID_FORMATS = {"BMP", "DDS", "GIF", "ICO", "JPEG", "PNG", "WEBP", "JPG", "TIFF", "PCX"}
 
 @router.post('/compress-images')
 async def compres_images(current_user = Depends(get_current_user), 
