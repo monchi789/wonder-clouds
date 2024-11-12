@@ -13,8 +13,6 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
-import { MailService } from './mail/mail.service';
-import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -47,8 +45,6 @@ import { MailModule } from './mail/mail.module';
     }),
     UsuarioModule,
     AuthModule,
-    MailModule,
   ],
-  providers: [MailService],
 })
 export class AppModule {}
