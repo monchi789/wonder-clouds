@@ -6,8 +6,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
+import { Servicio } from 'src/servicio/entities/servicio.entity';
 
 @Entity()
 export class Trabajo {
@@ -26,14 +28,16 @@ export class Trabajo {
   @Column({ type: 'boolean' })
   visibilidadTrabajo: boolean;
 
-  @Column({ type: Date })
+  @Column({ type: 'date' })
   fechaTrabajo: Date;
 
-  @ManyToOne(() => Cliente)
+  @ManyToOne(() => Cliente, (cliente) => cliente.trabajos, { eager: true })
+  @JoinColumn({ name: 'idCliente' })
   idCliente: Cliente;
 
-  @Column({ type: 'text' })
-  tipoTrabajo: string;
+  @ManyToOne(() => Servicio, { eager: true })
+  @JoinColumn({ name: 'idServicio' })
+  idServicio: Servicio;
 
   @CreateDateColumn()
   createAt: Date;

@@ -1,5 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { unlink } from 'fs/promises';
+import { extname } from 'path';
 
 @Injectable()
 export class ImageService {
@@ -11,9 +12,12 @@ export class ImageService {
       throw new BadRequestException('No se han subido imágenes');
     }
 
-    const imagePaths = files.map(
-      (file) => `/uploads/${folder}/${file.filename}`,
-    );
+    const imagePaths = files.map((file) => {
+      const uniqueName = this.generateUniqueName(file.originalname);
+      const fullPath = `/uploads/${folder}/${uniqueName}`;
+      return fullPath;
+    });
+
     return imagePaths;
   }
 
@@ -25,5 +29,13 @@ export class ImageService {
         throw new BadRequestException(`Error al eliminar la imagen: ${path}`);
       }
     }
+  }
+
+  private generateUniqueName(originalName: string): string {
+    const randomName = Array(32)
+      .fill(null)
+      .map(() => Math.round(Math.random() * 16).toString(16))
+      .join('');
+    return `${randomName}${extname(originalName)}`;
   }
 }

@@ -1,4 +1,10 @@
-import { IsOptional, IsString, IsBoolean, IsDate } from 'class-validator';
+import {
+  IsOptional,
+  IsString,
+  IsBoolean,
+  IsDate,
+  IsUUID,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class FiltroTrabajoDto {
@@ -17,8 +23,8 @@ export class FiltroTrabajoDto {
   fechaHasta?: Date;
 
   @IsOptional()
-  @IsString()
-  tipoTrabajo?: string;
+  @IsUUID()
+  idServicio?: string;
 
   @IsOptional()
   @Type(() => Boolean)

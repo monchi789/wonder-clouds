@@ -4,22 +4,68 @@ import { Repository } from 'typeorm';
 import { PopUp } from './entities/popup.entity';
 import { CreatePopUpDto } from './dto/create-popuo.dto';
 import { UpdatePopUpDto } from './dto/update-popup.dto';
+import { ImageService } from '../imagenes/subir_image.service';
 
 @Injectable()
 export class PopUpService {
   constructor(
     @InjectRepository(PopUp)
     private readonly popUpRepository: Repository<PopUp>,
+    private readonly imageService: ImageService,
   ) {}
 
-  async create(createPopUpDto: CreatePopUpDto) {
-    const popUp = this.popUpRepository.create(createPopUpDto);
+  async createWithImage(
+    createPopUpDto: CreatePopUpDto,
+    file: Express.Multer.File,
+  ) {
+    const imagePath = await this.imageService.uploadImages([file], 'popup');
+
+    const popUp = this.popUpRepository.create({
+      ...createPopUpDto,
+      imagenPopUp: imagePath[0],
+    });
 
     if (createPopUpDto.estadoPopUp) {
       await this.setAllPopUpToFalse();
     }
 
     return await this.popUpRepository.save(popUp);
+  }
+
+  async updateWithImage(
+    idPopUp: string,
+    updatePopUpDto: UpdatePopUpDto,
+    file?: Express.Multer.File,
+  ) {
+    const popUp = await this.findOne(idPopUp);
+
+    let imagenPopUp = popUp.imagenPopUp;
+
+    if (file) {
+      await this.imageService.deleteImages([popUp.imagenPopUp]);
+      const newImagePath = await this.imageService.uploadImages(
+        [file],
+        'popup',
+      );
+      imagenPopUp = newImagePath[0];
+    }
+
+    const updatedPopUp = {
+      ...popUp,
+      ...updatePopUpDto,
+      imagenPopUp,
+    };
+
+    return await this.popUpRepository.save(updatedPopUp);
+  }
+
+  async removeWithImage(idPopUp: string) {
+    const popUp = await this.findOne(idPopUp);
+
+    await this.imageService.deleteImages([popUp.imagenPopUp]);
+
+    await this.popUpRepository.remove(popUp);
+    return { message: `PopUp con id ${idPopUp} eliminado` };
   }
 
   async findAll() {
@@ -34,31 +80,6 @@ export class PopUpService {
     return popUp;
   }
 
-  async update(
-    idPopUp: string,
-    updatePopUpDto: Partial<UpdatePopUpDto & { imagenPopUp?: string }>,
-  ) {
-    const popUp = await this.popUpRepository.preload({
-      idPopUp,
-      ...updatePopUpDto,
-    });
-
-    if (!popUp) {
-      throw new NotFoundException(`PopUp con id ${idPopUp} no encontrado`);
-    }
-
-    return await this.popUpRepository.save(popUp);
-  }
-
-  async remove(idPopUp: string) {
-    const popUp = await this.popUpRepository.findOne({ where: { idPopUp } });
-    if (!popUp) {
-      throw new NotFoundException(`PopUp con id ${idPopUp} no encontrado`);
-    }
-    await this.popUpRepository.remove(popUp);
-    return { message: `PopUp con id ${idPopUp} eliminado` };
-  }
-
   async unPopUp() {
     const popUp = await this.popUpRepository.findOne({
       where: { estadoPopUp: true },
@@ -66,7 +87,7 @@ export class PopUpService {
     });
 
     if (!popUp) {
-      throw new NotFoundException(`No hay PopUps para listar`);
+      throw new NotFoundException(`No hay PopUps activos`);
     }
 
     return popUp;

@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Trabajo } from './entities/trabajo.entity';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Cliente } from 'src/cliente/entities/cliente.entity';
+import { Servicio } from 'src/servicio/entities/servicio.entity';
 import { FiltroTrabajoDto } from './dto/trabajo.filtro.dto';
 
 @Injectable()
@@ -14,6 +15,8 @@ export class TrabajoService {
     private readonly trabajoRepository: Repository<Trabajo>,
     @InjectRepository(Cliente)
     private readonly clienteRepository: Repository<Cliente>,
+    @InjectRepository(Servicio)
+    private readonly servicioRepository: Repository<Servicio>,
   ) {}
 
   private aplicarFiltros(
@@ -24,7 +27,7 @@ export class TrabajoService {
       nombreTrabajo,
       fechaDesde,
       fechaHasta,
-      tipoTrabajo,
+      idServicio,
       visibilidadTrabajo,
     } = filtros;
 
@@ -37,10 +40,7 @@ export class TrabajoService {
     if (fechaDesde && fechaHasta) {
       queryBuilder.andWhere(
         'trabajo.fechaTrabajo BETWEEN :fechaDesde AND :fechaHasta',
-        {
-          fechaDesde,
-          fechaHasta,
-        },
+        { fechaDesde, fechaHasta },
       );
     } else if (fechaDesde) {
       queryBuilder.andWhere('trabajo.fechaTrabajo >= :fechaDesde', {
@@ -52,25 +52,21 @@ export class TrabajoService {
       });
     }
 
-    if (tipoTrabajo) {
-      queryBuilder.andWhere('trabajo.tipoTrabajo = :tipoTrabajo', {
-        tipoTrabajo,
-      });
+    if (idServicio) {
+      queryBuilder.andWhere('trabajo.idServicio = :idServicio', { idServicio });
     }
 
     if (visibilidadTrabajo !== undefined) {
       queryBuilder.andWhere(
         'trabajo.visibilidadTrabajo = :visibilidadTrabajo',
-        {
-          visibilidadTrabajo,
-        },
+        { visibilidadTrabajo },
       );
     }
 
     return queryBuilder;
   }
 
-  async create(createTrabajoDto: CreateTrabajoDto, portadaTrabajo: string) {
+  async create(createTrabajoDto: CreateTrabajoDto) {
     const cliente = await this.clienteRepository.findOne({
       where: { idCliente: createTrabajoDto.idCliente },
     });
@@ -81,10 +77,20 @@ export class TrabajoService {
       );
     }
 
+    const servicio = await this.servicioRepository.findOne({
+      where: { idServicio: createTrabajoDto.idServicio },
+    });
+
+    if (!servicio) {
+      throw new NotFoundException(
+        `Servicio con el id ${createTrabajoDto.idServicio} no encontrado.`,
+      );
+    }
+
     const trabajo = this.trabajoRepository.create({
       ...createTrabajoDto,
-      portadaTrabajo,
       idCliente: cliente,
+      idServicio: servicio,
     });
 
     return await this.trabajoRepository.save(trabajo);
@@ -98,7 +104,7 @@ export class TrabajoService {
   async findOne(idTrabajo: string) {
     const trabajo = await this.trabajoRepository.findOne({
       where: { idTrabajo },
-      relations: ['idCliente'],
+      relations: ['idCliente', 'idServicio'],
     });
 
     if (!trabajo) {
@@ -110,14 +116,17 @@ export class TrabajoService {
     return trabajo;
   }
 
-  async update(
-    idTrabajo: string,
-    updateTrabajoDto: UpdateTrabajoDto,
-    portadaTrabajo?: string,
-  ) {
-    let cliente = null;
+  async update(idTrabajo: string, updateTrabajoDto: UpdateTrabajoDto) {
+    const trabajo = await this.findOne(idTrabajo);
+
+    if (!trabajo) {
+      throw new NotFoundException(
+        `Trabajo con el id ${idTrabajo} no encontrado.`,
+      );
+    }
+
     if (updateTrabajoDto.idCliente) {
-      cliente = await this.clienteRepository.findOne({
+      const cliente = await this.clienteRepository.findOne({
         where: { idCliente: updateTrabajoDto.idCliente },
       });
 
@@ -126,23 +135,25 @@ export class TrabajoService {
           `Cliente con el id ${updateTrabajoDto.idCliente} no encontrado.`,
         );
       }
+
+      trabajo.idCliente = cliente;
     }
 
-    const trabajo = await this.trabajoRepository.preload({
-      idTrabajo,
-      ...updateTrabajoDto,
-      idCliente: cliente ? cliente : undefined,
-    });
+    if (updateTrabajoDto.idServicio) {
+      const servicio = await this.servicioRepository.findOne({
+        where: { idServicio: updateTrabajoDto.idServicio },
+      });
 
-    if (!trabajo) {
-      throw new NotFoundException(
-        `Trabajo con el id ${idTrabajo} no encontrado.`,
-      );
+      if (!servicio) {
+        throw new NotFoundException(
+          `Servicio con el id ${updateTrabajoDto.idServicio} no encontrado.`,
+        );
+      }
+
+      trabajo.idServicio = servicio;
     }
 
-    if (portadaTrabajo) {
-      trabajo.portadaTrabajo = portadaTrabajo;
-    }
+    Object.assign(trabajo, updateTrabajoDto);
 
     return await this.trabajoRepository.save(trabajo);
   }
@@ -162,11 +173,12 @@ export class TrabajoService {
   async listaTrabajo(filtros?: FiltroTrabajoDto) {
     const queryBuilder = this.trabajoRepository
       .createQueryBuilder('trabajo')
+      .leftJoinAndSelect('trabajo.idServicio', 'servicio')
       .select([
         'trabajo.idTrabajo',
         'trabajo.portadaTrabajo',
         'trabajo.nombreTrabajo',
-        'trabajo.tipoTrabajo',
+        'servicio.nombreServicio',
       ]);
 
     if (filtros) {
@@ -179,13 +191,13 @@ export class TrabajoService {
   async unTrabajo(idTrabajo: string) {
     const trabajo = await this.trabajoRepository.findOne({
       where: { idTrabajo },
+      relations: ['idServicio'],
       select: [
         'idTrabajo',
         'descripcionTrabajo',
         'fechaTrabajo',
         'nombreTrabajo',
         'portadaTrabajo',
-        'tipoTrabajo',
       ],
     });
 
