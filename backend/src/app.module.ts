@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PublicacionModule } from './publicacion/publicacion.module';
-import { SliderModule } from './slider/slider.module';
+import { GaleriaModule } from './galeria/galeria.module';
 import { ClienteModule } from './cliente/cliente.module';
 import { TrabajoModule } from './trabajo/trabajo.module';
 import { DetalleTrabajoModule } from './detalle-trabajo/detalle-trabajo.module';
@@ -17,7 +17,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     PublicacionModule,
-    SliderModule,
+    GaleriaModule,
     PopUpModule,
     ServicioModule,
     TipoGeneralModule,
