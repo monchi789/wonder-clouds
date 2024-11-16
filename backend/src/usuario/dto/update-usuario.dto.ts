@@ -23,4 +23,19 @@ export class UpdateUsuarioDto {
   @IsOptional()
   @MinLength(3)
   rol?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  nombre: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  apellidoPaterno: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  apellidoMaterno: string;
 }
