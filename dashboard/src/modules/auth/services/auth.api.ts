@@ -8,8 +8,9 @@ export const getTokenAuth = async (email: string, contrasena: string) => {
       email: email,
       contrasena: contrasena
     });
+    console.log(res)
 
-    const token = res.data.token;
+    const token = res.data.accessToken;
     
     return token;
     
