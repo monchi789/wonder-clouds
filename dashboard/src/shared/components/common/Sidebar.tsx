@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom";;
-import { Briefcase, FileUser, Megaphone, SquareUserRound, Building2, SquareCheckBig, ChevronLeft, ChevronRight, LayoutDashboard } from "lucide-react";
+import { Briefcase, FileUser, Megaphone, SquareUserRound, Building2, ChevronLeft, ChevronRight, LayoutDashboard } from "lucide-react";
 
 interface MenuItemProps {
   to: string;
@@ -47,24 +47,19 @@ const Sidebar = () => {
           <div className="flex-grow">
             <div className="flex flex-col w-full">
               <ul className="flex flex-col w-full justify-between pt-20">
-                <MenuItem to="/admin" icon={<LayoutDashboard />} text="Panel general" collapsed={!isSidebarOpen} />
+                <MenuItem to="/" icon={<LayoutDashboard />} text="Panel general" collapsed={!isSidebarOpen} />
                 {!isSidebarOpen ? null :
                   <span className="text-gray-400 text-sm font-medium mx-5 mt-4 mb-2">Gestión</span>
                 }
-                <MenuItem to="/aplicantes" icon={<SquareUserRound />} text="Aplicantes" collapsed={!isSidebarOpen} />
-                <MenuItem to="/cargos" icon={<Briefcase />} text="Cargos" collapsed={!isSidebarOpen} />
-                <MenuItem to="/dependencias" icon={<Building2 />} text="Dependencias" collapsed={!isSidebarOpen} />
+                <MenuItem to="/clients" icon={<SquareUserRound />} text="Clientes" collapsed={!isSidebarOpen} />
+                <MenuItem to="/works" icon={<Briefcase />} text="Trabajos" collapsed={!isSidebarOpen} />
+                <MenuItem to="/services" icon={<Building2 />} text="Servicios" collapsed={!isSidebarOpen} />
 
                 {!isSidebarOpen ? null :
-                  <span className="text-gray-400 text-sm font-medium mx-5 mt-4 mb-2">Operaciones</span>
+                  <span className="text-gray-400 text-sm font-medium mx-5 mt-4 mb-2">Contenido</span>
                 }
-                <MenuItem to="/solicitudes" icon={<FileUser />} text="Solicitudes" collapsed={!isSidebarOpen} />
-                <MenuItem to="/convocatorias" icon={<Megaphone />} text="Convocatorias" collapsed={!isSidebarOpen} />
-
-                {!isSidebarOpen ? null :
-                  <span className="text-gray-400 text-sm font-medium mx-5 mt-4 mb-2">Calificaciones</span>
-                }
-                <MenuItem to="/calificaciones" icon={<SquareCheckBig />} text="Calificaciones" collapsed={!isSidebarOpen} />
+                <MenuItem to="/posts" icon={<FileUser />} text="Publicaciones" collapsed={!isSidebarOpen} />
+                <MenuItem to="/popups" icon={<Megaphone />} text="Anuncios" collapsed={!isSidebarOpen} />
               </ul>
             </div>
           </div>
