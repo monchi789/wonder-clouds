@@ -7,8 +7,14 @@ import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Producto } from './entities/producto.entity';
-import { Repository } from 'typeorm';
+import {
+  Repository,
+  FindOptionsWhere,
+  MoreThanOrEqual,
+  LessThanOrEqual,
+} from 'typeorm';
 import { ImageService } from '../imagenes/subir_image.service';
+import { FiltroProductoDto } from './dto/producto-filtro.dto';
 
 @Injectable()
 export class ProductoService {
@@ -37,8 +43,58 @@ export class ProductoService {
     return await this.productoRepository.save(producto);
   }
 
-  async findAll() {
-    return await this.productoRepository.find();
+  async findAll(filtros?: FiltroProductoDto) {
+    const where: FindOptionsWhere<Producto> = {};
+
+    if (filtros?.nombreProducto) {
+      where.nombreProducto = filtros.nombreProducto;
+    }
+
+    if (filtros?.precioMinimo || filtros?.precioMaximo) {
+      if (filtros.precioMinimo && filtros.precioMaximo) {
+        where.precioPruducto =
+          MoreThanOrEqual(filtros.precioMinimo) &&
+          LessThanOrEqual(filtros.precioMaximo);
+      } else if (filtros.precioMinimo) {
+        where.precioPruducto = MoreThanOrEqual(filtros.precioMinimo);
+      } else if (filtros.precioMaximo) {
+        where.precioPruducto = LessThanOrEqual(filtros.precioMaximo);
+      }
+    }
+
+    if (filtros?.categoriaProducto) {
+      where.categoriaProducto = filtros.categoriaProducto;
+    }
+
+    if (filtros?.estadoActivo !== undefined) {
+      where.estadoActivo = filtros.estadoActivo;
+    }
+
+    return await this.productoRepository.find({ where });
+  }
+
+  async findPublicos(filtros?: FiltroProductoDto) {
+    const where: FindOptionsWhere<Producto> = { estadoActivo: true };
+
+    if (filtros?.categoriaProducto) {
+      where.categoriaProducto = filtros.categoriaProducto;
+    }
+
+    return await this.productoRepository.find({ where });
+  }
+
+  async findPublicoById(idProducto: string) {
+    const producto = await this.productoRepository.findOne({
+      where: { idProducto, estadoActivo: true },
+    });
+
+    if (!producto) {
+      throw new NotFoundException(
+        `Producto público con el ID ${idProducto} no encontrado.`,
+      );
+    }
+
+    return producto;
   }
 
   async findOne(idProducto: string) {
@@ -61,12 +117,6 @@ export class ProductoService {
     files?: Express.Multer.File[],
   ) {
     const existingProducto = await this.findOne(idProducto);
-
-    if (!existingProducto) {
-      throw new NotFoundException(
-        `Producto con el id ${idProducto} no encontrado.`,
-      );
-    }
 
     let newImagePaths: string[] = existingProducto.imagenProducto;
 
@@ -94,12 +144,6 @@ export class ProductoService {
   async remove(idProducto: string) {
     const existingProducto = await this.findOne(idProducto);
 
-    if (!existingProducto) {
-      throw new NotFoundException(
-        `Producto con el id ${idProducto} no encontrado.`,
-      );
-    }
-
     await this.imageService.deleteImages(existingProducto.imagenProducto);
 
     const result = await this.productoRepository.softDelete(idProducto);
@@ -111,21 +155,5 @@ export class ProductoService {
     }
 
     return { message: `Producto con el id ${idProducto} eliminado.` };
-  }
-
-  async listaProductos() {
-    return await this.productoRepository.find({
-      select: [
-        'idProducto',
-        'nombreProducto',
-        'descripcionProducto',
-        'precioPruducto',
-        'imagenProducto',
-        'categoriaProducto',
-        'estadoActivo',
-        'createAt',
-        'updateAt',
-      ],
-    });
   }
 }

@@ -8,6 +8,7 @@ import {
   UploadedFiles,
   UseInterceptors,
   Body,
+  Query,
   BadRequestException,
 } from '@nestjs/common';
 import { ProductoService } from './producto.service';
@@ -19,10 +20,10 @@ import {
   ApiOperation,
   ApiResponse,
   ApiConsumes,
-  ApiParam,
 } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { FiltroProductoDto } from './dto/producto-filtro.dto';
 
 @ApiTags('Productos')
 @Controller('productos')
@@ -48,46 +49,33 @@ export class ProductoController {
   }
 
   @Get()
-  @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Obtiene todos los productos' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de productos obtenida exitosamente.',
-  })
-  findAll() {
-    return this.productoService.findAll();
+  async findAll(@Query() filtros: FiltroProductoDto) {
+    return this.productoService.findAll(filtros);
   }
 
-  @Get('lista-productos')
-  @ApiOperation({ summary: 'Obtiene una lista simplificada de productos' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de productos obtenida exitosamente.',
-  })
-  listaProductos() {
-    return this.productoService.listaProductos();
+  @Get('publicos')
+  @ApiOperation({ summary: 'Obtiene todos los productos públicos' })
+  async findPublicos(@Query() filtros: FiltroProductoDto) {
+    return this.productoService.findPublicos(filtros);
+  }
+
+  @Get('publicos/:id')
+  @ApiOperation({ summary: 'Obtiene un producto público por ID' })
+  async findPublicoById(@Param('id') id: string) {
+    return this.productoService.findPublicoById(id);
   }
 
   @Get(':id')
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Obtiene un producto por su ID' })
-  @ApiResponse({ status: 200, description: 'Producto obtenido exitosamente.' })
-  @ApiResponse({ status: 404, description: 'Producto no encontrado.' })
-  @ApiParam({ name: 'id', description: 'ID del producto a obtener' })
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.productoService.findOne(id);
   }
 
   @Patch(':id')
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Actualizar un producto' })
-  @ApiConsumes('multipart/form-data')
-  @ApiParam({ name: 'id', description: 'ID del producto a actualizar' })
-  @ApiResponse({
-    status: 200,
-    description: 'Producto actualizado exitosamente.',
-  })
-  @ApiResponse({ status: 404, description: 'Producto no encontrado.' })
   @UseInterceptors(FilesInterceptor('imagenes', 10))
   async update(
     @Param('id') id: string,
@@ -100,9 +88,6 @@ export class ProductoController {
   @Delete(':id')
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Eliminar un producto' })
-  @ApiParam({ name: 'id', description: 'ID del producto a eliminar' })
-  @ApiResponse({ status: 200, description: 'Producto eliminado exitosamente.' })
-  @ApiResponse({ status: 404, description: 'Producto no encontrado.' })
   async remove(@Param('id') id: string) {
     return this.productoService.remove(id);
   }
