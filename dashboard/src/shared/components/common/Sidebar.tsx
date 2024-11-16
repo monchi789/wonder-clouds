@@ -33,11 +33,11 @@ const Sidebar = () => {
 
       <div
         className={`fixed xl:static h-full z-30 ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } xl:translate-x-0 transition-all duration-500 ease-in-out bg-uac ${isSidebarOpen ? 'w-64' : 'w-16'}`}
+          } xl:translate-x-0 transition-all duration-500 ease-in-out bg-wonder-blue ${isSidebarOpen ? 'w-64' : 'w-16'}`}
       >
         {/* Collapse button */}
         <button
-          className="absolute -right-3 top-8 bg-uac-alter text-white rounded-full p-1 hidden xl:flex items-center justify-center"
+          className="absolute -right-3 top-8 bg-sky-500 text-white rounded-full p-1 hidden xl:flex items-center justify-center"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         >
           {isSidebarOpen ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
