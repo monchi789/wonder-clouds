@@ -20,4 +20,22 @@ export class UpdatePasswordDto {
   @IsString()
   @MinLength(6)
   nuevaContrasena: string;
+
+  @IsOptional()
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(3)
+  nombre?: string;
+
+  @IsOptional()
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(3)
+  apellidoPaterno?: string;
+
+  @IsOptional()
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(3)
+  apellidoMaterno?: string;
 }

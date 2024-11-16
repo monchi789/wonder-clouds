@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Trabajo } from 'src/trabajo/entities/trabajo.entity'; // Importa la entidad Trabajo
 
 @Entity()
 export class Cliente {
@@ -41,6 +43,9 @@ export class Cliente {
 
   @Column({ type: 'text' })
   tipoCliente: string;
+
+  @OneToMany(() => Trabajo, (trabajo) => trabajo.idCliente, { cascade: true }) // Relación uno a muchos
+  trabajos: Trabajo[];
 
   @CreateDateColumn()
   createAt: Date;

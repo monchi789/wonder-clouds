@@ -33,24 +33,7 @@ export class ClienteController {
 
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo cliente' })
-  @ApiConsumes('multipart/form-data') // Indica que se utilizará multipart/form-data
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        nombre: { type: 'string' },
-        apellidoPaterno: { type: 'string' },
-        apellidoMaterno: { type: 'string' },
-        nroDocumento: { type: 'string' },
-        rubro: { type: 'string' },
-        celular: { type: 'string' },
-        correo: { type: 'string' },
-        direccion: { type: 'string' },
-        tipoDocumento: { type: 'string' },
-        tipoCliente: { type: 'string' },
-      },
-    },
-  })
+  @ApiConsumes('application/json')
   create(@Body() createClienteDto: CreateClienteDto) {
     return this.clienteService.create(createClienteDto);
   }
@@ -73,7 +56,7 @@ export class ClienteController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Actualizar un cliente' })
-  @ApiConsumes('multipart/form-data') // Indica que se utilizará multipart/form-data
+  @ApiConsumes('application/json') // Indica que se utilizará application/json
   @ApiBody({
     schema: {
       type: 'object',

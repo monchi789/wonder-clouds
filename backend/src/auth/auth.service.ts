@@ -19,7 +19,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({ usuario, contrasena, email }: RegisterDto) {
+  async register({
+    usuario,
+    contrasena,
+    email,
+    nombre,
+    apellidoMaterno,
+    apellidoPaterno,
+  }: RegisterDto) {
     const nombreUsuario = await this.usuarioService.findByEmail(email);
 
     if (nombreUsuario) {
@@ -32,6 +39,9 @@ export class AuthService {
       usuario,
       email,
       contrasena: hashedPassword,
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
     });
 
     // Verificar que el hash se guardó correctamente
@@ -114,7 +124,14 @@ export class AuthService {
 
   async password(
     idUsuario: string,
-    { email, contrasena, nuevaContrasena }: UpdatePasswordDto,
+    {
+      email,
+      contrasena,
+      nuevaContrasena,
+      nombre,
+      apellidoMaterno,
+      apellidoPaterno,
+    }: UpdatePasswordDto,
   ) {
     const nombreUsuario =
       await this.usuarioService.findByEmailWithPassword(email);
@@ -137,6 +154,9 @@ export class AuthService {
     await this.usuarioService.update(idUsuario, {
       email,
       contrasena: hashedPassword,
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
     });
 
     return this.usuarioService.findByEmail(email);

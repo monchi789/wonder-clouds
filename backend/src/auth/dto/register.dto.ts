@@ -14,4 +14,19 @@ export class RegisterDto {
 
   @IsEmail()
   email: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(3)
+  nombre: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(3)
+  apellidoPaterno: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsString()
+  @MinLength(3)
+  apellidoMaterno: string;
 }

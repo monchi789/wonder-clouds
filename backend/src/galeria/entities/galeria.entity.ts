@@ -8,16 +8,21 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Slider {
+export class Galeria {
   @PrimaryGeneratedColumn('uuid')
-  idSlider: string;
+  idGaleria: string;
 
   @Column({ type: 'boolean' })
-  estadoSlider: boolean;
+  estadoGaleria: boolean;
 
-  // Cambiamos a un array de texto para soportar múltiples imágenes
   @Column('text', { array: true })
   imagen: string[];
+
+  @Column({ type: 'text' })
+  tituloGaleria: string;
+
+  @Column({ type: 'text' })
+  descripcion: string;
 
   @CreateDateColumn()
   createAt: Date;
