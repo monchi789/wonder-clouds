@@ -31,5 +31,5 @@ export class CreateProductoDto {
   @IsNotEmpty()
   @IsBoolean()
   @Type(() => Boolean)
-  descripcion: boolean;
+  estadoActivo: boolean;
 }

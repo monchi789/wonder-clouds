@@ -31,5 +31,5 @@ export class UpdateProductoDto {
   @IsOptional()
   @IsBoolean()
   @Type(() => Boolean)
-  descripcion: boolean;
+  estadoActivo: boolean;
 }

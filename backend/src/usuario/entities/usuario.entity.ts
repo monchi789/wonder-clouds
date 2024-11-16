@@ -25,6 +25,15 @@ export class Usuario {
   @Column({ type: 'enum', default: Rol.USUARIO, enum: Rol })
   rol: string;
 
+  @Column({ type: 'text', unique: true })
+  nombre: string;
+
+  @Column({ type: 'text', unique: true })
+  apellidoPaterno: string;
+
+  @Column({ type: 'text', unique: true })
+  apellidoMaterno: string;
+
   @CreateDateColumn()
   createAt: Date;
 

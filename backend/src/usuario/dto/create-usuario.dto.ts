@@ -23,4 +23,19 @@ export class CreateUsuarioDto {
   @IsNotEmpty()
   @MinLength(3)
   rol?: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(1)
+  nombre: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(1)
+  apellidoPaterno: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(1)
+  apellidoMaterno: string;
 }
