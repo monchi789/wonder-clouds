@@ -33,8 +33,7 @@ const Sidebar = () => {
 
       <div
         className={`fixed xl:static h-full z-30 ${isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } xl:translate-x-0 transition-all duration-200 ease-in-out bg-black
-        ${isSidebarOpen ? 'w-64' : 'w-16'}`}
+          } xl:translate-x-0 transition-all duration-500 ease-in-out bg-uac ${isSidebarOpen ? 'w-64' : 'w-16'}`}
       >
         {/* Collapse button */}
         <button
@@ -52,7 +51,7 @@ const Sidebar = () => {
                 {!isSidebarOpen ? null :
                   <span className="text-gray-400 text-sm font-medium mx-5 mt-4 mb-2">Gestión</span>
                 }
-                <MenuItem to="/aplicantes" icon={<SquareUserRound />} text="Clientes" collapsed={!isSidebarOpen} />
+                <MenuItem to="/aplicantes" icon={<SquareUserRound />} text="Aplicantes" collapsed={!isSidebarOpen} />
                 <MenuItem to="/cargos" icon={<Briefcase />} text="Cargos" collapsed={!isSidebarOpen} />
                 <MenuItem to="/dependencias" icon={<Building2 />} text="Dependencias" collapsed={!isSidebarOpen} />
 
