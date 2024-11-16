@@ -3,6 +3,7 @@ import { PublicacionModule } from './publicacion/publicacion.module';
 import { GaleriaModule } from './galeria/galeria.module';
 import { ClienteModule } from './cliente/cliente.module';
 import { TrabajoModule } from './trabajo/trabajo.module';
+import { ProductoModule } from './producto/producto.module';
 import { DetalleTrabajoModule } from './detalle-trabajo/detalle-trabajo.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -22,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
     ServicioModule,
     TipoGeneralModule,
     ClienteModule,
+    ProductoModule,
     TrabajoModule,
     DetalleTrabajoModule,
     ConfigModule.forRoot({
