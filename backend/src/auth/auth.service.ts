@@ -121,17 +121,9 @@ export class AuthService {
       throw new UnauthorizedException('Refresh token inválido o expirado');
     }
   }
-
   async password(
     idUsuario: string,
-    {
-      email,
-      contrasena,
-      nuevaContrasena,
-      nombre,
-      apellidoMaterno,
-      apellidoPaterno,
-    }: UpdatePasswordDto,
+    { email, contrasena, nuevaContrasena }: UpdatePasswordDto,
   ) {
     const nombreUsuario =
       await this.usuarioService.findByEmailWithPassword(email);
@@ -151,12 +143,9 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(nuevaContrasena, this.SALT_ROUNDS);
 
-    await this.usuarioService.update(idUsuario, {
+    await this.usuarioService.changePassword(idUsuario, {
       email,
       contrasena: hashedPassword,
-      nombre,
-      apellidoPaterno,
-      apellidoMaterno,
     });
 
     return this.usuarioService.findByEmail(email);
