@@ -1,10 +1,15 @@
-import PostCard from "../components/PostCard";
+import PostsCard from "../components/PostsCard";
+import PostsTitle from "../components/PostsTitle";
 
 const ClientsMain = () => {
   return (
-    <div>
-      <PostCard title="xd" portada="xd" date="asd" />
-    </div>
+    <>
+      <PostsTitle />
+
+      <div className="mt-6">
+        <PostsCard title="xd" portada="xd" date="asd" />
+      </div>
+    </>
   )
 }
 

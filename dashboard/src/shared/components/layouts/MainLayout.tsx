@@ -12,7 +12,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
       <div className="flex-1 flex flex-col w-full overflow-hidden">
 
         {/* Main Content - Scrollable */}
-        <main className="flex-1 overflow-auto p-4">
+        <main className="flex-1 overflow-auto p-10">
           {children}
         </main>
       </div>
