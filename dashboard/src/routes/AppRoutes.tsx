@@ -11,7 +11,8 @@ const Posts = lazy(() => import('@/modules/posts/pages/PostsMain'))
 const routes = [
   { path: "/", element: <Client /> },
   { path: "/login", element: <Login /> },
-  { path: "/posts", element: <Posts />}
+  { path: "/posts", element: <Posts />},
+  { path: "/clients", element: <Client />}
 ];
 
 const AppRoutes = () => {
