@@ -35,5 +35,5 @@ export class TipoGeneral {
   updatedAt: Date;
 
   @DeleteDateColumn()
-  deletedAt: Date;
+  deleteAt: Date;
 }
