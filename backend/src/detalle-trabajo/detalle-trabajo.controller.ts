@@ -10,9 +10,10 @@ import {
 import { DetalleTrabajoService } from './detalle-trabajo.service';
 import { CreateDetalleTrabajoDto } from './dto/create-detalle-trabajo.dto';
 import { UpdateDetalleTrabajoDto } from './dto/update-detalle-trabajo.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { DetalleTrabajoDocumentationDto } from './documentation/detalle-trabajo-doc.dto';
 
 @ApiTags('Detalle Trabajo')
 @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
@@ -21,6 +22,11 @@ export class DetalleTrabajoController {
   constructor(private readonly detalleTrabajoService: DetalleTrabajoService) {}
 
   @Post()
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para crear un nuevo detalle de trabajo',
+    type: DetalleTrabajoDocumentationDto,
+  })
   create(@Body() createDetalleTrabajoDto: CreateDetalleTrabajoDto) {
     return this.detalleTrabajoService.create(createDetalleTrabajoDto);
   }
@@ -36,6 +42,11 @@ export class DetalleTrabajoController {
   }
 
   @Patch(':id')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para actualizar un detalle de trabajo',
+    type: DetalleTrabajoDocumentationDto,
+  })
   update(
     @Param('id') id: string,
     @Body() updateDetalleTrabajoDto: UpdateDetalleTrabajoDto,

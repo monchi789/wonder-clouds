@@ -1,7 +1,9 @@
 import { Transform } from 'class-transformer';
 import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import { UpdateUsuarioDto } from '../../usuario/dto/update-usuario.dto';
+import { PartialType } from '@nestjs/swagger';
 
-export class UpdatePasswordDto {
+export class UpdatePasswordDto extends PartialType(UpdateUsuarioDto) {
   @IsOptional()
   @Transform(({ value }) => value.trim())
   @IsString()
@@ -20,22 +22,4 @@ export class UpdatePasswordDto {
   @IsString()
   @MinLength(6)
   nuevaContrasena: string;
-
-  @IsOptional()
-  @Transform(({ value }) => value.trim())
-  @IsString()
-  @MinLength(3)
-  nombre?: string;
-
-  @IsOptional()
-  @Transform(({ value }) => value.trim())
-  @IsString()
-  @MinLength(3)
-  apellidoPaterno?: string;
-
-  @IsOptional()
-  @Transform(({ value }) => value.trim())
-  @IsString()
-  @MinLength(3)
-  apellidoMaterno?: string;
 }

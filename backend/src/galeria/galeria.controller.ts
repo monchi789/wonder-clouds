@@ -20,9 +20,11 @@ import {
   ApiResponse,
   ApiConsumes,
   ApiParam,
+  ApiBody,
 } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { GaleriaDocumentationDto } from './documentation/galeriadoc.dto';
 
 @ApiTags('Galeria')
 @Controller('galeria')
@@ -32,7 +34,11 @@ export class GaleriaController {
   @Post()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Crear una nueva galería' })
-  @ApiConsumes('application/json')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para crear una nueva galería',
+    type: GaleriaDocumentationDto,
+  })
   @ApiResponse({ status: 201, description: 'Galería creada exitosamente.' })
   @ApiResponse({ status: 400, description: 'No se han subido imágenes.' })
   @UseInterceptors(FilesInterceptor('imagenes', 10))
@@ -81,8 +87,12 @@ export class GaleriaController {
   @Patch(':id')
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Actualizar una galería' })
-  @ApiConsumes('application/json')
+  @ApiConsumes('application/json', 'multipart/form-data')
   @ApiParam({ name: 'id', description: 'ID de la galería a actualizar' })
+  @ApiBody({
+    description: 'Estructura necesaria para actualizar una galería',
+    type: GaleriaDocumentationDto,
+  })
   @ApiResponse({
     status: 200,
     description: 'Galería actualizada exitosamente.',
