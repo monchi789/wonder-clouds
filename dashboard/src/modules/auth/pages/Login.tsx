@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserCircle, Lock } from "lucide-react";
 import useAuth from "@/modules/auth/hooks/useAuth";
 import { getTokenAuth } from "@/modules/auth/services/auth.api";
-import { getMemes } from "@/modules/auth/services/meme.api";
 import LoadingSpinner from "@/shared/components/common/LoadingSpinner";
 import { Alert, AlertDescription } from "@/shared/components/ui/alert";
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import wonder from "@/assets/images/wonderclouds.webp";
+import MemeList from "../components/MemeList";
 
 interface FormData {
   username: string;
@@ -16,35 +16,17 @@ interface FormData {
 }
 
 const Login = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState<FormData>({
     username: "",
     password: "",
   });
+
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [memeUrl, setMemeUrl] = useState<string | null>(null);
-  const [isMemeLoading, setIsMemeLoading] = useState<boolean>(true);
   
-  const { login } = useAuth();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchMeme = async () => {
-      try {
-        const memes = await getMemes();
-        if (memes?.length > 0) {
-          setMemeUrl(memes[0].image);
-        }
-      } catch (error) {
-        console.error('Error fetching meme:', error);
-      } finally {
-        setIsMemeLoading(false);
-      }
-    };
-
-    fetchMeme();
-  }, []);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -70,34 +52,6 @@ const Login = () => {
     }
   };
 
-  const renderMemeContent = () => {
-    if (isMemeLoading) {
-      return (
-        <div className="w-full h-full flex items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      );
-    }
-
-    if (!memeUrl) {
-      return (
-        <div className="w-full flex items-center justify-center">
-          <Alert variant="destructive">
-            <AlertDescription>No se pudo cargar el meme.</AlertDescription>
-          </Alert>
-        </div>
-      );
-    }
-
-    return (
-      <img
-        src={memeUrl}
-        alt="Meme de programación"
-        className="w-full h-60 object-contain"
-        loading="lazy"
-      />
-    );
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
@@ -115,7 +69,7 @@ const Login = () => {
         {/* Meme Section with Fixed Height */}
         <div className="px-6">
           <div className="bg-gray-50 rounded-lg overflow-hidden">
-            {renderMemeContent()}
+            <MemeList />
           </div>
         </div>
 

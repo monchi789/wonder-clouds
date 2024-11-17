@@ -2,7 +2,7 @@ export interface Post {
   id: string,
   titulo: string,
   contenido: string,
-  portada: string,
+  portada: string | null,
   categoriaPublicacion: string
 }
 
@@ -10,6 +10,6 @@ export const defaultPost: Post = {
   id: "",
   titulo: "",
   contenido: "",
-  portada: "",
+  portada: null,
   categoriaPublicacion: ""
 } 

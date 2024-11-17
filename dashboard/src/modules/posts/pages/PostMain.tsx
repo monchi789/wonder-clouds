@@ -1,5 +1,5 @@
-import PostsCard from "../components/PostsCard";
-import PostsTitle from "../components/PostsTitle";
+import PostsCard from "../components/PostCard";
+import PostsTitle from "../components/PostTitle";
 
 const ClientsMain = () => {
   return (
