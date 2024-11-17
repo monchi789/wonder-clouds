@@ -10,9 +10,10 @@ import {
 import { TipoGeneralService } from './tipo-general.service';
 import { CreateTipoGeneralDto } from './dto/create-tipo-general.dto';
 import { UpdateTipoGeneralDto } from './dto/update-tipo-general.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
+import { TipoGeneralDocumentationDto } from './documentation/tipo-generaldoc.dto';
 
 @ApiTags('Tipo General')
 @Controller('tipo-general')
@@ -20,6 +21,11 @@ export class TipoGeneralController {
   constructor(private readonly tipoGeneralService: TipoGeneralService) {}
 
   @Post()
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para crear un nuevo tipo general',
+    type: TipoGeneralDocumentationDto,
+  })
   @Auth(Rol.ADMIN)
   create(@Body() createTipoGeneralDto: CreateTipoGeneralDto) {
     return this.tipoGeneralService.create(createTipoGeneralDto);
@@ -65,6 +71,11 @@ export class TipoGeneralController {
   }
 
   @Patch(':id')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para actualziar un tipo general',
+    type: TipoGeneralDocumentationDto,
+  })
   @Auth(Rol.ADMIN)
   update(
     @Param('id') id: string,

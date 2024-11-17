@@ -18,10 +18,12 @@ import {
   ApiConsumes,
   ApiOperation,
   ApiResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 import { FiltroTrabajoDto } from './dto/trabajo.filtro.dto';
+import { TrabajoDocumentationDto } from './documentation/trabajodoc.dto';
 
 @ApiTags('Trabajo')
 @Controller('trabajo')
@@ -30,7 +32,11 @@ export class TrabajoController {
 
   @Post()
   @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
-  @ApiConsumes('application/json')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para crear un nuevo trabajo',
+    type: TrabajoDocumentationDto,
+  })
   @ApiOperation({ summary: 'Crear un nuevo trabajo' })
   @ApiResponse({ status: 201, description: 'Trabajo creado exitosamente.' })
   async create(@Body() createTrabajoDto: CreateTrabajoDto) {
@@ -71,7 +77,11 @@ export class TrabajoController {
 
   @Patch(':id')
   @Auth(Rol.ADMIN, Rol.GESTOR_CLIENTES_TRABAJOS)
-  @ApiConsumes('application/json')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para crear un nuevo trabajo',
+    type: TrabajoDocumentationDto,
+  })
   @ApiOperation({ summary: 'Actualizar un trabajo' })
   @ApiResponse({
     status: 200,

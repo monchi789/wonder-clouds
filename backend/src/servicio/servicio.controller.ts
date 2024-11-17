@@ -15,11 +15,12 @@ import {
 import { ServicioService } from './servicio.service';
 import { CreateServicioDto } from './dto/create-servicio.dto';
 import { UpdateServicioDto } from './dto/update-servicio.dto';
-import { ApiTags, ApiConsumes } from '@nestjs/swagger';
+import { ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 import { FiltroServicioDto } from './dto/servicio-filtro.dto';
+import { ServicioDocumentationDto } from './documentation/serviciodoc.dto';
 
 @ApiTags('Servicio')
 @Controller('servicio')
@@ -28,7 +29,11 @@ export class ServicioController {
 
   @Post()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-  @ApiConsumes('application/json')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para crear un nuevo servicio',
+    type: ServicioDocumentationDto,
+  })
   @UseInterceptors(FileInterceptor('logoServicio'))
   async create(
     @UploadedFile() file: Express.Multer.File,
@@ -62,7 +67,11 @@ export class ServicioController {
   }
 
   @Patch(':id')
-  @ApiConsumes('application/json')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para actualizar un servicio',
+    type: ServicioDocumentationDto,
+  })
   @UseInterceptors(FileInterceptor('logoServicio'))
   async update(
     @Param('id') id: string,
