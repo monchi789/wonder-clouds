@@ -2,8 +2,8 @@
 export default {
   darkMode: ["class"],
   content: [
-    "./index.html",
-    "./src/**/*.{ts,tsx,js,jsx}"
+    "./src/**/*.{js,ts,jsx,tsx}",  // Asegúrate de que tu directorio sea correcto
+    "./node_modules/@shadcn/ui/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -18,5 +18,5 @@ export default {
       }
     }
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 }

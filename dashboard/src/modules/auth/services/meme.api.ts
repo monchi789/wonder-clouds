@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export const getMemes = async () => {
-  const apiUrl = "https://programming-memes-images.p.rapidapi.com/v1/memes";
-  const apiKey = "11a65cdbbcmsh00a124d7f497d01p1e1696jsna19f7ede7589";
-  const apiHost = "programming-memes-images.p.rapidapi.com";
+  const apiUrl = import.meta.env.VITE_MEME_URL;
+  const apiKey = import.meta.env.VITE_MEME_KEY;
+  const apiHost = import.meta.env.VITE_MEME_HOST;
 
   try {
     const res = await axios.get(apiUrl, {

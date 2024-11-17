@@ -1,13 +1,13 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/shared/components/ui/card';
 import { CalendarDays } from 'lucide-react';
 
-interface PostCard {
+interface PostsCard {
   title: string;
   portada: string,
   date: string;
 }
 
-const PostCard = ({ title, portada, date }: PostCard) => {
+const PostsCard = ({ title, portada, date }: PostsCard) => {
   return (
     <Card className="w-full max-w-md transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       <CardHeader className="flex flex-col space-y-1">
@@ -29,4 +29,4 @@ const PostCard = ({ title, portada, date }: PostCard) => {
   );
 };
 
-export default PostCard;
+export default PostsCard;
