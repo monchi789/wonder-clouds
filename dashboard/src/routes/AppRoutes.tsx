@@ -9,13 +9,15 @@ const Login = lazy(() => import('@/modules/auth/pages/Login'));
 const Client = lazy(() => import('@/modules/clients/pages/ClientsMain'));
 const Post = lazy(() => import('@/modules/posts/pages/PostMain'));
 const PostCreate = lazy(() => import('@/modules/posts/pages/PostCreate'));
+const Service = lazy(() => import('@/modules/services/pages/ServiceMain'));
 
 const routes = [
   { path: "/", element: <Client /> },
   { path: "/login", element: <Login /> },
   { path: "/clients", element: <ClientsMain />},
   { path: "/posts", element: <Post />},
-  { path: "/posts/new", element: <PostCreate /> }
+  { path: "/posts/new", element: <PostCreate /> },
+  { path: "/services", element: <Service />},
 ];
 
 const AppRoutes = () => {

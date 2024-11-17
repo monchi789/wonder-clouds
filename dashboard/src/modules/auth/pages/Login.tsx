@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserCircle, Lock } from "lucide-react";
+import { UserCircle, Lock, Eye, EyeOff } from "lucide-react";
 import useAuth from "@/modules/auth/hooks/useAuth";
 import { getTokenAuth } from "@/modules/auth/services/auth.api";
 import LoadingSpinner from "@/shared/components/common/LoadingSpinner";
@@ -11,7 +11,7 @@ import wonder from "@/assets/images/wonderclouds.webp";
 import MemeList from "../components/MemeList";
 
 interface FormData {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -20,13 +20,15 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormData>({
-    username: "",
+    email: "",
     password: "",
   });
 
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -42,7 +44,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await getTokenAuth(formData.username, formData.password);
+      const response = await getTokenAuth(formData.email, formData.password);
       login(response);
       navigate("/", { replace: true });
     } catch {
@@ -52,15 +54,18 @@ const Login = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
         {/* Header with Logo */}
         <div className="w-full flex justify-center pt-8 pb-4">
-          <img 
-            src={wonder} 
-            alt="Logo wonder" 
+          <img
+            src={wonder}
+            alt="Logo wonder"
             className="w-32"
             loading="lazy"
           />
@@ -94,23 +99,24 @@ const Login = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                    Nombre de usuario
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Correo institucional
                   </label>
                   <div className="mt-1 relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <UserCircle className="h-5 w-5 text-gray-400" />
                     </div>
                     <Input
-                      id="username"
-                      name="username"
+                      id="email"
+                      name="email"
                       type="text"
                       required
                       className="pl-10"
-                      placeholder="usuario"
-                      value={formData.username}
+                      placeholder="email"
+                      value={formData.email}
                       onChange={handleInputChange}
                       disabled={isLoading}
+                      autoComplete="email"
                     />
                   </div>
                 </div>
@@ -126,14 +132,26 @@ const Login = () => {
                     <Input
                       id="password"
                       name="password"
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       required
-                      className="pl-10"
+                      className="pl-10 pr-10"
                       placeholder="••••••••"
                       value={formData.password}
                       onChange={handleInputChange}
                       disabled={isLoading}
+                      autoComplete="current-password"
                     />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                      ) : (
+                        <Eye className="h-5 w-5 text-gray-400 hover:text-gray-500" />
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -144,6 +162,8 @@ const Login = () => {
                     id="remember-me"
                     name="remember-me"
                     type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
                     className="h-4 w-4 rounded border-gray-300 text-wonder-blue focus:ring-wonder"
                   />
                   <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
