@@ -1,11 +1,19 @@
-import GeneralTypeCard from "../components/GeneralTypeCard";
+import Title from '@/shared/components/common/Title'
+import GeneralTypeCard from '../components/GeneralTypeCard'
 
-const ClientsMain = () => {
+const GeneralTypeMain = () => {
   return (
     <>
-    <GeneralTypeCard title="xd" description="xd" type={""} />
+      <Title
+        title='Tipos Generales'
+        description='Aquí puedes gestionar todos los tipos generales.'
+      />
+
+      <div className='mt-6'>
+        <GeneralTypeCard title='xd' description='xd' type={''} />
+      </div>
     </>
   )
 }
 
-export default ClientsMain;
+export default GeneralTypeMain

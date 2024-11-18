@@ -10,11 +10,8 @@ Note.   Pa' formularios usar 'ReactHookForms'
         En shared common, estan componentes que se utilizan muchas veces
 */
 
-
 function ClientsList() {
-  return (
-    <div>ClientsList</div>
-  )
+  return <div>ClientsList</div>
 }
 
 export default ClientsList
