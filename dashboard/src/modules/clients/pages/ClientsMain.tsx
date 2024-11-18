@@ -11,7 +11,8 @@ const formSchema = z.object({
   name: z.string(),
   paternalSurname: z.string(),
   maternalSurname: z.string(),
-  nroDocument: z.number().int(),
+  nroDocument: z.string().min(8),
+  phone: z.number().int(),
   emailAddress: z.string().email(),
   password: z.string().min(3),
   passwordConfirm: z.string(),
@@ -29,6 +30,11 @@ const formSchema = z.object({
 }, {
   message: "El nombre de la Compañía es Requerida.",
   path: ["companyName"],
+}).refine((data) => {
+  return data.phone >= 0 && data.phone >= 111111111;
+}, {
+  message: "El número de celular debe tener como mínimo 9 dígitos.",
+  path: ["phone"],
 })
 
 function ClientsMain() {
@@ -36,6 +42,7 @@ function ClientsMain() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      nroDocument: "",
       emailAddress: "",
       password: "",
       passwordConfirm: "",
@@ -53,6 +60,7 @@ function ClientsMain() {
     <main className="flex flex-col items-center justify-between p-24 min-h-screen">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="max-w-md w-full flex flex-col gap-4">
+
           <FormField name="name" control={form.control} render={({ field }) => {
             return <FormItem>
               <FormLabel>Nombre</FormLabel>
@@ -83,11 +91,42 @@ function ClientsMain() {
             </FormItem>
           }} />
 
+          <FormField name="nroDocument" control={form.control} render={({ field }) => {
+            return <FormItem>
+              <FormLabel>Nro. de Documento</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Ingresa el Nro de Doc. del Cliente"
+                onInput={(e) => {
+                  if (e.currentTarget.value.length > 8) {
+                    e.currentTarget.value = e.currentTarget.value.slice(0, 8);
+                  }
+                }} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          }} />
+
+          <FormField name="phone" control={form.control} render={({ field }) => {
+            return <FormItem>
+              <FormLabel>Número de Celular</FormLabel>
+              <FormControl>
+                <Input {...field} type="number" placeholder="Ingresa el Nro de Celular del Cliente"
+                onChange={(e) => field.onChange(Number(e.target.value))}
+                onInput={(e) => {
+                  if (e.currentTarget.value.length > 9) {
+                    e.currentTarget.value = e.currentTarget.value.slice(0, 9);
+                  }
+                }} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          }} />
+
           <FormField name="emailAddress" control={form.control} render={({ field }) => {
             return <FormItem>
               <FormLabel>Correo</FormLabel>
               <FormControl>
-                <Input {...field} type="email" placeholder="Ingresa el Apellido Paterno del Cliente" />
+                <Input {...field} type="email" placeholder="Ingresa el Correo del Cliente" />
               </FormControl>
               <FormMessage />
             </FormItem>
