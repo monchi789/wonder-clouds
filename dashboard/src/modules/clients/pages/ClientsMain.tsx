@@ -8,6 +8,10 @@ import { Button } from "@/shared/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 
 const formSchema = z.object({
+  name: z.string(),
+  paternalSurname: z.string(),
+  maternalSurname: z.string(),
+  nroDocument: z.number().int(),
   emailAddress: z.string().email(),
   password: z.string().min(3),
   passwordConfirm: z.string(),
@@ -49,15 +53,46 @@ function ClientsMain() {
     <main className="flex flex-col items-center justify-between p-24 min-h-screen">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="max-w-md w-full flex flex-col gap-4">
-          <FormField name="emailAddress" control={form.control} render={({ field }) => {
+          <FormField name="name" control={form.control} render={({ field }) => {
             return <FormItem>
-              <FormLabel>Correo</FormLabel>
+              <FormLabel>Nombre</FormLabel>
               <FormControl>
-                <Input {...field} type="email" placeholder="Ingresa tu Correo" />
+                <Input {...field} placeholder="Ingresa el Nombre del Cliente" />
               </FormControl>
               <FormMessage />
             </FormItem>
           }} />
+
+          <FormField name="paternalSurname" control={form.control} render={({ field }) => {
+            return <FormItem>
+              <FormLabel>Apellido Paterno</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Ingresa el Apellido Paterno del Cliente" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          }} />
+
+          <FormField name="maternalSurname" control={form.control} render={({ field }) => {
+            return <FormItem>
+              <FormLabel>Apellido Materno</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Ingresa el Apellido Materno del Cliente" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          }} />
+
+          <FormField name="emailAddress" control={form.control} render={({ field }) => {
+            return <FormItem>
+              <FormLabel>Correo</FormLabel>
+              <FormControl>
+                <Input {...field} type="email" placeholder="Ingresa el Apellido Paterno del Cliente" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          }} />
+
           <FormField name="accountType" control={form.control} render={({ field }) => {
             return <FormItem>
               <FormLabel>Tipo de Companía</FormLabel>
@@ -75,6 +110,7 @@ function ClientsMain() {
               <FormMessage />
             </FormItem>
           }} />
+
           {accountType === "company" &&
             <FormField name="companyName" control={form.control} render={({ field }) => {
               return <FormItem>
@@ -86,6 +122,7 @@ function ClientsMain() {
               </FormItem>
             }} />
           }
+
           <FormField name="password" control={form.control} render={({ field }) => {
             return <FormItem>
               <FormLabel>Contraseña</FormLabel>
@@ -95,6 +132,7 @@ function ClientsMain() {
               <FormMessage />
             </FormItem>
           }} />
+
           <FormField name="passwordConfirm" control={form.control} render={({ field }) => {
             return <FormItem>
               <FormLabel>Confirmar Contraseña</FormLabel>
@@ -104,6 +142,7 @@ function ClientsMain() {
               <FormMessage />
             </FormItem>
           }} />
+          
           <Button type="submit" className="w-full">
             Enviar
           </Button>
