@@ -16,13 +16,14 @@ import {
 import { PublicacionService } from './publicacion.service';
 import { CreatePublicacionDto } from './dto/create-publicacion.dto';
 import { UpdatePublicacionDto } from './dto/update-publicacion.dto';
-import { ApiTags, ApiConsumes } from '@nestjs/swagger';
+import { ApiTags, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 import { ActiveUsuario } from 'src/common/decorators/active-usuario.decorator';
 import { UsuarioActiveInterface } from 'src/common/interfaces/usuario-active.interface';
 import { FiltrosPublicacionDto } from './dto/publicacion-filtro.dto';
+import { PublicacionDocumentationDto } from './documentation/publicaciodoc.dto';
 
 @ApiTags('Publicacion')
 @Controller('publicacion')
@@ -31,7 +32,11 @@ export class PublicacionController {
 
   @Post()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-  @ApiConsumes('application/json')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para crear una nueva publicacion',
+    type: PublicacionDocumentationDto,
+  })
   @UseInterceptors(FileInterceptor('portada'))
   async create(
     @UploadedFile() file: Express.Multer.File,
@@ -77,7 +82,11 @@ export class PublicacionController {
 
   @Patch(':id')
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
-  @ApiConsumes('application/json')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para actualizar una publicacion',
+    type: PublicacionDocumentationDto,
+  })
   @UseInterceptors(FileInterceptor('portada'))
   async update(
     @Param('id') id: string,

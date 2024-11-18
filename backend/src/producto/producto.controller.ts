@@ -20,10 +20,12 @@ import {
   ApiOperation,
   ApiResponse,
   ApiConsumes,
+  ApiBody,
 } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { Rol } from 'src/common/enums/rol.enum';
 import { FiltroProductoDto } from './dto/producto-filtro.dto';
+import { ProductoDocumentationDto } from './documentation/productodoc.dto';
 
 @ApiTags('Productos')
 @Controller('productos')
@@ -33,7 +35,11 @@ export class ProductoController {
   @Post()
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
   @ApiOperation({ summary: 'Crear un nuevo producto' })
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para nuevo producto',
+    type: ProductoDocumentationDto,
+  })
   @ApiResponse({ status: 201, description: 'Producto creado exitosamente.' })
   @ApiResponse({ status: 400, description: 'No se han subido imágenes.' })
   @UseInterceptors(FilesInterceptor('imagenes', 10))
@@ -75,6 +81,11 @@ export class ProductoController {
 
   @Patch(':id')
   @Auth(Rol.ADMIN, Rol.CREADOR_CONTENIDO)
+  @ApiConsumes('application/json', 'multipart/form-data')
+  @ApiBody({
+    description: 'Estructura necesaria para actualizar producto',
+    type: ProductoDocumentationDto,
+  })
   @ApiOperation({ summary: 'Actualizar un producto' })
   @UseInterceptors(FilesInterceptor('imagenes', 10))
   async update(

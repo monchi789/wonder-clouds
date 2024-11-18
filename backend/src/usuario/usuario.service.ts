@@ -154,4 +154,33 @@ export class UsuarioService {
 
     return { message: `Usuario con el ID ${idUsuario} eliminada` };
   }
+  async changePassword(
+    idUsuario: string,
+    { email, contrasena }: { email: string; contrasena: string },
+  ) {
+    // Busca al usuario por ID y email
+    const usuario = await this.usuarioRepository.findOne({
+      where: { idUsuario, email },
+      select: ['idUsuario', 'email', 'contrasena'], // Selecciona solo los campos necesarios
+    });
+
+    if (!usuario) {
+      throw new NotFoundException(
+        `Usuario con ID ${idUsuario} y email ${email} no encontrado`,
+      );
+    }
+
+    // Actualiza la contraseña del usuario
+    const result = await this.usuarioRepository.update(idUsuario, {
+      contrasena,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `No se pudo actualizar la contraseña para el usuario con ID ${idUsuario}`,
+      );
+    }
+
+    return { message: 'Contraseña actualizada exitosamente' };
+  }
 }
