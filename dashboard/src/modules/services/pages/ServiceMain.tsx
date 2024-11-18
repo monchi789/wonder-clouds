@@ -1,9 +1,5 @@
 const ServiceMain = () => {
-  return (
-    <div>
-
-    </div>
-  )
+  return <div></div>
 }
 
-export default ServiceMain;
+export default ServiceMain
