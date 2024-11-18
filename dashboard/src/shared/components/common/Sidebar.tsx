@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom";;
-import { Briefcase, FileUser, Megaphone, SquareUserRound, Building2, ChevronLeft, ChevronRight, LayoutDashboard } from "lucide-react";
+import { Briefcase, FileUser, Megaphone, SquareUserRound, Building2, ChevronLeft, ChevronRight, LayoutDashboard, BookA } from "lucide-react";
 
 interface MenuItemProps {
   to: string;
@@ -54,6 +54,7 @@ const Sidebar = () => {
                 <MenuItem to="/clients" icon={<SquareUserRound />} text="Clientes" collapsed={!isSidebarOpen} />
                 <MenuItem to="/works" icon={<Briefcase />} text="Trabajos" collapsed={!isSidebarOpen} />
                 <MenuItem to="/services" icon={<Building2 />} text="Servicios" collapsed={!isSidebarOpen} />
+                <MenuItem to="/general-type" icon={<BookA />} text="Tipos generales" collapsed={!isSidebarOpen} />
 
                 {!isSidebarOpen ? null :
                   <span className="text-gray-400 text-sm font-medium mx-5 mt-4 mb-2">Contenido</span>
