@@ -82,12 +82,6 @@ export class AuthController {
   }
 
   @Post('refresh')
-  @Auth(
-    Rol.ADMIN,
-    Rol.GESTOR_CLIENTES_TRABAJOS,
-    Rol.CREADOR_CONTENIDO,
-    Rol.USUARIO,
-  )
   refresh(@Body('refreshToken') refreshToken: string) {
     if (!refreshToken) {
       throw new UnauthorizedException('Refresh token no provisto');
