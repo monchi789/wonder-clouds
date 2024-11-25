@@ -1,5 +1,5 @@
 const ClientsMain = () => {
-  return <div></div>
-}
+  return <div></div>;
+};
 
-export default ClientsMain
+export default ClientsMain;

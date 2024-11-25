@@ -1,5 +1,5 @@
-import Title from '@/shared/components/common/Title'
-import GeneralTypeCard from '../components/GeneralTypeCard'
+import Title from '@/shared/components/common/Title';
+import GeneralTypeCard from '../components/GeneralTypeCard';
 
 const GeneralTypeMain = () => {
   return (
@@ -13,7 +13,7 @@ const GeneralTypeMain = () => {
         <GeneralTypeCard title='xd' description='xd' type={''} />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default GeneralTypeMain
+export default GeneralTypeMain;

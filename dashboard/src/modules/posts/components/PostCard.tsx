@@ -1,10 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/shared/components/ui/card'
-import { CalendarDays } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/shared/components/ui/card';
+import { CalendarDays } from 'lucide-react';
 
 interface PostsCard {
-  title: string
-  portada: string
-  date: string
+  title: string;
+  portada: string;
+  date: string;
 }
 
 const PostsCard = ({ title, portada, date }: PostsCard) => {
@@ -27,7 +27,7 @@ const PostsCard = ({ title, portada, date }: PostsCard) => {
         </div>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
-export default PostsCard
+export default PostsCard;
