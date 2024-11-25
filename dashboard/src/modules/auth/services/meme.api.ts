@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 export const getMemes = async () => {
-  const apiUrl = import.meta.env.VITE_MEME_URL
-  const apiKey = import.meta.env.VITE_MEME_KEY
-  const apiHost = import.meta.env.VITE_MEME_HOST
+  const apiUrl = import.meta.env.VITE_MEME_URL as string
+  const apiKey = import.meta.env.VITE_MEME_KEY as string
+  const apiHost = import.meta.env.VITE_MEME_HOST as string
 
   try {
     const res = await axios.get(apiUrl, {

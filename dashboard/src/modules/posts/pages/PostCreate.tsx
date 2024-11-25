@@ -11,7 +11,7 @@ import {
 } from '@/shared/components/ui/select'
 import { useRef } from 'react'
 import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react'
-import { Post } from '@/interfaces/Post'
+import type { Post } from '@/interfaces/Post'
 import { toast } from 'sonner'
 import { createPost } from '../services/post.api'
 import { useGetCategoriasPublicacion } from '../hooks/useCategoriasPublicacion'
@@ -39,8 +39,7 @@ const PostCreate = () => {
 
   const onSubmit = async (data: Post) => {
     try {
-      const res = await createPost(data)
-      console.log(res)
+      await createPost(data)
       reset()
       toast.success('Publicación creada exitosamente.')
     } catch {
@@ -59,7 +58,9 @@ const PostCreate = () => {
   return (
     <form
       className='flex flex-col flex-1 border rounded-lg shadow-md'
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={() => {
+        handleSubmit(onSubmit)
+      }}
     >
       {/* Header */}
       <div className='border-b px-4 py-5'>
