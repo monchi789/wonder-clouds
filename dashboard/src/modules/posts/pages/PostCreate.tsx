@@ -16,7 +16,6 @@ import { toast } from 'sonner';
 import { createPost } from '../services/post.api';
 import { useGetCategoriasPublicacion } from '../hooks/useCategoriasPublicacion';
 import LoadingSpinner from '@/shared/components/common/LoadingSpinner';
-import type { TipoGeneral } from '@/interfaces/TipoGeneral';
 
 const PostCreate = () => {
   const { data: categoriasList, isLoading, isError, error } = useGetCategoriasPublicacion();
@@ -106,7 +105,7 @@ const PostCreate = () => {
                     <SelectValue placeholder='Seleccionar categoría' />
                   </SelectTrigger>
                   <SelectContent>
-                    {Array.isArray(categoriasList) && categoriasList.map(({ cat }: { cat: TipoGeneral }) => (
+                    {Array.isArray(categoriasList) && categoriasList.map((cat) => (
                       <SelectItem key={cat.idTipoGeneral} value={cat.nombre}>
                         {cat.nombre}
                       </SelectItem>
