@@ -1,6 +1,6 @@
-import { ReactNode } from 'react'
-import { Toaster } from 'sonner'
-import Sidebar from '../common/Sidebar'
+import { ReactNode } from 'react';
+import { Toaster } from 'sonner';
+import Sidebar from '../common/Sidebar';
 
 const MainLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -16,7 +16,7 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
 
       <Toaster richColors position='bottom-right' />
     </div>
-  )
-}
+  );
+};
 
-export default MainLayout
+export default MainLayout;

@@ -1,24 +1,24 @@
-import ImageUpload from '../components/ImageUpload'
-import { useForm, Controller } from 'react-hook-form'
-import { Input } from '@/shared/components/ui/input'
-import { Save, Send } from 'lucide-react'
+import ImageUpload from '../components/ImageUpload';
+import { useForm, Controller } from 'react-hook-form';
+import { Input } from '@/shared/components/ui/input';
+import { Save, Send } from 'lucide-react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@/shared/components/ui/select'
-import { useRef } from 'react'
-import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react'
-import type { Post } from '@/interfaces/Post'
-import { toast } from 'sonner'
-import { createPost } from '../services/post.api'
-import { useGetCategoriasPublicacion } from '../hooks/useCategoriasPublicacion'
-import LoadingSpinner from '@/shared/components/common/LoadingSpinner'
+} from '@/shared/components/ui/select';
+import { useRef } from 'react';
+import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
+import type { Post } from '@/interfaces/Post';
+import { toast } from 'sonner';
+import { createPost } from '../services/post.api';
+import { useGetCategoriasPublicacion } from '../hooks/useCategoriasPublicacion';
+import LoadingSpinner from '@/shared/components/common/LoadingSpinner';
 
 const PostCreate = () => {
-  const { data: categoriasList, isLoading, isError, error } = useGetCategoriasPublicacion()
+  const { data: categoriasList, isLoading, isError, error } = useGetCategoriasPublicacion();
 
   const {
     register,
@@ -33,34 +33,34 @@ const PostCreate = () => {
       portada: '',
       categoriaPublicacion: ''
     }
-  })
+  });
 
-  const editorRef = useRef<TinyMCEEditor['editor'] | null>(null)
+  const editorRef = useRef<TinyMCEEditor['editor'] | null>(null);
 
   const onSubmit = async (data: Post) => {
     try {
-      await createPost(data)
-      reset()
-      toast.success('Publicación creada exitosamente.')
+      const res = await createPost(data);
+
+      console.log(res);
+      reset();
+      toast.success('Publicación creada exitosamente.');
     } catch {
-      toast.error('Algo sucedió mal, vuelva a intentarlo.')
+      toast.error('Algo sucedió mal, vuelva a intentarlo.');
     }
-  }
+  };
 
   if (isLoading) {
-    return <LoadingSpinner size='w-12 h-12' />
+    return <LoadingSpinner size='w-12 h-12' />;
   }
 
   if (isError) {
-    return <div>Error: {error instanceof Error ? error.message : 'Algo salió mal'}</div>
+    return <div>Error: {error instanceof Error ? error.message : 'Algo salió mal'}</div>;
   }
 
   return (
     <form
       className='flex flex-col flex-1 border rounded-lg shadow-md'
-      onSubmit={() => {
-        handleSubmit(onSubmit)
-      }}
+      onSubmit={() => handleSubmit(onSubmit)}
     >
       {/* Header */}
       <div className='border-b px-4 py-5'>
@@ -217,7 +217,7 @@ const PostCreate = () => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default PostCreate
+export default PostCreate;

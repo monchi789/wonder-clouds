@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom'
-import { Button } from '@/shared/components/ui/button' // Importando el componente Button de Shadcn
+import { Link } from 'react-router-dom';
+import { Button } from '@/shared/components/ui/button'; // Importando el componente Button de Shadcn
 
 interface TitleProps {
-  title: string
-  description: string
-  buttonName?: string
-  link?: string
+  title: string;
+  description: string;
+  buttonName?: string;
+  link?: string;
 }
 
 const Title = ({ title, description, buttonName = '', link = '' }: TitleProps) => {
@@ -26,7 +26,7 @@ const Title = ({ title, description, buttonName = '', link = '' }: TitleProps) =
         </Link>
       ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default Title
+export default Title;
