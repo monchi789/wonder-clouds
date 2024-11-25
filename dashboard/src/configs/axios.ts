@@ -1,33 +1,36 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { refreshAccessToken } from "@/modules/auth/services/auth.api";
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  // Importante: permite a axios enviar y recibir cookies
-  withCredentials: true
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL
 });
 
-// Interceptor para manejar errores y refresh token
-axiosInstance.interceptors.response.use(
+api.interceptors.request.use(
+  (config) => {
+    const token = Cookies.get('accessToken');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // Si el error es 401 y no hemos intentado refresh
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        // La cookie de refresh token se enviará automáticamente
-        await axios.post('tu-api-url/refresh', {}, { withCredentials: true });
+        const newToken = await refreshAccessToken();
+        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+        return api(originalRequest);
+      } catch {
 
-        // No necesitamos manejar el token manualmente,
-        // la API debe establecer la cookie
-        return axiosInstance(originalRequest);
-      } catch (error) {
-        // Si el refresh falla, redirigir al login
         window.location.href = '/login';
         return Promise.reject(error);
       }
@@ -37,4 +40,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance;
+export default api;
