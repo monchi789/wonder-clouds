@@ -10,11 +10,18 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+			backgroundImage: {
+        'smooth-primary': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
+      },
+      gradientColorStops: {
+        primary: 'var(--primary)',
+      },
   		colors: {
   			background: 'var(--background)',
   			foreground: 'var(--foreground)',
   			primary: 'var(--primary)',
   			secondary: 'var(--secondary)',
+				light: '#BCD0DF',
   			default: 'var(--default)'
   		},
   		keyframes: {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -9,135 +9,204 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
   const navLinks = [
-    { href: '/', label: 'Inicio' },
-    { href: '/nosotros', label: 'Nosotros' },
-    { href: '/servicios', label: 'Servicios' },
-    { href: '/proyectos', label: 'Nuestros proyectos' },
+    { href: '/', label: 'Inicio'},
+    { href: '/nosotros', label: 'Nosotros'},
+    { href: '/servicios', label: 'Servicios'},
+    { href: '/proyectos', label: 'Nuestros proyectos'},
   ];
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  // Manejo del scroll para efectos de header
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Cerrar menú al cambiar de ruta
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
+  // Animaciones
+  const headerVariants = {
+    initial: { backgroundColor: 'rgba(255, 255, 255, 0)' },
+    scrolled: { 
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+      backdropFilter: 'blur(8px)'
+    }
+  };
+
+  const linkVariants = {
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 }
+  };
 
   return (
-    <nav className="relative z-10 xl:px-24 py-4">
+    <motion.nav
+      className="fixed w-full z-50 xl:px-24 py-4 transition-all duration-300"
+      initial="initial"
+      animate={isScrolled ? "scrolled" : "initial"}
+      variants={headerVariants}
+    >
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo with Animation */}
+          {/* Logo con mejores animaciones */}
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, type: "spring" }}
             className="flex-shrink-0"
           >
-            <Link href={"/"}>
-            <Image
-              src="/static/logos/wonderclouds.webp"
-              alt="Logo Wonder Clouds Cusco"
-              width={200}
-              height={200}
-              className="w-4/6 xl:w-5/6 h-auto"
-            />
+            <Link href="/">
+              <Image
+                src="/static/logos/wonderclouds.webp"
+                alt="Logo Wonder Clouds Cusco"
+                width={200}
+                height={200}
+                className="w-4/6 xl:w-5/6 h-auto transform hover:scale-105 transition-transform duration-300"
+                priority
+              />
             </Link>
           </motion.div>
 
-          {/* Desktop Navigation with Animation */}
+          {/* Navegación Desktop */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="hidden lg:flex items-center space-x-8"
           >
-            {navLinks.map((link) => (
-              <Link
+            {navLinks.map((link, index) => (
+              <motion.div
                 key={link.label}
-                href={link.href}
-                className={`text-lg font-medium relative transition-colors 
-                  ${pathname === link.href ? 'text-secondary font-semibold border-b-2 border-secondary' : 'text-default hover:text-secondary hover:border-b-2 hover:border-secondary'} `}
+                variants={linkVariants}
+                whileHover="hover"
+                whileTap="tap"
               >
-                {link.label}
-              </Link>
+                <Link
+                  href={link.href}
+                  className={`text-lg font-medium relative group transition-all duration-300
+                    ${pathname === link.href 
+                      ? 'text-secondary font-semibold' 
+                      : 'text-default hover:text-secondary'}`}
+                >
+                  <span className="flex items-center gap-2">
+                    {link.label}
+                  </span>
+                  {pathname === link.href && (
+                    <motion.div
+                      className="absolute bottom-0 left-0 w-full h-0.5 bg-secondary"
+                      layoutId="underline"
+                    />
+                  )}
+                </Link>
+              </motion.div>
             ))}
 
-            <Link
-              href="/contactanos"
-              className="relative inline-flex items-center justify-center h-12 px-5 text-lg font-medium text-white transition-transform rounded-xl border-2 border-transparent bg-primary overflow-hidden active:scale-95 group"
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-
-              <span
-                className="absolute inset-0 w-full h-full rounded-xl bg-primary transition-all duration-500 transform scale-105 group-hover:border-2 group-hover:border-secondary group-hover:scale-100"
-              ></span>
-
-              <span className="relative z-10 flex items-center gap-2 text-white transition-transform duration-500 group-hover:scale-105">
-                Consulta aquí
-                <svg
-                  stroke="currentColor"
-                  fill="currentColor"
-                  strokeWidth="0"
-                  viewBox="0 0 448 512"
-                  height="1em"
-                  width="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M429.6 92.1c4.9-11.9 2.1-25.6-7-34.7s-22.8-11.9-34.7-7l-352 144c-14.2 5.8-22.2 20.8-19.3 35.8s16.1 25.8 31.4 25.8H224V432c0 15.3 10.8 28.4 25.8 31.4s30-5.1 35.8-19.3l144-352z"></path>
-                </svg>
-              </span>
-            </Link>
-
+              <Link
+                href="/contactanos"
+                className="relative inline-flex items-center justify-center h-12 px-6 text-lg font-medium text-white transition-all duration-300 rounded-xl bg-primary overflow-hidden group hover:shadow-lg"
+              >
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10 flex items-center gap-2">
+                  Consulta aquí
+                  <motion.svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 448 512"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1, repeat: Infinity }}
+                  >
+                    <path d="M429.6 92.1c4.9-11.9 2.1-25.6-7-34.7s-22.8-11.9-34.7-7l-352 144c-14.2 5.8-22.2 20.8-19.3 35.8s16.1 25.8 31.4 25.8H224V432c0 15.3 10.8 28.4 25.8 31.4s30-5.1 35.8-19.3l144-352z" />
+                  </motion.svg>
+                </span>
+              </Link>
+            </motion.div>
           </motion.div>
 
-          {/* Mobile menu button */}
-          <div className="lg:hidden">
-            <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-default hover:text-secondary"
-            >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-
-          </div>
+          {/* Botón menú móvil */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden p-2 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            {isMenuOpen ? (
+              <X className="h-6 w-6 text-secondary" />
+            ) : (
+              <Menu className="h-6 w-6 text-default" />
+            )}
+          </motion.button>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Menú Móvil Mejorado */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden"
+            className="lg:hidden overflow-hidden"
           >
-            <div className="bg-white shadow-lg mt-5 pb-4">
-              {navLinks.map((link) => (
-                <Link
+            <motion.div
+              className="bg-white/90 backdrop-blur-lg shadow-lg mt-2 rounded-xl mx-4"
+              initial={{ y: -20 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              {navLinks.map((link, index) => (
+                <motion.div
                   key={link.label}
-                  href={link.href}
-                  className={`block rounded-md text-base font-medium hover:bg-gray-50 px-3 py-2
-                    ${pathname === link.href ? 'text-secondary border-b-2 border-secondary' : 'text-default hover:text-secondary'}`}
-                  onClick={() => setIsMenuOpen(false)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  {link.label}
-                </Link>
+                  <Link
+                    href={link.href}
+                    className={`flex items-center gap-3 px-4 py-3 text-base font-medium transition-colors
+                      ${pathname === link.href 
+                        ? 'text-secondary bg-gray-50' 
+                        : 'text-default hover:text-secondary hover:bg-gray-50'}`}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
-              <Link
-                href="/contactanos"
-                className="block text-center text-base font-medium text-white hover:bg-secondary transition-colors bg-primary rounded-xl mx-3 mt-5 px-3 py-2"
-                onClick={() => setIsMenuOpen(false)}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="p-4"
               >
-                Consulta Gratuita
-              </Link>
-            </div>
+                <Link
+                  href="/contactanos"
+                  className="block text-center text-base font-medium text-white bg-primary hover:bg-secondary transition-colors rounded-xl py-3 px-4"
+                >
+                  Consulta aqui
+                </Link>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   );
 };
 

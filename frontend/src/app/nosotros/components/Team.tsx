@@ -68,7 +68,7 @@ const Team = () => {
       >
         <TeamCard
           name="Jayo Baez"
-          role="Especialista en Marketing Digital"
+          role="CEO"
           imageSrc="/static/images/team/jayo.webp"
           githubUrl="https://github.com/"
           instagramUrl="https://www.instagram.com/"
@@ -107,17 +107,17 @@ const Team = () => {
           linkedinUrl="https://www.linkedin.com/"
         />
         <TeamCard
-          name="Leslie Vargas"
-          role="Diseñadora UX/UI"
-          imageSrc="/static/images/team/leslie.webp"
+          name="Kiara Oquendo"
+          role="Especialista en Marketing Digital"
+          imageSrc="/static/images/team/kiara.webp"
           githubUrl="https://github.com/"
           instagramUrl="https://www.instagram.com/"
           linkedinUrl="https://www.linkedin.com/"
         />
         <TeamCard
-          name="Kiara Oquendo"
-          role="Diseñadora de contenido"
-          imageSrc="/static/images/team/kiara.webp"
+          name="Leslie Vargas"
+          role="Diseñadora UX/UI"
+          imageSrc="/static/images/team/leslie.webp"
           githubUrl="https://github.com/"
           instagramUrl="https://www.instagram.com/"
           linkedinUrl="https://www.linkedin.com/"

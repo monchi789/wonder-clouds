@@ -31,7 +31,7 @@ const NosotrosTitle = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-primary to-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-primary to-white pt-12">
       {/* Header Section */}
       <div className="container mx-auto pt-6 px-4">
         <motion.div
