@@ -1,4 +1,4 @@
-import { TipoGeneral } from '@/interfaces/TipoGeneral';
+import { GeneralType } from '@/interfaces/GeneralType';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -19,7 +19,7 @@ export const getAllTipoGeneral = async () => {
   return res.data;
 };
 
-export const createTipoGeneral = async (tipoGeneral: TipoGeneral) => {
+export const createTipoGeneral = async (tipoGeneral: GeneralType) => {
   const token = Cookies.get('authToken');
 
   cargoApi.post('api/v1/tipo-general', tipoGeneral, {

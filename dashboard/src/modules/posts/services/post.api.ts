@@ -16,7 +16,7 @@ export const getAllTipoPublicacion = async () => {
     }
   });
 
-  return res.data as Post[];
+  return res.data;
 };
 
 export const createPost = async (post: Post) => {
