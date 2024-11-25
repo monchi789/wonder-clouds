@@ -3,7 +3,7 @@ const ResetPassword = () => {
     <div>
       <h1>Forgot Password</h1>
     </div>
-  )
-}
+  );
+};
 
-export default ResetPassword
+export default ResetPassword;

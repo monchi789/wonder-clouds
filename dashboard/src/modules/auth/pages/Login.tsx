@@ -1,62 +1,62 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { UserCircle, Lock, Eye, EyeOff } from 'lucide-react'
-import useAuth from '@/modules/auth/hooks/useAuth'
-import { getTokenAuth } from '@/modules/auth/services/auth.api'
-import LoadingSpinner from '@/shared/components/common/LoadingSpinner'
-import { Alert, AlertDescription } from '@/shared/components/ui/alert'
-import { Input } from '@/shared/components/ui/input'
-import { Button } from '@/shared/components/ui/button'
-import wonder from '@/assets/images/wonderclouds.webp'
-import MemeList from '../components/MemeList'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserCircle, Lock, Eye, EyeOff } from 'lucide-react';
+import useAuth from '@/modules/auth/hooks/useAuth';
+import { getTokenAuth } from '@/modules/auth/services/auth.api';
+import LoadingSpinner from '@/shared/components/common/LoadingSpinner';
+import { Alert, AlertDescription } from '@/shared/components/ui/alert';
+import { Input } from '@/shared/components/ui/input';
+import { Button } from '@/shared/components/ui/button';
+import wonder from '@/assets/images/wonderclouds.webp';
+import MemeList from '../components/MemeList';
 
 interface FormData {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
 const Login = () => {
-  const { login } = useAuth()
-  const navigate = useNavigate()
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: ''
-  })
+  });
 
-  const [error, setError] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [rememberMe, setRememberMe] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value
-    }))
-    setError('')
-  }
+    }));
+    setError('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError('')
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
 
     try {
-      const response = await getTokenAuth(formData.email, formData.password)
-      login(response)
-      navigate('/', { replace: true })
+      const response = await getTokenAuth(formData.email, formData.password);
+      login(response);
+      navigate('/', { replace: true });
     } catch {
-      setError('Credenciales inválidas. Inténtalo nuevamente.')
+      setError('Credenciales inválidas. Inténtalo nuevamente.');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4'>
@@ -179,7 +179,7 @@ const Login = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

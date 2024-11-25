@@ -29,8 +29,3 @@ app.add_middleware(
 # Incluir routers
 app.include_router(router_images.router)
 app.include_router(email_router.router)
-
-# Para desarrollo, si necesitas ver qué rutas están registradas
-@app.get("/")
-async def root():
-    return {"message": "API Wonder Clouds funcionando correctamente"}

@@ -1,9 +1,9 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/shared/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/shared/components/ui/card';
 
 interface GeneralTypeCard {
-  title: string
-  description: string
-  type: string
+  title: string;
+  description: string;
+  type: string;
 }
 
 const GeneralTypeCard = ({ title, description }: GeneralTypeCard) => {
@@ -20,7 +20,7 @@ const GeneralTypeCard = ({ title, description }: GeneralTypeCard) => {
         </p>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default GeneralTypeCard
+export default GeneralTypeCard;
