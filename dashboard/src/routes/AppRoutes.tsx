@@ -5,12 +5,14 @@ import { Route, Routes } from 'react-router-dom';
 import ProtectedRoutes from './ProtectedRoutes';
 import ClientsMain from '@/modules/clients/pages/ClientsMain';
 
+
 const Login = lazy(() => import('@/modules/auth/pages/Login'));
 const Client = lazy(() => import('@/modules/clients/pages/ClientsMain'));
 const Post = lazy(() => import('@/modules/posts/pages/PostMain'));
 const PostCreate = lazy(() => import('@/modules/posts/pages/PostCreate'));
 const Service = lazy(() => import('@/modules/services/pages/ServiceMain'));
 const GeneralType = lazy(() => import('@/modules/general-type/pages/GeneralTypeMain'));
+const Products = lazy(() => import('@/modules/products/pages/ProductsMain'));
 
 const routes = [
   { path: '/', element: <Client /> },
@@ -19,7 +21,8 @@ const routes = [
   { path: '/posts', element: <Post /> },
   { path: '/posts/new', element: <PostCreate /> },
   { path: '/services', element: <Service /> },
-  { path: '/general-type', element: <GeneralType /> }
+  { path: '/general-type', element: <GeneralType /> },
+  { path: '/products', element: <Products/> },
 ];
 
 const AppRoutes = () => {
