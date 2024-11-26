@@ -4,7 +4,6 @@ import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ProtectedRoutes from './ProtectedRoutes';
 
-
 const Login = lazy(() => import('@/modules/auth/pages/Login'));
 const Client = lazy(() => import('@/modules/clients/pages/ClientsMain'));
 const Works = lazy(() => import('@/modules/works/pages/WorksMain'));
@@ -14,6 +13,7 @@ const Service = lazy(() => import('@/modules/services/pages/ServiceMain'));
 const GeneralType = lazy(() => import('@/modules/general-type/pages/GeneralTypeMain'));
 const Products = lazy(() => import('@/modules/products/pages/ProductsMain'));
 const UserMain = lazy(() => import('@/modules/users/pages/UserMain'));
+
 
 const routes = [
   { path: '/', element: <Client /> },

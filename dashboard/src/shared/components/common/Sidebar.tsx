@@ -12,9 +12,9 @@ import {
   ChevronRight,
   LayoutDashboard,
   BookA,
+  User,
   PackageSearch,
-  User
-} from 'lucide-react'
+} from 'lucide-react';
 
 interface MenuItemProps {
   to: string;
