@@ -1,5 +1,5 @@
-import Title from '@/shared/components/common/Title'
-import PostsCard from '../components/PostCard'
+import Title from '@/shared/components/common/Title';
+import PostsCard from '../components/PostCard';
 
 const ClientsMain = () => {
   return (
@@ -15,7 +15,7 @@ const ClientsMain = () => {
         <PostsCard title='xd' portada='xd' date='asd' />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ClientsMain
+export default ClientsMain;

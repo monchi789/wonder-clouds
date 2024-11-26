@@ -11,7 +11,7 @@ Note.   Pa' formularios usar 'ReactHookForms'
 */
 
 function ClientsList() {
-  return <div>ClientsList</div>
+  return <div>ClientsList</div>;
 }
 
-export default ClientsList
+export default ClientsList;

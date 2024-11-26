@@ -1,9 +1,9 @@
-import React from 'react'
+import type React from 'react';
 
 interface SpinnerProps {
-  size?: string
-  color?: string
-  screen?: boolean
+  size?: string;
+  color?: string;
+  screen?: boolean;
 }
 
 const LoadingSpinner: React.FC<SpinnerProps> = ({
@@ -11,7 +11,7 @@ const LoadingSpinner: React.FC<SpinnerProps> = ({
   color = 'border-sky-400',
   screen = false
 }) => {
-  const screenClass = screen ? 'h-screen' : ''
+  const screenClass = screen ? 'h-screen' : '';
 
   return (
     <div className={`flex justify-center items-center ${screenClass} m-5 px-5 py-1`}>
@@ -19,7 +19,7 @@ const LoadingSpinner: React.FC<SpinnerProps> = ({
         className={`${size} border-4 ${color} border-t-transparent border-solid rounded-full animate-spin`}
       ></div>
     </div>
-  )
-}
+  );
+};
 
-export default LoadingSpinner
+export default LoadingSpinner;

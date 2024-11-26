@@ -1,14 +1,15 @@
-import { Link } from 'react-router-dom'
-import { Button } from '@/shared/components/ui/button' // Importando el componente Button de Shadcn
+import { Link } from 'react-router-dom';
+import { Button } from '@/shared/components/ui/button'; // Importando el componente Button de Shadcn
 
 interface TitleProps {
-  title: string
-  description: string
-  buttonName?: string
-  link?: string
+  title: string;
+  description: string;
+  buttonName?: string;
+  link?: string;
+  openModal?: () => void;
 }
 
-const Title = ({ title, description, buttonName = '', link = '' }: TitleProps) => {
+const Title = ({ title, description, buttonName = '', link = '', openModal}: TitleProps) => {
   return (
     <div className='flex flex-row justify-between bg-gradient-to-r from-wonder-blue to-wonder shadow-lg rounded-lg overflow-hidden border-b border-gray-200 px-6 py-4'>
       <div>
@@ -20,13 +21,13 @@ const Title = ({ title, description, buttonName = '', link = '' }: TitleProps) =
 
       {buttonName ? (
         <Link to={link} className=''>
-          <Button className='bg-wonder-blue text-white hover:bg-cyan-950 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 mt-4 px-6 py-2'>
+          <Button onClick={() => openModal} className='bg-wonder-blue text-white hover:bg-cyan-950 rounded-md shadow-md transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 mt-4 px-6 py-2'>
             {buttonName}
           </Button>
         </Link>
       ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default Title
+export default Title;

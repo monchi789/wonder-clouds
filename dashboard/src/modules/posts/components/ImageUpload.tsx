@@ -1,25 +1,27 @@
-import { Button } from '@/shared/components/ui/button'
-import { Input } from '@/shared/components/ui/input'
-import { Label } from '@/shared/components/ui/label'
-import { ImagePlus, X } from 'lucide-react'
-import { cn } from '@/libs/utils'
+import { Button } from '@/shared/components/ui/button';
+import { Input } from '@/shared/components/ui/input';
+import { Label } from '@/shared/components/ui/label';
+import { ImagePlus, X } from 'lucide-react';
+import { cn } from '@/libs/utils';
 
 interface ImageUploadProps {
-  onChange: (url: string | null) => void
-  value: string | null
+  onChange: (url: string | null) => void;
+  value: string | null;
 }
 
 const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
+
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
+
       reader.onloadend = () => {
-        onChange(reader.result as string)
-      }
-      reader.readAsDataURL(file)
+        onChange(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   return (
     <div className='space-y-4'>
@@ -58,7 +60,7 @@ const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ImageUpload
+export default ImageUpload;

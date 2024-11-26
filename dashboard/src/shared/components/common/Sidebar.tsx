@@ -1,3 +1,4 @@
+
 import type React from 'react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -14,11 +15,12 @@ import {
   User
 } from 'lucide-react'
 
+
 interface MenuItemProps {
-  to: string
-  icon: React.ReactNode
-  text: string
-  collapsed?: boolean
+  to: string;
+  icon: React.ReactNode;
+  text: string;
+  collapsed?: boolean;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ to, icon, text, collapsed }) => (
@@ -28,7 +30,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ to, icon, text, collapsed }) => (
       {!collapsed && <span className='my-auto ml-3'>{text}</span>}
     </li>
   </Link>
-)
+);
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
@@ -119,7 +121,7 @@ const Sidebar = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
