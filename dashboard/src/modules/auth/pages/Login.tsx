@@ -36,12 +36,10 @@ const Login: React.FC = () => {
   );
 
   useEffect(() => {
-    // Redirige si el login es exitoso
     if (isSuccess || user) {
-      navigate('/'); // Redirige a la página principal o dashboard
+      navigate('/');
     }
 
-    // Resetea el estado de autenticación
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
@@ -60,7 +58,7 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     const userData = {
-      email: email, // Ajusta según la estructura de tu backend
+      email: email,
       contrasena: contrasena
     };
 

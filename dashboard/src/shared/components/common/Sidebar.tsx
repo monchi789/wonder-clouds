@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   Briefcase,
   FileUser,
@@ -9,8 +10,11 @@ import {
   ChevronLeft,
   ChevronRight,
   LayoutDashboard,
-  BookA
+  BookA,
+  LogOut
 } from 'lucide-react';
+import { AppDispatch } from '@/app/store'; // Ajusta la ruta según tu configuración
+import { logout } from '@/modules/auth/redux/authSlice';
 
 interface MenuItemProps {
   to: string;
@@ -21,7 +25,7 @@ interface MenuItemProps {
 
 const MenuItem: React.FC<MenuItemProps> = ({ to, icon, text, collapsed }) => (
   <Link to={to}>
-    <li className='flex flex-row text-white text-base hover:bg-uac-alter rounded-lg transition duration-300 mx-2 mb-2 px-3 py-2 items-center'>
+    <li className='flex flex-row text-white text-base hover:bg-wonder rounded-lg transition duration-300 items-center mx-2 mb-2 px-3 py-2'>
       {icon}
       {!collapsed && <span className='my-auto ml-3'>{text}</span>}
     </li>
@@ -31,6 +35,17 @@ const MenuItem: React.FC<MenuItemProps> = ({ to, icon, text, collapsed }) => (
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout())
+      .then(() => {
+        navigate('/login');
+      })
+  };
+
   return (
     <>
       {/* Overlay for mobile */}
@@ -111,6 +126,17 @@ const Sidebar = () => {
                 />
               </ul>
             </div>
+          </div>
+
+          {/* Botón de Logout */}
+          <div className='mt-auto'>
+            <button 
+              onClick={handleLogout}
+              className='flex flex-row text-white text-base hover:bg-red-800 rounded-lg transition duration-300 items-center w-[calc(100%-1rem)] mx-2 mb-2 px-3 py-2'
+            >
+              <LogOut />
+              {isSidebarOpen && <span className='my-auto ml-3'>Cerrar sesión</span>}
+            </button>
           </div>
         </div>
       </div>
