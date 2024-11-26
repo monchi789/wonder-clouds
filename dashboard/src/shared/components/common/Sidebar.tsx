@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
+import type React from 'react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Briefcase,
   FileUser,
@@ -10,7 +12,8 @@ import {
   ChevronRight,
   LayoutDashboard,
   BookA,
-  PackageSearch
+  User,
+  PackageSearch,
 } from 'lucide-react';
 
 interface MenuItemProps {
@@ -30,8 +33,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ to, icon, text, collapsed }) => (
 );
 
 const Sidebar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
+
   return (
     <>
       {/* Overlay for mobile */}
@@ -86,6 +90,7 @@ const Sidebar = () => {
                   text='Servicios'
                   collapsed={!isSidebarOpen}
                 />
+                <MenuItem to='/user' icon={<User />} text='Users' collapsed={!isSidebarOpen} />
                 <MenuItem
                   to='/general-type'
                   icon={<BookA />}

@@ -1,4 +1,4 @@
-// hooks/useCargos.ts
+// Hook: useCargos.ts
 import { useQuery } from '@tanstack/react-query';
 import { GeneralType } from '@/interfaces/GeneralType';
 import { getAllTipoPublicacion } from '../services/post.api';
