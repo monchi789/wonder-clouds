@@ -1,61 +1,70 @@
-import { useState } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { UserCircle, Lock, Eye, EyeOff } from 'lucide-react';
-import useAuth from '@/modules/auth/hooks/useAuth';
-import { getTokenAuth } from '@/modules/auth/services/auth.api';
-import LoadingSpinner from '@/shared/components/common/LoadingSpinner';
-import { Alert, AlertDescription } from '@/shared/components/ui/alert';
-import { Input } from '@/shared/components/ui/input';
-import { Button } from '@/shared/components/ui/button';
-import wonder from '@/assets/images/wonderclouds.webp';
-import MemeList from '../components/MemeList';
+import { RootState, AppDispatch } from '@/app/store'; // Ajusta la ruta según tu estructura
 
-interface FormData {
-  email: string;
-  password: string;
-}
+// Importaciones de componentes y iconos
+import { 
+  UserCircle, 
+  Lock, 
+  Eye, 
+  EyeOff 
+} from 'lucide-react';
+import { Button } from '@/shared/components/ui/button'; // Ajusta según tus componentes
+import { Input } from '@/shared/components/ui/input'; // Ajusta según tus componentes
+import { Alert, AlertDescription } from '@/shared/components/ui/alert'; // Ajusta según tus componentes
+import LoadingSpinner from '@/shared/components/common/LoadingSpinner'; // Ajusta la ruta
+import wonder from '@/assets/images/wonderclouds.webp'; // Ajusta la ruta de tu logo
+import MemeList from '../components/MemeList'; // Si tienes este componente
+import { login, reset } from '../redux/authSlice';
 
-const Login = () => {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-
-  const [formData, setFormData] = useState<FormData>({
+const Login: React.FC = () => {
+  const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    contrasena: ''
   });
-
-  const [error, setError] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const { email, contrasena } = formData;
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state: RootState) => state.auth
+  );
+
+  useEffect(() => {
+    // Redirige si el login es exitoso
+    if (isSuccess || user) {
+      navigate('/'); // Redirige a la página principal o dashboard
+    }
+
+    // Resetea el estado de autenticación
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value
     }));
-    setError('');
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
-    try {
-      const response = await getTokenAuth(formData.email, formData.password);
-      login(response);
-      navigate('/', { replace: true });
-    } catch {
-      setError('Credenciales inválidas. Inténtalo nuevamente.');
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    const userData = {
+      email: email, // Ajusta según la estructura de tu backend
+      contrasena: contrasena
+    };
+
+    dispatch(login(userData));
   };
 
   return (
@@ -81,9 +90,9 @@ const Login = () => {
               <p className='mt-2 text-sm text-gray-600'>Ingresa a tu cuenta para continuar</p>
             </div>
 
-            {error && (
+            {isError && (
               <Alert variant='destructive'>
-                <AlertDescription>{error}</AlertDescription>
+                <AlertDescription>{message}</AlertDescription>
               </Alert>
             )}
 
@@ -104,7 +113,7 @@ const Login = () => {
                       required
                       className='pl-10'
                       placeholder='email'
-                      value={formData.email}
+                      value={email}
                       onChange={handleInputChange}
                       disabled={isLoading}
                       autoComplete='email'
@@ -113,7 +122,7 @@ const Login = () => {
                 </div>
 
                 <div>
-                  <label htmlFor='password' className='block text-sm font-medium text-gray-700'>
+                  <label htmlFor='contrasena' className='block text-sm font-medium text-gray-700'>
                     Contraseña
                   </label>
                   <div className='mt-1 relative'>
@@ -121,13 +130,13 @@ const Login = () => {
                       <Lock className='h-5 w-5 text-gray-400' />
                     </div>
                     <Input
-                      id='password'
-                      name='password'
+                      id='contrasena'
+                      name='contrasena'
                       type={showPassword ? 'text' : 'password'}
                       required
                       className='pl-10 pr-10'
                       placeholder='••••••••'
-                      value={formData.password}
+                      value={contrasena}
                       onChange={handleInputChange}
                       disabled={isLoading}
                       autoComplete='current-password'

@@ -1,38 +1,72 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { refreshAccessToken } from "@/modules/auth/services/auth.api";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+// Función para obtener el token de acceso
+const getAccessToken = () => Cookies.get('accessToken');
+
+// Función para obtener el refresh token
+const getRefreshToken = () => Cookies.get('refreshToken');
+
+// Crear instancia de axios
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL, // Reemplaza con tu URL base
+  headers: {
+    'Content-Type': 'application/json',
+  }
 });
 
-api.interceptors.request.use(
+// Interceptor de solicitudes
+axiosInstance.interceptors.request.use(
   (config) => {
-    const token = Cookies.get('accessToken');
+    const token = getAccessToken();
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
-api.interceptors.response.use(
+// Interceptor de respuestas para manejar tokens expirados
+axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Si el error es de autorización y no es un reintento
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const newToken = await refreshAccessToken();
-        originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
-        return api(originalRequest);
-      } catch {
+        // Llamar al endpoint de refresh token
+        const refreshToken = getRefreshToken();
+        if (!refreshToken) {
+          throw new Error('No refresh token found');
+        }
 
-        window.location.href = '/login';
-        return Promise.reject(error);
+        const refreshResponse = await axios.post('/api/v1/auth/refresh', {
+          refreshToken,
+        });
+
+        const { accessToken, refreshToken: newRefreshToken } = refreshResponse.data;
+
+        // Guardar nuevos tokens en cookies
+        Cookies.set('accessToken', accessToken, { expires: 1 / 24 }); // 1 hora de expiración
+        Cookies.set('refreshToken', newRefreshToken, { expires: 7 }); // 7 días de expiración
+
+        // Actualizar el token en el header de la solicitud original
+        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+
+        // Reintentar la solicitud original
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        // Si falla el refresh, hacer logout
+        Cookies.remove('accessToken');
+        Cookies.remove('refreshToken');
+        window.location.href = '/login'; // Redirigir al login
+        return Promise.reject(refreshError);
       }
     }
 
@@ -40,4 +74,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default axiosInstance;

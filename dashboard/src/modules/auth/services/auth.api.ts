@@ -5,7 +5,7 @@ export const getTokenAuth = async (email: string, contrasena: string) => {
   const apiUrl = import.meta.env.VITE_API_URL;
 
   try {
-    const res = await axios.post(`${apiUrl}api/v1/auth/login`, {
+    const res = await axios.post(`${apiUrl}auth/login`, {
       email,
       contrasena
     });
@@ -34,7 +34,7 @@ export const refreshAccessToken = async () => {
   const refreshToken = Cookies.get('refreshToken');
 
   try {
-    const response = await axios.post(`${apiUrl}api/v1/auth/refresh`, {
+    const response = await axios.post(`${apiUrl}auth/refresh`, {
       refreshToken
     });
 
