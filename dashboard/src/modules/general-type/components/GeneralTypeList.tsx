@@ -15,8 +15,9 @@ const GeneralTypeList = () => {
 
   return (
     <div className="mt-6">
-      {generalTypeList?.length !== 0 ? generalTypeList?.map((generalType) => (
+      {generalTypeList?.length !== 0 ? generalTypeList?.map((generalType, key) => (
         <GeneralTypeCard
+          key={key}
           generalType={generalType}
         />
       )) : <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">

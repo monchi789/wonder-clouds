@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState, AppDispatch } from '@/app/store'; // Ajusta la ruta según tu estructura
 
-// Importaciones de componentes y iconos
-import { 
-  UserCircle, 
-  Lock, 
-  Eye, 
-  EyeOff 
+import {
+  UserCircle,
+  Lock,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button'; // Ajusta según tus componentes
 import { Input } from '@/shared/components/ui/input'; // Ajusta según tus componentes
@@ -23,6 +22,7 @@ const Login: React.FC = () => {
     email: '',
     contrasena: ''
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -88,9 +88,13 @@ const Login: React.FC = () => {
               <p className='mt-2 text-sm text-gray-600'>Ingresa a tu cuenta para continuar</p>
             </div>
 
-            {isError && (
+            {isError && message && (
               <Alert variant='destructive'>
-                <AlertDescription>{message}</AlertDescription>
+                <AlertDescription>
+                  {Array.isArray(message)
+                    ? message.join(', ')
+                    : message}
+                </AlertDescription>
               </Alert>
             )}
 

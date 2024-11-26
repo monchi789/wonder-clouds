@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { AuthState, LoginCredentials } from '../types/auth';
-import authService from '../services/authService';
+import authService from './authService';
 
 // Estado inicial
 const initialState: AuthState = {
@@ -31,12 +31,20 @@ export const login = createAsyncThunk(
       
       return response;
     } catch (error: any) {
-      const message = 
-        (error.response && 
-         error.response.data && 
-         error.response.data.message) || 
-        error.message || 
-        error.toString();
+      let message = 'Login failed';
+      
+      if (error.response) {
+        // El servidor respondió con un estado de error
+        message = error.response.data.message || 
+                  error.response.data.error || 
+                  'Error de servidor';
+      } else if (error.request) {
+        // La solicitud fue hecha pero no se recibió respuesta
+        message = 'No se recibió respuesta del servidor';
+      } else {
+        // Algo sucedió al configurar la solicitud
+        message = error.message || 'Error de inicio de sesión';
+      }
       
       return thunkAPI.rejectWithValue(message);
     }
@@ -69,7 +77,6 @@ export const refreshToken = createAsyncThunk(
     try {
       const newAccessToken = await authService.refreshToken();
       
-      // Actualizar tokens
       localStorage.setItem('accessToken', newAccessToken);
       Cookies.set('accessToken', newAccessToken, { 
         expires: 1, 
@@ -78,7 +85,7 @@ export const refreshToken = createAsyncThunk(
       
       return newAccessToken;
     } catch (error) {
-      // Si falla el refresh, hacer logout
+
       thunkAPI.dispatch(logout());
       throw error;
     }
@@ -92,9 +99,7 @@ const authSlice = createSlice({
   reducers: {
     reset: (state) => {
       state.isLoading = false;
-      state.isError = false;
       state.isSuccess = false;
-      state.message = '';
     }
   },
   extraReducers: (builder) => {

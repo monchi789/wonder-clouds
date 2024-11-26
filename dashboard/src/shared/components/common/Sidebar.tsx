@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import {
   Briefcase,
   FileUser,
-  Megaphone,
   SquareUserRound,
   Building2,
   ChevronLeft,
@@ -40,7 +39,6 @@ const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
 
-  
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -53,7 +51,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Overlay for mobile */}
       {isMobileSidebarOpen && (
         <div
           className='fixed inset-0 bg-black bg-opacity-50 z-20 xl:hidden'
@@ -66,7 +63,6 @@ const Sidebar = () => {
           isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } xl:translate-x-0 transition-all duration-500 ease-in-out bg-wonder-blue ${isSidebarOpen ? 'w-64' : 'w-16'}`}
       >
-        {/* Collapse button */}
         <button
           className='absolute -right-3 top-8 bg-sky-500 text-white rounded-full p-1 hidden xl:flex items-center justify-center'
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -105,7 +101,12 @@ const Sidebar = () => {
                   text='Servicios'
                   collapsed={!isSidebarOpen}
                 />
-                <MenuItem to='/user' icon={<User />} text='Users' collapsed={!isSidebarOpen} />
+                <MenuItem 
+                  to='/users' 
+                  icon={<User />} 
+                  text='Users' 
+                  collapsed={!isSidebarOpen} 
+                />
                 <MenuItem
                   to='/general-type'
                   icon={<BookA />}
@@ -124,12 +125,6 @@ const Sidebar = () => {
                   text='Publicaciones'
                   collapsed={!isSidebarOpen}
                 />
-                <MenuItem
-                  to='/popups'
-                  icon={<Megaphone />}
-                  text='Anuncios'
-                  collapsed={!isSidebarOpen}
-                />
 
                 {!isSidebarOpen ? null : (
                   <span className='text-gray-400 text-sm font-medium mx-5 mt-4 mb-2'>Productos</span>
@@ -144,7 +139,6 @@ const Sidebar = () => {
             </div>
           </div>
 
-          {/* Botón de Logout */}
           <div className='mt-auto'>
             <button 
               onClick={handleLogout}
