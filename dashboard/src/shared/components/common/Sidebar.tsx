@@ -12,9 +12,9 @@ import {
   ChevronRight,
   LayoutDashboard,
   BookA,
+  PackageSearch,
   User
 } from 'lucide-react'
-
 
 interface MenuItemProps {
   to: string;
@@ -114,6 +114,16 @@ const Sidebar = () => {
                   icon={<Megaphone />}
                   text='Anuncios'
                   collapsed={!isSidebarOpen}
+                />
+
+                {!isSidebarOpen ? null : (
+                  <span className='text-gray-400 text-sm font-medium mx-5 mt-4 mb-2'>Productos</span>
+                )}
+                <MenuItem
+                  to='/products'
+                  icon={<PackageSearch />}
+                  text='Productos'
+                  collapsed={!isSidebarOpen} 
                 />
               </ul>
             </div>
