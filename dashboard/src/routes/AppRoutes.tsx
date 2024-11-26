@@ -11,7 +11,8 @@ const Post = lazy(() => import('@/modules/posts/pages/PostMain'));
 const PostCreate = lazy(() => import('@/modules/posts/pages/PostCreate'));
 const Service = lazy(() => import('@/modules/services/pages/ServiceMain'));
 const GeneralType = lazy(() => import('@/modules/general-type/pages/GeneralTypeMain'));
-
+const UserMain = lazy(() => import('@/modules/users/pages/UserMain'));
+  
 const routes = [
   { path: '/', element: <Client /> },
   { path: '/login', element: <Login /> },
@@ -20,8 +21,9 @@ const routes = [
   { path: '/posts', element: <Post /> },
   { path: '/posts/new', element: <PostCreate /> },
   { path: '/services', element: <Service /> },
-  { path: '/general-type', element: <GeneralType /> }
-];
+   { path: '/general-type', element: <GeneralType /> },
+  { path: '/user', element: <UserMain /> }
+
 
 const AppRoutes = () => {
   return (
