@@ -2,7 +2,7 @@ export interface Post {
   id: string;
   titulo: string;
   contenido: string;
-  portada: string | null;
+  portada: string[] | null;
   categoriaPublicacion: string;
 }
 

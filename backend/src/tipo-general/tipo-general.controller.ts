@@ -64,6 +64,11 @@ export class TipoGeneralController {
     return this.tipoGeneralService.tipoCliente();
   }
 
+  @Get('categoria-producto')
+  categoriaProducto() {
+    return this.tipoGeneralService.categoriaProducto();
+  }
+
   @Get(':id')
   @Auth(Rol.ADMIN)
   findOne(@Param('id') id: string) {

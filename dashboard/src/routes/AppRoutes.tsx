@@ -12,6 +12,9 @@ const Post = lazy(() => import('@/modules/posts/pages/PostMain'));
 const PostCreate = lazy(() => import('@/modules/posts/pages/PostCreate'));
 const Service = lazy(() => import('@/modules/services/pages/ServiceMain'));
 const GeneralType = lazy(() => import('@/modules/general-type/pages/GeneralTypeMain'));
+const Products = lazy(() => import('@/modules/products/pages/ProductsMain'));
+const UserMain = lazy(() => import('@/modules/users/pages/UserMain'));
+
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

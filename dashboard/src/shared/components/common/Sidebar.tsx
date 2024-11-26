@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+
+import type React from 'react'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Briefcase,
   FileUser,
@@ -11,10 +12,13 @@ import {
   ChevronRight,
   LayoutDashboard,
   BookA,
+  User,
+  PackageSearch,
   LogOut
 } from 'lucide-react';
-import { AppDispatch } from '@/app/store'; // Ajusta la ruta según tu configuración
+import { useDispatch } from 'react-redux';
 import { logout } from '@/modules/auth/redux/authSlice';
+import { AppDispatch } from '@/app/store';
 
 interface MenuItemProps {
   to: string;
@@ -33,8 +37,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ to, icon, text, collapsed }) => (
 );
 
 const Sidebar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
+
   
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -100,6 +105,7 @@ const Sidebar = () => {
                   text='Servicios'
                   collapsed={!isSidebarOpen}
                 />
+                <MenuItem to='/user' icon={<User />} text='Users' collapsed={!isSidebarOpen} />
                 <MenuItem
                   to='/general-type'
                   icon={<BookA />}
@@ -123,6 +129,16 @@ const Sidebar = () => {
                   icon={<Megaphone />}
                   text='Anuncios'
                   collapsed={!isSidebarOpen}
+                />
+
+                {!isSidebarOpen ? null : (
+                  <span className='text-gray-400 text-sm font-medium mx-5 mt-4 mb-2'>Productos</span>
+                )}
+                <MenuItem
+                  to='/products'
+                  icon={<PackageSearch />}
+                  text='Productos'
+                  collapsed={!isSidebarOpen} 
                 />
               </ul>
             </div>

@@ -1,7 +1,10 @@
-import ImageUpload from '../components/ImageUpload';
+import React, { useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Input } from '@/shared/components/ui/input';
 import { Save, Send } from 'lucide-react';
+import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
+import { toast } from 'sonner';
+
+import { Input } from '@/shared/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -9,15 +12,13 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/shared/components/ui/select';
-import { useRef } from 'react';
-import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 import type { Post } from '@/interfaces/Post';
-import { toast } from 'sonner';
 import { createPost } from '../services/post.api';
 import { useGetCategoriasPublicacion } from '../hooks/useCategoriasPublicacion';
 import LoadingSpinner from '@/shared/components/common/LoadingSpinner';
+import ImageUpload from '../components/ImageUpload';
 
-const PostCreate = () => {
+const PostCreate: React.FC = () => {
   const { data: categoriasList, isLoading, isError, error } = useGetCategoriasPublicacion();
 
   const {
@@ -28,9 +29,10 @@ const PostCreate = () => {
     formState: { errors }
   } = useForm<Post>({
     defaultValues: {
+      id: '',
       titulo: '',
       contenido: '',
-      portada: '',
+      portada: null,
       categoriaPublicacion: ''
     }
   });
@@ -40,7 +42,6 @@ const PostCreate = () => {
   const onSubmit = async (data: Post) => {
     try {
       const res = await createPost(data);
-
       console.log(res);
       reset();
       toast.success('Publicación creada exitosamente.');
@@ -60,16 +61,14 @@ const PostCreate = () => {
   return (
     <form
       className='flex flex-col flex-1 border rounded-lg shadow-md'
-      onSubmit={() => handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
     >
-      {/* Header */}
       <div className='border-b px-4 py-5'>
         <h2 className='text-2xl font-bold'>Crear nueva publicación</h2>
       </div>
 
       <div className='p-4 flex-1 space-y-8'>
         <div className='grid grid-cols-2 gap-4'>
-          {/* Título de la publicación */}
           <div className='space-y-2'>
             <label htmlFor='titulo' className='block text-sm font-medium text-gray-700'>
               Título de la publicación
@@ -92,7 +91,6 @@ const PostCreate = () => {
             )}
           </div>
 
-          {/* Categoría */}
           <div className='space-y-2'>
             <label className='block text-sm font-medium text-gray-700'>Categoría</label>
             <Controller
@@ -143,29 +141,13 @@ const PostCreate = () => {
                     height: '300px',
                     menubar: false,
                     plugins: [
-                      'advlist',
-                      'autolink',
-                      'lists',
-                      'link',
-                      'image',
-                      'charmap',
-                      'preview',
-                      'anchor',
-                      'searchreplace',
-                      'visualblocks',
-                      'code',
-                      'fullscreen',
-                      'insertdatetime',
-                      'media',
-                      'table',
-                      'code',
-                      'help',
-                      'wordcount'
+                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                      'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
                     ],
-                    toolbar:
-                      'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-                    content_style:
-                      'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                    toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter ' +
+                      'alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                     resize: true,
                     autoresize_bottom_margin: 0
                   }}
@@ -180,15 +162,14 @@ const PostCreate = () => {
           )}
         </div>
 
-        {/* Cover Image */}
         <div className='space-y-2'>
           <label className='block text-sm font-medium text-gray-700'>Portada</label>
           <Controller
             name='portada'
             control={control}
-            rules={{ required: 'La portada es requerida' }}
+            rules={{ required: 'Al menos una imagen es requerida' }}
             render={({ field: { onChange, value } }) => (
-              <ImageUpload value={value} onChange={onChange} />
+              <ImageUpload value={value} onChange={onChange} multiple={true} />
             )}
           />
           {errors.portada && (
@@ -197,7 +178,6 @@ const PostCreate = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className='border-t px-4 py-2 flex justify-between'>
         <div className='flex gap-2'>
           <button
