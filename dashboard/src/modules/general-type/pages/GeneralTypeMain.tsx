@@ -16,7 +16,7 @@ const GeneralTypeMain = () => {
         title="Tipos Generales"
         description="Aquí puedes gestionar todos los tipos generales."
         buttonName='Crear Tipo General'
-        openModal={() => {console.log('open modal')}}
+        openModal={() => handleOpenModal}
       />
 
       <GeneralTypeList />

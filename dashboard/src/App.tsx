@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { Provider } from 'react-redux';
 import AppRoutes from './routes/AppRoutes';
+import { store } from './app/store';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,13 +15,13 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true}}>
         <QueryClientProvider client={queryClient}>
           <AppRoutes />
         </QueryClientProvider>
       </BrowserRouter>
-    </AuthProvider>
+    </Provider>
   );
 }
 

@@ -40,7 +40,10 @@ export default function WonderClouds() {
         />
       </motion.div>
       <motion.div
-        className="flex flex-col items-center text-white bg-gradient-to-b from-primary to-primary/90 relative min-h-[80vh] px-4 md:px-10"
+        className="flex flex-col items-center text-white bg-gradient-to-b from-primary  to-primary/20 relative min-h-[80vh] px-4 md:px-10"
+
+
+
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -148,13 +151,14 @@ export default function WonderClouds() {
           ))}
         </motion.div>
 
-        <Link href="/contactanos" className="inline-block">
+        <Link href="/contactanos" className="inline-block mt-16">
           <motion.div
-            className="bg-white text-primary rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all mt-16 px-8 py-4 cursor-pointer"
+            className="relative w-fit text-lg text-primary font-semibold bg-white shadow-lg hover:shadow-xl rounded-full overflow-hidden group cursor-pointer mx-auto px-8 py-4"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Comienza ahora
+            <div className="absolute top-0 left-0 w-0 h-full bg-light -z-10 group-hover:w-full transition-all duration-1000"/>
           </motion.div>
         </Link>
       </motion.div>
