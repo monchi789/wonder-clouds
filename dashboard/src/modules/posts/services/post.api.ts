@@ -1,11 +1,11 @@
-import api from '@/configs/axios';
+import axiosInstance from '@/configs/axios';
 import type { Post } from '@/interfaces/Post';
 import Cookies from 'js-cookie';
 
 export const getAllTipoPublicacion = async () => {
   const token = Cookies.get('authToken');
 
-  const res = await api.get('api/v1/tipo-general/categoria-publicacion', {
+  const res = await axiosInstance.get('tipo-general/categoria-publicacion', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
@@ -18,7 +18,7 @@ export const getAllTipoPublicacion = async () => {
 export const createPost = async (post: Post) => {
   const token = Cookies.get('authToken');
 
-  await api.post('api/v1/publicacion', post, {
+  await axiosInstance.post('publicacion', post, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`

@@ -54,7 +54,7 @@ const UsersMain = () => {
   }
 
   return (
-    <div className='p-6'>
+    <>
       {/* Encabezado principal sin cambios */}
       <Title title='Usuarios' description='Administra y gestiona los usuarios de tu aplicación.' />
 
@@ -125,7 +125,7 @@ const UsersMain = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }
 
