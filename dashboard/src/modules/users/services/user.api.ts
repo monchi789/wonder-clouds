@@ -11,7 +11,7 @@ export const createUser = async (user: {
   apellidoMaterno?: string
 }): Promise<User> => {
   try {
-    const res = await axiosInstance.post('/api/v1/auth/register', user, {
+    const res = await axiosInstance.post('auth/register', user, {
       headers: {
         'Content-Type': 'application/json'
       }

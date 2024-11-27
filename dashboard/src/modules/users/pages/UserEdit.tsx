@@ -1,55 +1,50 @@
-import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { getUserById, updateUser } from '../services/user.api'
+import { useState } from 'react';
+import { updateUser } from '../services/user.api';
 
-const UserEdit = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
+const UserEdit = ({
+  user,
+  onClose,
+  onSave,
+}: {
+  user: {
+    idUsuario: string;
+    usuario: string;
+    contrasena: string;
+    email: string;
+    rol: string;
+    nombre: string;
+    apellidoPaterno?: string;
+    apellidoMaterno?: string;
+  };
+  onClose: () => void;
+  onSave: () => void;
+}) => {
   const [formData, setFormData] = useState({
-    nombre: '',
-    email: '',
-    usuario: '',
-    contrasena: '',
-    rol: ''
-  })
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await getUserById(id as string)
-
-        setFormData(user)
-      } catch (error) {
-        console.error('Error al obtener el usuario:', error)
-      }
-    }
-
-    fetchUser()
-  }, [id])
+    ...user, // Prellenamos el formulario con los datos del usuario
+    contrasena: '', // La contraseña siempre debe ser actualizada (según Swagger)
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      await updateUser(id as string, formData)
-      alert('Usuario actualizado correctamente.')
-      navigate('/users')
+      // Llamamos al service para actualizar el usuario
+      await updateUser(user.idUsuario, formData);
+      alert('Usuario actualizado correctamente.');
+      onSave(); // Refresca la lista de usuarios
+      onClose(); // Cierra el modal
     } catch (error) {
-      console.error('Error al actualizar usuario:', error)
-      alert('Error al actualizar el usuario.')
+      console.error('Error al actualizar usuario:', error);
+      alert('Error al actualizar el usuario.');
     }
-  }
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className='max-w-4xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-lg space-y-6'
-    >
+    <form onSubmit={handleSubmit} className='space-y-6'>
       <h1 className='text-2xl font-bold'>Editar Usuario</h1>
 
       <div>
@@ -65,7 +60,7 @@ const UserEdit = () => {
       </div>
 
       <div>
-        <label className='block text-sm font-medium text-gray-700'>Email</label>
+        <label className='block text-sm font-medium text-gray-700'>Correo Electrónico</label>
         <input
           type='email'
           name='email'
@@ -89,6 +84,18 @@ const UserEdit = () => {
       </div>
 
       <div>
+        <label className='block text-sm font-medium text-gray-700'>Contraseña</label>
+        <input
+          type='password'
+          name='contrasena'
+          value={formData.contrasena}
+          onChange={handleChange}
+          className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500'
+          required
+        />
+      </div>
+
+      <div>
         <label className='block text-sm font-medium text-gray-700'>Rol</label>
         <select
           name='rol'
@@ -97,10 +104,32 @@ const UserEdit = () => {
           className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500'
           required
         >
-          <option value='Admin'>Admin</option>
-          <option value='Editor'>Editor</option>
-          <option value='Viewer'>Viewer</option>
+          <option value='ADMIN'>Admin</option>
+          <option value='EDITOR'>Editor</option>
+          <option value='VIEWER'>Viewer</option>
         </select>
+      </div>
+
+      <div>
+        <label className='block text-sm font-medium text-gray-700'>Apellido Paterno</label>
+        <input
+          type='text'
+          name='apellidoPaterno'
+          value={formData.apellidoPaterno || ''}
+          onChange={handleChange}
+          className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500'
+        />
+      </div>
+
+      <div>
+        <label className='block text-sm font-medium text-gray-700'>Apellido Materno</label>
+        <input
+          type='text'
+          name='apellidoMaterno'
+          value={formData.apellidoMaterno || ''}
+          onChange={handleChange}
+          className='block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500'
+        />
       </div>
 
       <button
@@ -110,7 +139,7 @@ const UserEdit = () => {
         Guardar Cambios
       </button>
     </form>
-  )
-}
+  );
+};
 
-export default UserEdit
+export default UserEdit;
