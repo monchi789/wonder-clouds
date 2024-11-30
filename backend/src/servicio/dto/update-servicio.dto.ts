@@ -1,4 +1,12 @@
-import { IsDecimal, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  ArrayMinSize,
+  ArrayNotEmpty,
+  IsArray,
+  IsDecimal,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 
 export class UpdateServicioDto {
   @IsOptional()
@@ -14,4 +22,16 @@ export class UpdateServicioDto {
   @IsOptional()
   @IsDecimal()
   precioServicio: number;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  descripcionCorta: string;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ArrayMinSize(1)
+  @IsString({ each: true })
+  palabrasClave: string[];
 }

@@ -8,6 +8,7 @@ import { UpdateTipoGeneralDto } from './dto/update-tipo-general.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TipoGeneral } from './entities/tipo-general.entity';
 import { Repository } from 'typeorm';
+import { Tipo } from 'src/common/enums/tipo.enum';
 
 @Injectable()
 export class TipoGeneralService {
@@ -76,5 +77,41 @@ export class TipoGeneralService {
     }
 
     return { message: `Tipo General con el ID ${idTipoGeneral} eliminada` };
+  }
+
+  async categoriaServicio() {
+    return await this.tipoGeneralRepository.find({
+      where: { tipo: Tipo.CATEGORIA_SERVICIO },
+    });
+  }
+
+  async categoriaPublicacion() {
+    return await this.tipoGeneralRepository.find({
+      where: { tipo: Tipo.CATEGORIA_PUBLICACION },
+    });
+  }
+
+  async tipoTrabajo() {
+    return await this.tipoGeneralRepository.find({
+      where: { tipo: Tipo.TIPO_TRABAJO },
+    });
+  }
+
+  async tipoDocumento() {
+    return await this.tipoGeneralRepository.find({
+      where: { tipo: Tipo.TIPO_DOCUMENTO },
+    });
+  }
+
+  async tipoCliente() {
+    return await this.tipoGeneralRepository.find({
+      where: { tipo: Tipo.TIPO_CLIENTE },
+    });
+  }
+
+  async categoriaProducto() {
+    return await this.tipoGeneralRepository.find({
+      where: { tipo: Tipo.CATEGORIA_PRODUCTO },
+    });
   }
 }

@@ -1,37 +1,38 @@
+import { Type } from 'class-transformer';
 import {
   IsOptional,
   IsString,
   MinLength,
   IsBoolean,
   IsDate,
+  IsUUID,
 } from 'class-validator';
 
 export class UpdateTrabajoDto {
   @IsString()
   @IsOptional()
   @MinLength(5)
-  nombreTrabajo: string;
+  nombreTrabajo?: string;
 
   @IsString()
   @IsOptional()
   @MinLength(5)
-  descripcionTrabajo: string;
+  descripcionTrabajo?: string;
 
   @IsOptional()
   @IsBoolean()
-  visibilidadTrabajo: boolean;
+  visibilidadTrabajo?: boolean;
 
   @IsOptional()
   @IsDate()
-  fechaTrabajo: Date;
+  @Type(() => Date)
+  fechaTrabajo?: Date;
 
-  @IsString()
+  @IsUUID()
   @IsOptional()
-  @MinLength(5)
-  idCliente: string;
+  idCliente?: string;
 
-  @IsString()
+  @IsUUID()
   @IsOptional()
-  @MinLength(5)
-  tipoTrabajo: string;
+  idServicio?: string;
 }

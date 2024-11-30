@@ -21,6 +21,18 @@ export class Servicio {
   @Column({ type: 'float' })
   precioServicio: number;
 
+  @Column({ type: 'text' })
+  descripcion: string;
+
+  @Column('text', { array: true })
+  fotoServicio: string[];
+
+  @Column('text', { array: true })
+  palabrasClave: string[];
+
+  @Column({ type: 'text' })
+  descripcionCorta: string;
+
   @CreateDateColumn()
   createAt: Date;
 

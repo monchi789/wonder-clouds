@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PublicacionModule } from './publicacion/publicacion.module';
-import { SliderModule } from './slider/slider.module';
+import { GaleriaModule } from './galeria/galeria.module';
 import { ClienteModule } from './cliente/cliente.module';
 import { TrabajoModule } from './trabajo/trabajo.module';
+import { ProductoModule } from './producto/producto.module';
 import { DetalleTrabajoModule } from './detalle-trabajo/detalle-trabajo.module';
+import { InstagramModule } from './instagram/isntagram.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServicioModule } from './servicio/servicio.module';
@@ -17,13 +19,15 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     PublicacionModule,
-    SliderModule,
+    GaleriaModule,
     PopUpModule,
     ServicioModule,
     TipoGeneralModule,
     ClienteModule,
+    ProductoModule,
     TrabajoModule,
     DetalleTrabajoModule,
+    InstagramModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env'],

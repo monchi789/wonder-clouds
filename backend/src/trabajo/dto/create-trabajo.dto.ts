@@ -5,6 +5,7 @@ import {
   MinLength,
   IsBoolean,
   IsDate,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateTrabajoDto {
@@ -27,13 +28,11 @@ export class CreateTrabajoDto {
   @Type(() => Date)
   fechaTrabajo: Date;
 
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  @MinLength(5)
   idCliente: string;
 
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  @MinLength(5)
-  tipoTrabajo: string;
+  idServicio: string;
 }

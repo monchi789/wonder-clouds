@@ -17,7 +17,15 @@ export class UsuarioService {
     private readonly usuarioRepository: Repository<Usuario>,
   ) {}
 
-  async create({ usuario, contrasena, email, rol }: CreateUsuarioDto) {
+  async create({
+    usuario,
+    contrasena,
+    email,
+    rol,
+    nombre,
+    apellidoPaterno,
+    apellidoMaterno,
+  }: CreateUsuarioDto) {
     const isHashed = contrasena.startsWith('$2b$');
     const hashedPassword = isHashed
       ? contrasena
@@ -28,6 +36,9 @@ export class UsuarioService {
       contrasena: hashedPassword,
       email,
       rol,
+      apellidoPaterno,
+      apellidoMaterno,
+      nombre,
     });
     return await this.usuarioRepository.save(usuarioCreate);
   }
@@ -44,13 +55,36 @@ export class UsuarioService {
   }
 
   async findAll() {
-    return await this.usuarioRepository.find();
+    return await this.usuarioRepository.find({
+      select: [
+        'idUsuario',
+        'usuario',
+        'email',
+        'rol',
+        'nombre',
+        'apellidoPaterno',
+        'apellidoMaterno',
+        'createAt',
+        'updateAt',
+      ],
+    });
   }
 
   async findOne(idUsuario: string) {
     try {
       const usuario = await this.usuarioRepository.findOne({
         where: { idUsuario },
+        select: [
+          'idUsuario',
+          'usuario',
+          'email',
+          'rol',
+          'nombre',
+          'apellidoPaterno',
+          'apellidoMaterno',
+          'createAt',
+          'updateAt',
+        ],
       });
 
       if (!usuario) {
@@ -70,13 +104,24 @@ export class UsuarioService {
 
   async update(
     idUsuario: string,
-    { usuario, contrasena, email, rol }: UpdateUsuarioDto,
+    {
+      usuario,
+      contrasena,
+      email,
+      rol,
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
+    }: UpdateUsuarioDto,
   ) {
     const updateData: Partial<Usuario> = {};
 
     if (usuario) updateData.usuario = usuario;
     if (email) updateData.email = email;
     if (rol) updateData.rol = rol;
+    if (nombre) updateData.nombre = nombre;
+    if (apellidoPaterno) updateData.apellidoMaterno = apellidoPaterno;
+    if (apellidoMaterno) updateData.apellidoMaterno = apellidoMaterno;
 
     if (contrasena) {
       const isHashed = contrasena.startsWith('$2b$');
@@ -108,5 +153,34 @@ export class UsuarioService {
     }
 
     return { message: `Usuario con el ID ${idUsuario} eliminada` };
+  }
+  async changePassword(
+    idUsuario: string,
+    { email, contrasena }: { email: string; contrasena: string },
+  ) {
+    // Busca al usuario por ID y email
+    const usuario = await this.usuarioRepository.findOne({
+      where: { idUsuario, email },
+      select: ['idUsuario', 'email', 'contrasena'], // Selecciona solo los campos necesarios
+    });
+
+    if (!usuario) {
+      throw new NotFoundException(
+        `Usuario con ID ${idUsuario} y email ${email} no encontrado`,
+      );
+    }
+
+    // Actualiza la contraseña del usuario
+    const result = await this.usuarioRepository.update(idUsuario, {
+      contrasena,
+    });
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `No se pudo actualizar la contraseña para el usuario con ID ${idUsuario}`,
+      );
+    }
+
+    return { message: 'Contraseña actualizada exitosamente' };
   }
 }

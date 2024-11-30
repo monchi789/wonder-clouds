@@ -19,7 +19,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register({ usuario, contrasena, email }: RegisterDto) {
+  async register({
+    usuario,
+    contrasena,
+    email,
+    nombre,
+    apellidoMaterno,
+    apellidoPaterno,
+  }: RegisterDto) {
     const nombreUsuario = await this.usuarioService.findByEmail(email);
 
     if (nombreUsuario) {
@@ -32,6 +39,9 @@ export class AuthService {
       usuario,
       email,
       contrasena: hashedPassword,
+      nombre,
+      apellidoPaterno,
+      apellidoMaterno,
     });
 
     // Verificar que el hash se guardó correctamente
@@ -111,7 +121,6 @@ export class AuthService {
       throw new UnauthorizedException('Refresh token inválido o expirado');
     }
   }
-
   async password(
     idUsuario: string,
     { email, contrasena, nuevaContrasena }: UpdatePasswordDto,
@@ -134,7 +143,7 @@ export class AuthService {
 
     const hashedPassword = await bcrypt.hash(nuevaContrasena, this.SALT_ROUNDS);
 
-    await this.usuarioService.update(idUsuario, {
+    await this.usuarioService.changePassword(idUsuario, {
       email,
       contrasena: hashedPassword,
     });

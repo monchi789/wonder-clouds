@@ -9,5 +9,6 @@ import { ImageModule } from '../imagenes/image.module';
   imports: [TypeOrmModule.forFeature([Servicio]), ImageModule],
   controllers: [ServicioController],
   providers: [ServicioService],
+  exports: [TypeOrmModule],
 })
 export class ServicioModule {}
