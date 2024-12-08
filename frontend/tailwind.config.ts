@@ -13,6 +13,11 @@ const config: Config = {
 			backgroundImage: {
         'smooth-primary': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
       },
+			fontFamily: {
+        quicksand: 'var(--font-quicksand)',
+        monserrat: 'var(--font-monserrat)',
+				roboto: 'var(--font-roboto)',
+      },
       gradientColorStops: {
         primary: 'var(--primary)',
       },
@@ -22,7 +27,7 @@ const config: Config = {
   			primary: 'var(--primary)',
   			secondary: 'var(--secondary)',
 				light: '#BCD0DF',
-  			default: 'var(--default)'
+  			default: '#1F2C3D'
   		},
   		keyframes: {
   			efecto: {

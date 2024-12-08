@@ -16,7 +16,7 @@ const HeroSection = () => {
   });
   return (
     <>
-      <div className="w-full flex flex-col justify-center lg:flex-row items-center relative overflow-hidden space-y-5 space-x-20 px-4 lg:px-0 z-10">
+      <div className="max-w-8xl mx-auto flex flex-col justify-center lg:flex-row items-center relative overflow-hidden z-10 space-y-5 space-x-20 px-4 lg:px-0">
 
         {/* Contenedor animado del texto */}
         <motion.div
@@ -25,7 +25,7 @@ const HeroSection = () => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: 'easeInOut' }}
         >
-          <span className="text-3xl text-default lg:text-6xl font-extrabold leading-tight">
+          <span className="text-default text-3xl lg:text-5xl font-monserrat font-extrabold leading-tight">
             Es momento de que <br />
             <span className="text-primary">{text}</span>
             <Cursor cursorColor="#104D7E" /> <br />

@@ -15,24 +15,6 @@ export default function Footer() {
 
   return (
     <div className="mt-12">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        variants={fadeIn}
-        transition={{ duration: 0.8 }}
-        className="relative"
-      >
-        <Image
-          className="w-full -mb-1"
-          src="/static/images/background_footer.webp"
-          alt="Fondo tecnológico"
-          width={1800}
-          height={1000}
-          layout="responsive"
-          priority
-        />
-      </motion.div>
-
       <div className="bg-primary pt-10 pb-5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between gap-8 text-white max-w-6xl mx-auto py-8">

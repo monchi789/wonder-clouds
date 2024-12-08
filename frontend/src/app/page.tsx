@@ -8,14 +8,14 @@ import ContactUsForm from "@/app/components/ContactUsForm";
 const Inicio = () => {
   return (
     <>
-      <div className=" flex flex-row w-full lg:w-full items-center px-auto mx-auto mb-12 space-y-10 relative">
+      <div className=" flex flex-row w-full lg:w-full items-center relative mb-12 px-auto mx-auto">
         <MovingCirclesBackground />
         <InicioWritting />
       </div>
 
       <WonderClouds />
 
-      <div className="container flex flex-col w-full lg:w-3/4 items-center relative space-y-20 mx-auto mt-24 px-5">
+      <div className="container flex flex-col w-full lg:max-w-7xl relative space-y-10 mx-auto mt-24 px-5">
         <Services />
       </div>
 

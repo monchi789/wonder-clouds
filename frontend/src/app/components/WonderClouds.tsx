@@ -135,7 +135,7 @@ export default function WonderClouds() {
             <Sparkles size={24} />
           </motion.div>
 
-          <h1 className="text-5xl md:text-7xl font-bold text-white text-center">
+          <h1 className="text-5xl md:text-8xl font-bold text-white text-center">
             Wonder Clouds
           </h1>
         </motion.div>
