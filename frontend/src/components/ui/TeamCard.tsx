@@ -21,7 +21,7 @@ const TeamCard = ({
   instagramUrl 
 }: TeamCardProps) => {
   return (
-    <div className="flex flex-col text-color">
+    <div className="flex flex-col text-color font-quicksand">
       <Image className="w-full max-h-80 object-cover rounded-2xl" src={imageSrc} width={800} height={800} alt={name} />
       <span className="text-xl text-color font-semibold mt-3">{name}</span>
       <span className="text-medium text-[#9EA1ADEE]">{role}</span>

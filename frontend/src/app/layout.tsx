@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { Quicksand } from "next/font/google";
+import { Montserrat, Quicksand, Roboto } from "next/font/google";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import WhatsAppButton from "@/components/ui/WhatsappButton";
@@ -15,6 +15,24 @@ const quicksand = Quicksand({
   variable: "--font-quicksand",
   fallback: ["system-ui", "arial"],
 });
+
+const monserrat = Montserrat({
+  weight: ["300", "400", "500", "700"],
+  style: ["normal"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-monserrat",
+  fallback: ["system-ui", "arial"],
+})
+
+const roboto = Roboto({
+  weight: ["300", "400", "500", "700"],
+  style: ["normal"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-roboto",
+  fallback: ["system-ui", "arial"],
+})
 
 // Metadata mejorada
 export const metadata: Metadata = {
@@ -95,18 +113,17 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html
       lang="es"
-      className={quicksand.variable}
       suppressHydrationWarning
     >
       <body
-        className={`${quicksand.className} min-h-screen flex flex-col bg-slate-50 antialiased`}
+        className={`${quicksand.variable} ${monserrat.variable} ${roboto.variable} min-h-screen flex flex-col bg-white antialiased`}
       >
         <Suspense fallback={<div className="h-16" />}>
           <Header />
         </Suspense>
 
         <main
-          className="flex-grow pt-24 pb-12" // pt-24 compensa el header fijo
+          className="flex-grow pt-24"
         >
           {children}
         </main>

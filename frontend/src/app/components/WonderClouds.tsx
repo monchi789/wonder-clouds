@@ -23,8 +23,44 @@ export default function WonderClouds() {
     { label: "Aliados estratégicos", value: "10+" },
     { label: "Proyectos completados", value: "15+" }
   ];
+
+  // Snow particle generation
+  const generateSnowParticles = () => {
+    return Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      animationDelay: `${Math.random() * 5}s`,
+      size: `${Math.random() * 4 + 2}px`
+    }));
+  };
+
+  const snowParticles = generateSnowParticles();
+
   return (
-    <>
+    <div className="relative overflow-hidden">
+      {/* Snow particles */}
+      {snowParticles.map((particle) => (
+        <motion.div
+          key={particle.id}
+          className="absolute z-10 bg-white rounded-full opacity-70"
+          style={{
+            left: particle.left,
+            width: particle.size,
+            height: particle.size
+          }}
+          animate={{
+            y: ['0vh', '100vh'],
+            x: ['-20px', '20px']
+          }}
+          transition={{
+            duration: Math.random() * 10 + 10,
+            repeat: Infinity,
+            delay: parseFloat(particle.animationDelay),
+            ease: 'linear'
+          }}
+        />
+      ))}
+
       <motion.div
         initial={{ scale: 0.8, rotate: -10, opacity: 0 }}
         animate={{ scale: 1, rotate: 0, opacity: 1 }}
@@ -39,11 +75,9 @@ export default function WonderClouds() {
           className="w-full h-full"
         />
       </motion.div>
+
       <motion.div
         className="flex flex-col items-center text-white bg-gradient-to-b from-primary  to-primary/20 relative min-h-[80vh] px-4 md:px-10"
-
-
-
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -101,7 +135,7 @@ export default function WonderClouds() {
             <Sparkles size={24} />
           </motion.div>
 
-          <h1 className="text-5xl md:text-7xl font-bold text-white text-center">
+          <h1 className="text-5xl md:text-8xl font-bold text-white text-center">
             Wonder Clouds
           </h1>
         </motion.div>
@@ -153,15 +187,15 @@ export default function WonderClouds() {
 
         <Link href="/contactanos" className="inline-block mt-16">
           <motion.div
-            className="relative w-fit text-lg text-primary font-semibold bg-white shadow-lg hover:shadow-xl rounded-full overflow-hidden group cursor-pointer mx-auto px-8 py-4"
+            className="relative w-fit text-lg text-primary font-semibold bg-white shadow-lg hover:shadow-xl hover:text-white transition duration-1000 rounded-full overflow-hidden group cursor-pointer mx-auto px-8 py-4"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             Comienza ahora
-            <div className="absolute top-0 left-0 w-0 h-full bg-light -z-10 group-hover:w-full transition-all duration-1000"/>
+            <div className="absolute top-0 left-0 w-0 h-full bg-primary -z-10 group-hover:w-full transition-all duration-1000"/>
           </motion.div>
         </Link>
       </motion.div>
-    </>
+    </div>
   );
 }
