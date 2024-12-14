@@ -116,14 +116,14 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
       suppressHydrationWarning
     >
       <body
-        className={`${quicksand.variable} ${monserrat.variable} ${roboto.variable} min-h-screen flex flex-col bg-slate-50 antialiased`}
+        className={`${quicksand.variable} ${monserrat.variable} ${roboto.variable} min-h-screen flex flex-col bg-white antialiased`}
       >
         <Suspense fallback={<div className="h-16" />}>
           <Header />
         </Suspense>
 
         <main
-          className="flex-grow pt-24 pb-12" // pt-24 compensa el header fijo
+          className="flex-grow pt-24"
         >
           {children}
         </main>

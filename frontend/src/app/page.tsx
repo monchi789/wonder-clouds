@@ -1,4 +1,4 @@
-import InicioWritting from "@/app/components/HeroSection";
+import HeroSection from "@/app/components/HeroSection";
 import MovingCirclesBackground from "@/components/ui/MovingCirclesBackground";
 import Services from "@/app/components/Services";
 import ProjectsCarousel from "@/app/components/ProjectsCarousel";
@@ -10,12 +10,12 @@ const Inicio = () => {
     <>
       <div className=" flex flex-row w-full lg:w-full items-center relative mb-12 px-auto mx-auto">
         <MovingCirclesBackground />
-        <InicioWritting />
+        <HeroSection />
       </div>
 
       <WonderClouds />
 
-      <div className="container flex flex-col w-full lg:max-w-7xl relative space-y-10 mx-auto mt-24 px-5">
+      <div className="container flex flex-col w-full lg:max-w-7xl relative space-y-10 mx-auto mt-24 ">
         <Services />
       </div>
 

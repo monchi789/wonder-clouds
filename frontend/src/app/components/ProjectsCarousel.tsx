@@ -17,26 +17,26 @@ const projects = [
   {
     title: "Proyecto Paltos - Geragri",
     imageSrc: "/static/images/prueba.png",
-    description: "asdasdsadas asdasdsadas asdasdsadas asdasdsadas asdasdsadasasdasdsadas",
-    tags: ["React", "NextJS", "TypeScript"]
+    description: "",
+    tags: ["Desarrollo de software", "Página web", "Responsive"]
   },
   {
     title: "CORLAD - Cusco",
     imageSrc: "/static/images/prueba2.png",
-    description: "asdasdsadas asdasdsadas asdasdsadas asdasdsadas asdasdsadasasdasdsadas",
-    tags: ["React", "NextJS", "TypeScript"]
+    description: "",
+    tags: ["Plataforma web", "Dashboard", "Base de datos"]
   },
   {
     title: "AER. Athletic Club",
     imageSrc: "/static/images/prueba3.png",
-    description: "asdasdsadas asdasdsadas asdasdsadas asdasdsadas asdasdsadasasdasdsadas",
-    tags: ["React", "NextJS", "TypeScript"]
+    description: "",
+    tags: ["Desarrollo de software", "Página web", "Responsive"]
   },
   {
     title: "Peruvian Cusco Travel",
     imageSrc: "/static/images/prueba4.png",
-    description: "asdasdsadas asdasdsadas asdasdsadas asdasdsadas asdasdsadasasdasdsadas",
-    tags: ["React", "NextJS", "TypeScript"]
+    description: "",
+    tags: ["Desarrollo de software", "Página web", "Responsive"]
   }
 ];
 

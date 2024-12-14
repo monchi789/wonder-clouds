@@ -26,6 +26,7 @@ const config: Config = {
   			foreground: 'var(--foreground)',
   			primary: 'var(--primary)',
   			secondary: 'var(--secondary)',
+				"background-light": '#F8FAFC',
 				light: '#BCD0DF',
   			default: '#1F2C3D'
   		},

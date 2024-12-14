@@ -19,7 +19,7 @@ const ContactForm = () => {
     <div className="flex flex-col lg:flex-row mx-4 lg:mx-12 justify-center space-y-8 lg:space-y-0 lg:space-x-10">
       <section className="w-full lg:w-1/2 text-base md:text-lg px-4 lg:px-10">
         <motion.h3
-          className="text-3xl md:text-5xl text-primary font-extrabold py-6 md:py-10"
+          className="text-3xl md:text-5xl text-primary font-extrabold font-quicksand py-6 md:pb-10"
           initial="hidden"
           whileInView="visible"
           variants={fadeIn}
@@ -63,7 +63,7 @@ const ContactForm = () => {
           {["Aumentar tu visibilidad en línea", "Optimizar procesos internos y mejorar la eficiencia", "Crear conexiones significativas con tus clientes"].map((text, index) => (
             <motion.li
               key={index}
-              className="flex items-center"
+              className="flex items-center font-quicksand"
               initial="hidden"
               whileInView="visible"
               variants={fadeIn}
@@ -87,7 +87,7 @@ const ContactForm = () => {
           <h2 className="text-lg font-medium text-gray-600 mb-2">
             ¿Necesitas soluciones digitales?
           </h2>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#104D7E] mb-3">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-quicksand text-primary mb-3">
             No dudes en contactarnos
           </h1>
           <p className="text-gray-500">

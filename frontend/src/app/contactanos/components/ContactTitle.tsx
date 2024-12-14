@@ -21,7 +21,7 @@ const ContactTitle = () => {
         variants={fadeIn}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-4xl text-center text-primary font-bold lg:text-5xl">
+        <h1 className="text-5xl lg:text-6xl text-center text-primary font-bold ">
           Contáctanos
         </h1>
         <div className="mt-4">

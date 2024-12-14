@@ -64,8 +64,8 @@ const ServiceCard = ({
             <Image
               src={imageSrc}
               alt={imageAlt}
-              width={96}
-              height={96}
+              width={200}
+              height={200}
               className="relative z-10 
               object-contain w-full h-full 
               transition-transform duration-400 

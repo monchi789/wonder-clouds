@@ -40,7 +40,7 @@ const NosotrosTitle = () => {
           variants={fadeInUp}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-5xl md:text-6xl text-default font-bold mb-4">
+          <h1 className="text-5xl md:text-6xl text-primary font-bold mb-4">
             Nosotros
           </h1>
           <Breadcrumb />
@@ -95,7 +95,7 @@ const NosotrosTitle = () => {
               </span>
             </div>
 
-            <h2 className="text-4xl md:text-7xl font-bold text-default">
+            <h2 className="text-4xl md:text-7xl font-bold text-primary">
               Wonder Clouds
             </h2>
 
@@ -131,12 +131,12 @@ const NosotrosTitle = () => {
           whileInView="visible"
           variants={fadeInUp}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="grid md:grid-cols-3 gap-8 mt-20"
+          className="grid md:grid-cols-3 gap-12 mt-20"
         >
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 text-center
+              className="bg-gray-200/20 backdrop-blur-lg rounded-2xl p-6 text-center
                          border border-white/10 transition-all
                          hover:transform hover:-translate-y-1"
             >

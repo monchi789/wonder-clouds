@@ -5,12 +5,11 @@ const Contactanos = () => {
   return (
     <>
         
-        <ContactTitle />
-
+      <ContactTitle />
 
       <div className="container flex flex-col w-full items-center lg:w-3/4 mx-auto mt-12">
 
-        <ContactForm />
+      <ContactForm />
 
       </div>
     </>

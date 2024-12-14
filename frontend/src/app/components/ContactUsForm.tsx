@@ -8,17 +8,19 @@ import { motion } from 'framer-motion';
 
 const ContactUsForm = () => {
   return (
-    <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
-      <div className="flex flex-col items-center py-8 sm:py-12 lg:py-16">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+    <div className="max-w-7xl px-4 sm:px-6 lg:px-8 mx-auto">
+      <div className="flex flex-col py-8 sm:py-12">
+        <motion.div
+          className="flex items-center mx-auto gap-3 mb-6"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: true, amount: 0.2 }}
-          className="text-3xl lg:text-4xl font-semibold text-default text-center mb-8 sm:mb-12"
+          viewport={{ once: true }}
         >
+          <h2 className="text-3xl lg:text-4xl text-default font-semibold text-center">
           Comunícate con<span className="ps-2 text-primary">Nosotros</span>
-        </motion.h2>
+          </h2>
+        </motion.div>
 
         <div className="w-full flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 lg:gap-12">
           <motion.div
@@ -30,8 +32,8 @@ const ContactUsForm = () => {
           >
             <motion.div
               animate={{
-                y: [-10, 10, -10], // Movimiento vertical suave
-                rotate: [-2, 2, -2], // Ligera rotación
+                y: [-10, 10, -10],
+                rotate: [-2, 2, -2],
               }}
               transition={{
                 duration: 4,
@@ -41,7 +43,6 @@ const ContactUsForm = () => {
               }}
             >
               <motion.div
-                // Efecto de propulsión
                 whileInView={{
                   scale: [1, 1.02, 1],
                   transition: {
