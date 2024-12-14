@@ -1,21 +1,20 @@
-// src/components/ProtectedRoute.tsx
-import type { ReactNode } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
-import Cookies from 'js-cookie'
+import { Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
 
 interface ProtectedRouteProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
-const ProtectedRoutes = ({ children }: ProtectedRouteProps) => {
-  const token = Cookies.get('authToken');
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const location = useLocation();
+  const { accessToken } = useSelector((state: RootState) => state.auth);
 
-  if (!token) {
-    return <Navigate to='/login' state={{ from: location }} replace />;
+  if (!accessToken) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;
 };
 
-export default ProtectedRoutes;
+export default ProtectedRoute;

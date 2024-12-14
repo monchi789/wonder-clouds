@@ -108,4 +108,10 @@ export class TipoGeneralService {
       where: { tipo: Tipo.TIPO_CLIENTE },
     });
   }
+
+  async categoriaProducto() {
+    return await this.tipoGeneralRepository.find({
+      where: { tipo: Tipo.CATEGORIA_PRODUCTO },
+    });
+  }
 }

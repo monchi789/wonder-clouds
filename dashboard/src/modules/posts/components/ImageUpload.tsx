@@ -1,62 +1,72 @@
-import { Button } from '@/shared/components/ui/button';
-import { Input } from '@/shared/components/ui/input';
-import { Label } from '@/shared/components/ui/label';
+import React, { useState, useCallback } from 'react';
 import { ImagePlus, X } from 'lucide-react';
-import { cn } from '@/libs/utils';
 
 interface ImageUploadProps {
-  onChange: (url: string | null) => void;
-  value: string | null;
+  value: string[] | null;
+  onChange: (files: string[]) => void;
+  multiple?: boolean;
 }
 
-const ImageUpload = ({ onChange, value }: ImageUploadProps) => {
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange, multiple = false }) => {
+  const [previewUrls, setPreviewUrls] = useState<string[]>(value || []);
 
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        onChange(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      const newPreviewUrls = newFiles.map(file => URL.createObjectURL(file));
+      
+      if (multiple) {
+        onChange([...(value || []), ...newPreviewUrls]);
+        setPreviewUrls(prevUrls => [...prevUrls, ...newPreviewUrls]);
+      } else {
+        onChange(newPreviewUrls);
+        setPreviewUrls(newPreviewUrls);
+      }
     }
-  };
+  }, [multiple, onChange, value]);
+
+  const removeImage = useCallback((index: number) => {
+    const newUrls = [...previewUrls];
+    newUrls.splice(index, 1);
+    onChange(newUrls);
+    setPreviewUrls(newUrls);
+  }, [onChange, previewUrls]);
 
   return (
-    <div className='space-y-4'>
-      {value ? (
-        <div className='relative group'>
-          <img src={value} alt='Cover' className='w-full aspect-video object-cover rounded-lg' />
-          <Button
-            variant='destructive'
-            size='sm'
-            className='absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity'
-            onClick={() => onChange(null)}
-          >
-            <X className='h-4 w-4' />
-          </Button>
-        </div>
-      ) : (
-        <div className='border-2 border-dashed rounded-lg p-8 text-center'>
-          <Input
-            type='file'
-            accept='image/*'
-            className='hidden'
-            id='cover-image'
-            onChange={handleImageUpload}
+    <div className="space-y-4">
+      <div className="flex items-center justify-center w-full">
+        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+            <ImagePlus className="w-10 h-10 mb-3 text-gray-400" />
+            <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Haga clic para cargar</span> o arrastre y suelte</p>
+            <p className="text-xs text-gray-500">SVG, PNG, JPG o GIF (MAX. 800x400px)</p>
+          </div>
+          <input 
+            id="dropzone-file" 
+            type="file" 
+            className="hidden" 
+            onChange={handleFileChange} 
+            multiple={multiple} 
+            accept="image/*" 
+            aria-label="Subir imagen"
           />
-          <Label
-            htmlFor='cover-image'
-            className={cn(
-              'flex flex-col items-center gap-2 cursor-pointer',
-              'text-muted-foreground hover:text-foreground transition-colors'
-            )}
-          >
-            <ImagePlus className='h-8 w-8' />
-            <span>Subir imagen de portada</span>
-            <span className='text-sm'>Recomendado: 1200×630px, max 2MB</span>
-          </Label>
+        </label>
+      </div>
+      {previewUrls.length > 0 && (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {previewUrls.map((url, index) => (
+            <div key={index} className="relative">
+              <img src={url} alt={`Imagen subida ${index + 1}`} className="rounded-lg object-cover w-full h-40" />
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                aria-label={`Eliminar imagen ${index + 1}`}
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
         </div>
       )}
     </div>
